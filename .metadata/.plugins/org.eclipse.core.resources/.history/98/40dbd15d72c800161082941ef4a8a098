@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum Colour {
-	//All colours from wikipedia with duplicate names removed.
 	VOID(null),
 	ABSOLUTE_ZERO("#0048BA"),
 	ACID_GREEN("#B0BF1A"),
@@ -1231,7 +1230,6 @@ public enum Colour {
 	
 	private String hex;
 	
-	//Makes the Colour with field hex as a string.
 	private Colour(String hex) {
 		this.hex = hex;
 	}

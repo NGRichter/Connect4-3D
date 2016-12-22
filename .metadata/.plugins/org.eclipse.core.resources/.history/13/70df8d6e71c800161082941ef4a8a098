@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum Colour {
-	//All colours from wikipedia with duplicate names removed.
-	VOID(null),
 	ABSOLUTE_ZERO("#0048BA"),
 	ACID_GREEN("#B0BF1A"),
 	AERO("#7CB9E8"),
@@ -1231,25 +1229,24 @@ public enum Colour {
 	
 	private String hex;
 	
-	//Makes the Colour with field hex as a string.
 	private Colour(String hex) {
 		this.hex = hex;
 	}
-	
-	//Returns a list of all the colour except VOID.
+
 	public static List<Colour> allColours() {
 		List<Colour> colours = new ArrayList<Colour>();
 		for (Colour c : Colour.values()) {
-			if (!(c == Colour.VOID)) {
-				colours.add(c);				
-			}
+			colours.add(c);
 		}
 		return colours;
 	}
 	
-	//Returns the hex string.
 	public String getHex() {
 		return hex;
+	}
+	
+	public static String toString(Colour colour) {
+		return colour.name();
 	}
 }
 

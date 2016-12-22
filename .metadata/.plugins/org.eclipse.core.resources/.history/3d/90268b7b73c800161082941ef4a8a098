@@ -11,7 +11,7 @@ public class Game {
 	public Game(Board board, String[] players) {
 		int i = 0;
 		for (String string : players) {
-			Player player = new HumanPlayer(string, colours.get(i));
+			Player player = new Player(string, colours.get(i));
 			this.players.add(player);
 			i++;
 		}

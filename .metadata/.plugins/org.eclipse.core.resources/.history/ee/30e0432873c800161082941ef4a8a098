@@ -26,6 +26,6 @@ public abstract class Player {
 	
 	public void makeMove(Board board) {
 		int choice = determineMove(board);
-		board.setField(choice, colour);
+		board.setField(choice, getColour());
 	}
 }

@@ -1,6 +1,6 @@
 package connected.game;
 
-public abstract class Player {
+public class Player {
 	
 	private String name;
 	private Colour colour;
@@ -22,10 +22,5 @@ public abstract class Player {
 		return name + "(" + colour.name() + ")";
 	}
 	
-	public abstract int determineMove(Board board);
 	
-	public void makeMove(Board board) {
-		int choice = determineMove(board);
-		board.setField(choice, colour);
-	}
 }
