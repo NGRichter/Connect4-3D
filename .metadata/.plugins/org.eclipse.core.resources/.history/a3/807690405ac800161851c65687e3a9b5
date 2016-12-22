@@ -1,0 +1,14 @@
+package connected.game;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Colour {
+	
+	public List<Colour> getAllColours() {
+		List<Colour> colours = new ArrayList<Colour>();
+		
+		return colours;
+	}
+
+}

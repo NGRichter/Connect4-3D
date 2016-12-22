@@ -1,0 +1,16 @@
+package connected.game;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public enum Colour {
+	BLACK, WHITE, RED, BLUE, GREEN, PURPLE, ORANGE, YELLOW, GOLD, PINK, TURQUOISE, SILVER, GRAY, AMBER;
+
+	public static List<Colour> allColours() {
+		List<Colour> colours = new ArrayList<Colour>();
+		for (Colour c : Colour.values()) {
+			colours.add(c);
+		}
+		return colours;
+}
+

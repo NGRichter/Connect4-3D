@@ -1,0 +1,20 @@
+package connected.game;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Game {
+	
+	private List<Player> players = new ArrayList<Player>();
+	private List<Colour> colours = new ArrayList<Colour>();
+	
+	public Game(Board board, String[] players) {
+		colours = Colour.allColours();
+		for (String string : players) {
+			Player player = new Player(string, colour);
+			this.players.add(player);
+		}
+	}
+	
+	
+}

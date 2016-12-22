@@ -1,0 +1,26 @@
+package connected.game;
+
+public class Player {
+	
+	private String name;
+	private Colour colour;
+	
+	public Player(String name, Colour colour) {
+		this.name = name;
+		this.colour = colour;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public Colour getColour() {
+		return colour;
+	}
+	
+	public String toString() {
+		return name + "(" + colour.toString() + ")";
+	}
+	
+	
+}
