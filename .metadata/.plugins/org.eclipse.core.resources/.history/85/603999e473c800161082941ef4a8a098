@@ -1,9 +1,0 @@
-package connected.game;
-
-public class HumanPlayer extends Player {
-
-	public HumanPlayer(String name, Colour colour) {
-		super(name, colour);
-	}
-
-}
