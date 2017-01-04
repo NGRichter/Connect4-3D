@@ -17,8 +17,17 @@ public class Board {
 		DIMZ = z;
 	}
 
-	public void setField(int choice, Player player) {
+	public void setField(int choice, Player player) throws OutsidePlayingBoardException {
+		int[] intarray = index(choice);
+		fields[intarray[0]][intarray[1]][intarray[2]] = player;
 		
+	}
+	
+	public void setField(int x, int y, int z, Player player) throws OutsidePlayingBoardException {
+		if (x >= DIMX || y >= DIMY || z >= DIMZ) {
+			throw new OutsidePlayingBoardException();
+		}
+		fields[x][y][z] = player;
 		
 	}
 	
@@ -34,10 +43,25 @@ public class Board {
 		return DIMZ;
 	}
 	
-	public Player getField(int choice) {
+	public Player[][][] getFields() {
+		return fields;
+	}
+	
+	public Player getField(int choice) throws OutsidePlayingBoardException {
 		Player player;
-		player = fields[x][y][z];
+		int[] intarray;
+		intarray = index(choice);
+		player = fields[intarray[0]][intarray[1]][intarray[2]];
 		
+		return player;
+	}
+	
+	public Player getField(int x, int y, int z) throws OutsidePlayingBoardException {
+		Player player;
+		if (x >= DIMX || y >= DIMY || z >= DIMZ) {
+			throw new OutsidePlayingBoardException();
+		}
+		player = fields[x][y][z];	
 		return player;
 	}
 	
@@ -45,7 +69,7 @@ public class Board {
 		int x = choice % DIMX;
 		int y = (choice / DIMX) % DIMY;
 		int z = choice / (DIMX * DIMY);
-		if (z > DIMZ) {
+		if (z >= DIMZ) {
 			throw new OutsidePlayingBoardException();
 		}
 		int[] array = {x,y,z};
