@@ -19,13 +19,19 @@ public class Board {
 
 	public void setField(int choice, Player player) throws OutsidePlayingBoardException {
 		int[] intarray = index(choice);
+		while (fields[intarray[0]][intarray[1]][intarray[2]] == null && intarray[2] > 0) {
+			intarray[2] -= 1;
+		}
 		fields[intarray[0]][intarray[1]][intarray[2]] = player;
 		
 	}
 	
 	public void setField(int x, int y, int z, Player player) throws OutsidePlayingBoardException {
-		if (x >= DIMX || y >= DIMY || z >= DIMZ) {
+		if (x >= DIMX || y >= DIMY || z >= DIMZ || x < 0 || y < 0 || z < 0) {
 			throw new OutsidePlayingBoardException();
+		}
+		while (fields[x][y][z] == null && z > 0) {
+			z -= 1;
 		}
 		fields[x][y][z] = player;
 		
@@ -58,7 +64,7 @@ public class Board {
 	
 	public Player getField(int x, int y, int z) throws OutsidePlayingBoardException {
 		Player player;
-		if (x >= DIMX || y >= DIMY || z >= DIMZ) {
+		if (x >= DIMX || y >= DIMY || z >= DIMZ || x < 0 || y < 0 || z < 0) {
 			throw new OutsidePlayingBoardException();
 		}
 		player = fields[x][y][z];	
@@ -66,12 +72,12 @@ public class Board {
 	}
 	
 	public int[] index(int choice) throws OutsidePlayingBoardException {
+		if ((choice < 0) || (choice >= DIMX * DIMY * DIMZ)) {
+			throw new OutsidePlayingBoardException();
+		}
 		int x = choice % DIMX;
 		int y = (choice / DIMX) % DIMY;
 		int z = choice / (DIMX * DIMY);
-		if (z >= DIMZ) {
-			throw new OutsidePlayingBoardException();
-		}
 		int[] array = {x,y,z};
 		return array;
 		
