@@ -1,5 +1,7 @@
 package connect4.game;
 
+import connect4.exceptions.OutsidePlayingBoardException;
+
 public abstract class Player {
 	
 	private String name;
@@ -26,6 +28,12 @@ public abstract class Player {
 	
 	public void makeMove(Board board) {
 		int choice = determineMove(board);
-		board.setField(choice, colour);
+		try {
+			board.setField(choice, this);		
+		} catch (OutsidePlayingBoardException e) {
+			System.out.println("Wrong location please try again");
+			makeMove(board);
+		}
+
 	}
 }

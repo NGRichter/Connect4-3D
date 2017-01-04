@@ -19,7 +19,7 @@ public class Board {
 
 	public void setField(int choice, Player player) throws OutsidePlayingBoardException {
 		int[] intarray = index(choice);
-		while (fields[intarray[0]][intarray[1]][intarray[2]] == null && intarray[2] > 0) {
+		while (fields[intarray[0]][intarray[1]][intarray[2] - 1] == null && intarray[2] > 0) {
 			intarray[2] -= 1;
 		}
 		fields[intarray[0]][intarray[1]][intarray[2]] = player;
@@ -30,7 +30,7 @@ public class Board {
 		if (x >= DIMX || y >= DIMY || z >= DIMZ || x < 0 || y < 0 || z < 0) {
 			throw new OutsidePlayingBoardException();
 		}
-		while (fields[x][y][z] == null && z > 0) {
+		while (fields[x][y][z - 1] == null && z > 0) {
 			z -= 1;
 		}
 		fields[x][y][z] = player;

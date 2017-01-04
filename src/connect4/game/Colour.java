@@ -1236,7 +1236,7 @@ public enum Colour {
 		this.hex = hex;
 	}
 	
-	//Returns a list of all the colour except VOID.
+	//Returns a list of all the colours except VOID.
 	public static List<Colour> allColours() {
 		List<Colour> colours = new ArrayList<Colour>();
 		for (Colour c : Colour.values()) {
