@@ -16,6 +16,16 @@ public class Board {
 		DIMY = y;
 		DIMZ = z;
 	}
+	
+	public void empty() {
+		for (int x = 0; x < DIMX; x++) {
+			for (int y = 0; y < DIMY; y++) {
+				for (int z = 0; y < DIMZ; z++) {
+					fields[x][y][z] = null;
+				}
+			}
+		}
+	}
 
 	public void setField(int choice, Player player) throws OutsidePlayingBoardException {
 		int[] intarray = index(choice);
