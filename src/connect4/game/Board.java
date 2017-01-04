@@ -17,7 +17,7 @@ public class Board {
 		DIMZ = z;
 	}
 
-	public void setField(int choice, Colour colour) {
+	public void setField(int choice, Player player) {
 		
 		
 	}
@@ -34,7 +34,7 @@ public class Board {
 		return DIMZ;
 	}
 	
-	public Colour getField(int choice) {
+	public Player getField(int choice) {
 		Player player;
 		player = fields[x][y][z];
 		
