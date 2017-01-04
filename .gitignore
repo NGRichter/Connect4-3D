@@ -1,7 +1,6 @@
 /bin/
 
-# IntelliJ project files
-.idea
-*.iml
-out
-gen
+# Eclipse project files
+.classpath
+.project
+/.settings/
