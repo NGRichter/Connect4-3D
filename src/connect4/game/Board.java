@@ -4,14 +4,14 @@ import connect4.exceptions.OutsidePlayingBoardException;
 
 public class Board {
 	
-	private Colour[][][] fields;
+	private Player[][][] fields;
 	public final int DIMX;
 	public final int DIMY;
 	public final int DIMZ;
 	
 	
 	public Board(int x, int y, int z) {
-		fields = new Colour[x][y][z];
+		fields = new Player[x][y][z];
 		DIMX = x;
 		DIMY = y;
 		DIMZ = z;
@@ -35,11 +35,10 @@ public class Board {
 	}
 	
 	public Colour getField(int choice) {
-		Colour colour;
+		Player player;
+		player = fields[x][y][z];
 		
-		colour = fields[x][y][z];
-		
-		return colour;
+		return player;
 	}
 	
 	public int[] index(int choice) throws OutsidePlayingBoardException {
