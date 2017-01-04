@@ -1,4 +1,4 @@
-package connected.game;
+package connect4.game;
 
 public class HumanPlayer extends Player {
 

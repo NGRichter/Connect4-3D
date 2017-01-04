@@ -1,4 +1,4 @@
-package connected.game;
+package connect4.game;
 
 import java.util.ArrayList;
 import java.util.List;
