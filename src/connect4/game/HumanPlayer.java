@@ -37,7 +37,10 @@ public class HumanPlayer extends Player {
         	} else if (isInteger(input[0]) && isInteger(input[1])) {
         		x = Integer.parseInt(input[0]);
         		y = Integer.parseInt(input[1]);
-        	}
+        	} else {
+				System.out.println("Invalid input");
+				return -1;
+			}
         } catch (ArrayIndexOutOfBoundsException e) {
         	System.out.println("Invalid syntax, please try again.");
         	return -1;

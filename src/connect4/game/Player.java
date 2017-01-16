@@ -34,7 +34,7 @@ public abstract class Player {
 		} else if (choice == -2) {
 			try {
 				if (board.layer < board.getDimZ() - 1) {
-					board.makeLayer(board.layer + 1);
+					board.drawLayer(board.layer + 1);
 				} else {
 					System.out.println("You are on the uppermost layer.");
 				}
@@ -47,7 +47,7 @@ public abstract class Player {
 		} else if (choice == -3) {
 			try {
 				if (board.layer > 0) {
-					board.makeLayer(board.layer - 1);				
+					board.drawLayer(board.layer - 1);
 				} else {
 					System.out.println("You are on the bottommost layer.");
 				}

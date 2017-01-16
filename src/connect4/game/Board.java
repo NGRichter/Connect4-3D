@@ -107,19 +107,15 @@ public class Board {
 	}
 
 
-
-
-    final String operatingSystem = System.getProperty("os.name");
-
-	public void makeLayer(int z) throws OutsidePlayingBoardException {
-		layer = z;
+	public void drawLayer(int z) throws OutsidePlayingBoardException {
+        layer = z;
+        System.out.println("Viewing layer: " + z + " out of " + (DIMZ-1));
         String vertFrame = "\n+---+";
         System.out.print("+---+");
         for(int x = 0; x < DIMX; x++){
             vertFrame += "----------+";
             System.out.format(" X %-6d |", x);
         }
-
 
         String name = "";
         System.out.println(vertFrame);
