@@ -13,24 +13,23 @@ public class HumanPlayer extends Player {
 	@Override
 	public int determineMove(Board board) {
         String prompt = "> " + getName() + " (" + getColour().name() + ")"
-                + ", what is your choice? (\"x y z\")";
+                + ", what is your choice? (\"x y\")";
         System.out.println(prompt);
         Scanner in = new Scanner(System.in);
         String[] input = in.nextLine().split(" ");
-        int x, y, z;
+        int x, y;
         try {
         	x = Integer.parseInt(input[0]);
         	y = Integer.parseInt(input[1]);
-        	z = Integer.parseInt(input[2]);
         } catch (ArrayIndexOutOfBoundsException e) {
         	System.out.println("Invalid syntax, please try again.");
         	return -1;
         }
         try {
-			int choice = board.index(x, y, z);
+			int choice = board.index(x, y, 0);
 			return choice;
 		} catch (OutsidePlayingBoardException e) {
-			System.out.println("Invalid location, please specify a valid x, y and z (\"x y z\")");
+			System.out.println("Invalid location, please specify a valid x, y and z (\"x y\")");
 			return -1;
 		}
 	}

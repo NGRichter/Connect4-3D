@@ -1,6 +1,6 @@
 package connect4.game;
 
-import connect4.exceptions.OutsidePlayingBoardException;
+import connect4.exceptions.*;
 
 public class Board {
 	
@@ -27,23 +27,35 @@ public class Board {
 		}
 	}
 
-	public void setField(int choice, Player player) throws OutsidePlayingBoardException {
-		int[] intarray = index(choice);
-		while (fields[intarray[0]][intarray[1]][intarray[2] - 1] == null && intarray[2] > 0) {
-			intarray[2] -= 1;
-		}
-		fields[intarray[0]][intarray[1]][intarray[2]] = player;
-		
-	}
-	
-	public void setField(int x, int y, int z, Player player) throws OutsidePlayingBoardException {
-		if (x >= DIMX || y >= DIMY || z >= DIMZ || x < 0 || y < 0 || z < 0) {
+	public void setField(int choice, Player player) throws OutsidePlayingBoardException, NoEmptySpotException {
+		if (choice >= (DIMX * DIMY) || choice < 0) {
 			throw new OutsidePlayingBoardException();
 		}
-		while (fields[x][y][z - 1] == null && z > 0) {
-			z -= 1;
+		int[] xyz = index(choice);
+		int z = 0;
+		while (z < DIMZ && fields[xyz[0]][xyz[1]][z] != null) {
+			z += 1;
 		}
-		fields[x][y][z] = player;
+		if (fields[xyz[0]][xyz[1]][z] == null) {
+			fields[xyz[0]][xyz[1]][z] = player;
+		} else {
+			throw new NoEmptySpotException();
+		}
+	}
+	
+	public void setField(int x, int y, Player player) throws OutsidePlayingBoardException, NoEmptySpotException {
+		if (x >= DIMX || y >= DIMY || x < 0 || y < 0) {
+			throw new OutsidePlayingBoardException();
+		}
+		int z = 0;
+		while (z < DIMZ && fields[x][y][z] != null) {
+			z += 1;
+		}
+		if (fields[x][y][z] == null) {
+			fields[x][y][z] = player;			
+		} else {
+			throw new NoEmptySpotException();
+		}
 		
 	}
 	
