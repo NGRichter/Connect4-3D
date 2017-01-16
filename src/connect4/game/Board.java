@@ -93,5 +93,12 @@ public class Board {
 		
 	}
 	
+	public int index(int x, int y, int z) throws OutsidePlayingBoardException {
+		if (x < 0 || y < 0 || z < 0 || x >= DIMX || y >= DIMY || z >= DIMZ) {
+			throw new OutsidePlayingBoardException();
+		}
+		return x + y * DIMX + z * DIMX * DIMY;
+	}
+	
 	
 }
