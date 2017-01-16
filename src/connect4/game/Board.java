@@ -101,6 +101,32 @@ public class Board {
 		return array;
 		
 	}
+	
+	public void makeLayer(){
+        String row = "|1 |";
+        String vertFrame = "+--+";
+        for (int x = 0; x < DIMX; x++) {
+            vertFrame += "----------+";
+            row += " %-8s |";
+        }
+        vertFrame += "%n";
+        System.out.format(vertFrame);
+
+        String[] rowNames;
+
+        //System.out.format(row,  );
+
+
+        /*
+        System.out.format("+-----------------+------+%n");
+        System.out.format("|                 | ID   |%n");
+        System.out.format("+-----------------+------+%n");
+        for (int i = 0; i < 5; i++) {
+            System.out.format(leftAlignFormat, "" + i, i * i);
+        }
+        System.out.format("+-----------------+------+%n");
+        */
+    }
 
 	public int index(int x, int y, int z) throws OutsidePlayingBoardException {
 		if (x < 0 || y < 0 || z < 0 || x >= DIMX || y >= DIMY || z >= DIMZ) {
@@ -108,5 +134,5 @@ public class Board {
 		}
 		return x + y * DIMX + z * DIMX * DIMY;
 	}
-	
+
 }
