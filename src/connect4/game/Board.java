@@ -93,7 +93,29 @@ public class Board {
 		
 	}
 
-	public void makeLayer(){
+	public void makeLayer() throws OutsidePlayingBoardException {
+        String vertFrame = "+--+";
+        for(int x = 0; x < DIMX; x++){
+            vertFrame += "----------+";
+        }
+
+        String name = "";
+        for(int y = 0; y < DIMY; y++){
+            System.out.println(vertFrame);
+            System.out.format("|%-2d|", y);
+			for(int x = 0; x < DIMX; x++){
+                if(getField(y,x,1) == null){
+                    name = "";
+                } else {
+                    name = getField(y,x,0).getName().substring(0,8);
+                }
+                System.out.format(" %-8s |", name);
+			}
+		}
+
+
+
+		/*
         String row = "|1 |";
         String vertFrame = "+--+";
         for (int x = 0; x < DIMX; x++) {
@@ -103,12 +125,10 @@ public class Board {
         vertFrame += "%n";
         System.out.format(vertFrame);
 
-        String[] rowNames;
 
         //System.out.format(row,  );
 
 
-        /*
         System.out.format("+-----------------+------+%n");
         System.out.format("|                 | ID   |%n");
         System.out.format("+-----------------+------+%n");
