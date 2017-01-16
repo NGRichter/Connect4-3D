@@ -32,7 +32,6 @@ public abstract class Player {
 			makeMove(game);
 			return;
 		} else if (choice == -2) {
-			try {
 				if (game.board.layer < game.board.getDimZ() - 1) {
 					game.board.drawLayer(game.board.layer + 1);
 				} else {
@@ -40,12 +39,7 @@ public abstract class Player {
 				}
 				makeMove(game);
 				return;
-				
-			} catch (OutsidePlayingBoardException e) {
-				e.printStackTrace();
-			}
 		} else if (choice == -3) {
-			try {
 				if (game.board.layer > 0) {
 					game.board.drawLayer(game.board.layer - 1);
 				} else {
@@ -53,10 +47,6 @@ public abstract class Player {
 				}
 				makeMove(game);
 				return;
-
-			} catch (OutsidePlayingBoardException e) {
-				e.printStackTrace();
-			}
 		}
 		try {
 			game.board.setField(choice, this);		
