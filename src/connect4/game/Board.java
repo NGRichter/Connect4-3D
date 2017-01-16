@@ -46,7 +46,7 @@ public class Board {
 		}
 		int[] xyz = index(choice);
 		int z = 0;
-		while (z < DIMZ && fields[xyz[0]][xyz[1]][z] != null) {
+		while (z < DIMZ - 1 && fields[xyz[0]][xyz[1]][z] != null) {
 			z += 1;
 		}
 		if (fields[xyz[0]][xyz[1]][z] == null) {
@@ -61,7 +61,7 @@ public class Board {
 			throw new OutsidePlayingBoardException();
 		}
 		int z = 0;
-		while (z < DIMZ && fields[x][y][z] != null) {
+		while (z < DIMZ - 1 && fields[x][y][z] != null) {
 			z += 1;
 		}
 		if (fields[x][y][z] == null) {
