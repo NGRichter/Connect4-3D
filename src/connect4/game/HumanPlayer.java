@@ -9,18 +9,35 @@ public class HumanPlayer extends Player {
 	public HumanPlayer(String name, Colour colour) {
 		super(name, colour);
 	}
+	
+	public boolean isInteger(String s) {
+		try { 
+	        Integer.parseInt(s); 
+	    } catch(NumberFormatException e) { 
+	        return false; 
+	    } catch(NullPointerException e) {
+	        return false;
+	    }
+		return true;
+	}
 
 	@Override
 	public int determineMove(Board board) {
         String prompt = "> " + getName() + " (" + getColour().name() + ")"
-                + ", what is your choice? (\"x y\")";
+                + ", what is your choice? (\"x y + -\")";
         System.out.println(prompt);
         Scanner in = new Scanner(System.in);
         String[] input = in.nextLine().split(" ");
-        int x, y;
+		int x = 0, y = 0;  
         try {
-        	x = Integer.parseInt(input[0]);
-        	y = Integer.parseInt(input[1]);
+        	if (input[0].equals("+")) {
+        		return -2;
+        	} else if (input[0].equals("-")) {
+        		return -3;
+        	} else if (isInteger(input[0]) && isInteger(input[1])) {
+        		x = Integer.parseInt(input[0]);
+        		y = Integer.parseInt(input[1]);
+        	}
         } catch (ArrayIndexOutOfBoundsException e) {
         	System.out.println("Invalid syntax, please try again.");
         	return -1;

@@ -1,14 +1,13 @@
 package connect4.game;
 import connect4.exceptions.*;
 
-import connect4.exceptions.*;
-
 public class Board {
 
 	private Player[][][] fields;
 	public final int DIMX;
 	public final int DIMY;
 	public final int DIMZ;
+	public int layer;
 
 
 	public Board(int x, int y, int z) {
@@ -16,6 +15,7 @@ public class Board {
 		DIMX = x;
 		DIMY = y;
 		DIMZ = z;
+		layer = 0;
 	}
 
 	public void empty() {
@@ -29,7 +29,7 @@ public class Board {
 	}
 
 	public void setField(int choice, Player player) throws OutsidePlayingBoardException, NoEmptySpotException {
-		if (choice >= (DIMX * DIMY) || choice < 0) {
+		if (choice >= (DIMX * DIMY * DIMZ) || choice < 0) {
 			throw new OutsidePlayingBoardException();
 		}
 		int[] xyz = index(choice);
@@ -112,6 +112,7 @@ public class Board {
     final String operatingSystem = System.getProperty("os.name");
 
 	public void makeLayer(int z) throws OutsidePlayingBoardException {
+		layer = z;
         String vertFrame = "\n+---+";
         System.out.print("+---+");
         for(int x = 0; x < DIMX; x++){
