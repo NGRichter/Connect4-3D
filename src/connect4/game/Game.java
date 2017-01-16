@@ -44,6 +44,10 @@ public class Game {
 
 	}
 	
+	public List<Player> getPlayers() {
+		return players;
+	}
+	
 	public void reset() {
 		board.empty();
 	}
@@ -236,12 +240,16 @@ public class Game {
 					if (gametemp.checkWinner() == player) {
 						int[] xy = {x,y};
 						return xy;
+					} else {
+						boardtemp.setFieldToNull(x, y);
 					}
 				} catch (OutsidePlayingBoardException | NoEmptySpotException e) {
-					e.printStackTrace();
+					
 				}
 			}
 		}
+		int[] noWinningMove = {-1,-1};
+		return noWinningMove;
 	}
 	
 	public boolean isFull() {

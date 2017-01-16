@@ -80,10 +80,8 @@ public class Board {
 		while (z > 0 && fields[x][y][z] == null) {
 			z -= 1;
 		}
-		if (!(x >= DIMX || y >= DIMY || x < 0 || y < 0)) {
-			fields[x][y][z] = null;
+		fields[x][y][z] = null;
 		}
-	}
 
 	public int getDimX() {
 		return DIMX;

@@ -6,13 +6,13 @@ import connect4.exceptions.OutsidePlayingBoardException;
 import connect4.game.*;
 
 public class Easy implements Strategy {
+	
+	public int BLOCKCHANCE = 50;
+	public int WINCHANCE = 50;
 
 	@Override
 	public int determineMove(Game game) {
 		Random random = new Random();
-		
-		int randomchance = random.nextInt(100);
-		
 		int x = random.nextInt(game.board.getDimX());
 		int y = random.nextInt(game.board.getDimY());
 		try {
