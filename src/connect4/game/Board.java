@@ -27,6 +27,18 @@ public class Board {
 			}
 		}
 	}
+	
+	public Board deepCopy() {
+		Board board = new Board(DIMX, DIMY, DIMZ);
+		for (int z = 0; z < DIMZ; z++) {
+			for (int y = 0; y < DIMY; y++) {
+				for (int x = 0; x < DIMX; x++) {
+					board.fields[x][y][z] = fields[x][y][z];
+				}
+			}
+		}
+		return board;
+	}
 
 	public void setField(int choice, Player player) throws OutsidePlayingBoardException, NoEmptySpotException {
 		if (choice >= (DIMX * DIMY * DIMZ) || choice < 0) {
@@ -58,6 +70,19 @@ public class Board {
 			throw new NoEmptySpotException();
 		}
 		
+	}
+	
+	public void setFieldToNull(int x, int y) throws OutsidePlayingBoardException {
+		if (x >= DIMX || y >= DIMY || x < 0 || y < 0) {
+			throw new OutsidePlayingBoardException();
+		}
+		int z = DIMZ - 1;
+		while (z > 0 && fields[x][y][z] == null) {
+			z -= 1;
+		}
+		if (!(x >= DIMX || y >= DIMY || x < 0 || y < 0)) {
+			fields[x][y][z] = null;
+		}
 	}
 
 	public int getDimX() {

@@ -24,21 +24,21 @@ public abstract class Player {
 		return name + "(" + colour.name() + ")";
 	}
 	
-	public abstract int determineMove(Board board);
+	public abstract int determineMove(Game game);
 	
-	public void makeMove(Board board) {
-		int choice = determineMove(board);
+	public void makeMove(Game game) {
+		int choice = determineMove(game);
 		if (choice == -1) {
-			makeMove(board);
+			makeMove(game);
 			return;
 		} else if (choice == -2) {
 			try {
-				if (board.layer < board.getDimZ() - 1) {
-					board.drawLayer(board.layer + 1);
+				if (game.board.layer < game.board.getDimZ() - 1) {
+					game.board.drawLayer(game.board.layer + 1);
 				} else {
 					System.out.println("You are on the uppermost layer.");
 				}
-				makeMove(board);
+				makeMove(game);
 				return;
 				
 			} catch (OutsidePlayingBoardException e) {
@@ -46,12 +46,12 @@ public abstract class Player {
 			}
 		} else if (choice == -3) {
 			try {
-				if (board.layer > 0) {
-					board.drawLayer(board.layer - 1);
+				if (game.board.layer > 0) {
+					game.board.drawLayer(game.board.layer - 1);
 				} else {
 					System.out.println("You are on the bottommost layer.");
 				}
-				makeMove(board);
+				makeMove(game);
 				return;
 
 			} catch (OutsidePlayingBoardException e) {
@@ -59,13 +59,13 @@ public abstract class Player {
 			}
 		}
 		try {
-			board.setField(choice, this);		
+			game.board.setField(choice, this);		
 		} catch (OutsidePlayingBoardException e) {
 			System.out.println(e.getMessage());
-			makeMove(board);
+			makeMove(game);
 		} catch (NoEmptySpotException e) {
 			System.out.println(e.getMessage());
-			makeMove(board);
+			makeMove(game);
 		}
 
 	}

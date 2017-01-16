@@ -22,7 +22,7 @@ public class HumanPlayer extends Player {
 	}
 
 	@Override
-	public int determineMove(Board board) {
+	public int determineMove(Game game) {
         String prompt = "> " + getName() + " (" + getColour().name() + ")"
                 + ", what is your choice? (\"x y + -\")";
         System.out.println(prompt);
@@ -46,7 +46,7 @@ public class HumanPlayer extends Player {
         	return -1;
         }
         try {
-			int choice = board.index(x, y, 0);
+			int choice = game.board.index(x, y, 0);
 			return choice;
 		} catch (OutsidePlayingBoardException e) {
 			System.out.println("Invalid location, please specify a valid x, y and z (\"x y\")");

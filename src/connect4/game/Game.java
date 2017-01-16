@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import connect4.exceptions.NoEmptySpotException;
 import connect4.exceptions.OutsidePlayingBoardException;
 
 public class Game {
 	
 	private List<Player> players = new ArrayList<Player>();
 	private List<Colour> colours = Colour.allColours();
-	private Board board;
+	public Board board;
 	private int winCondition;
 	
 	public Game(Board board, Player[] players, int win) {
@@ -32,7 +33,7 @@ public class Game {
                 } catch (OutsidePlayingBoardException e) {
                     e.printStackTrace();
                 }
-                players.get(i).makeMove(board);
+                players.get(i).makeMove(this);
 				i++;
 				i = i % players.size();
 			}
@@ -225,6 +226,26 @@ public class Game {
 			}
 		return null;
 		
+	}
+	
+	public int[] winningMove(Player player) {
+		Board boardtemp = board.deepCopy();
+		Player[] playertemp = {player};
+		Game gametemp = new Game(boardtemp, playertemp, winCondition);
+		
+		for (int x = 0; x < board.DIMX; x++) {
+			for (int y = 0; y < board.DIMY; y++) {
+				try {
+					boardtemp.setField(x, y, player);
+					if (gametemp.checkWinner() == player) {
+						int[] xy = {x,y};
+						return xy;
+					}
+				} catch (OutsidePlayingBoardException | NoEmptySpotException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public boolean isFull() {
