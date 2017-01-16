@@ -24,7 +24,7 @@ public class HumanPlayer extends Player {
 	@Override
 	public int determineMove(Board board) {
         String prompt = "> " + getName() + " (" + getColour().name() + ")"
-                + ", what is your choice? (\"x y + -\")";
+                + ", what is your choice? (\'X Y, +, -\')";
         System.out.println(prompt);
         Scanner in = new Scanner(System.in);
         String[] input = in.nextLine().split(" ");
