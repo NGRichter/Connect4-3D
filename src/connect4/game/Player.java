@@ -28,10 +28,14 @@ public abstract class Player {
 	
 	public void makeMove(Board board) {
 		int choice = determineMove(board);
+		if (choice == -1) {
+			makeMove(board);
+			return;
+		}
 		try {
 			board.setField(choice, this);		
 		} catch (OutsidePlayingBoardException e) {
-			System.out.println("Wrong location please try again");
+			System.out.println("Wrong location, please try again");
 			makeMove(board);
 		}
 

@@ -16,6 +16,16 @@ public class Board {
 		DIMY = y;
 		DIMZ = z;
 	}
+	
+	public void empty() {
+		for (int x = 0; x < DIMX; x++) {
+			for (int y = 0; y < DIMY; y++) {
+				for (int z = 0; y < DIMZ; z++) {
+					fields[x][y][z] = null;
+				}
+			}
+		}
+	}
 
 	public void setField(int choice, Player player) throws OutsidePlayingBoardException {
 		int[] intarray = index(choice);
@@ -82,6 +92,7 @@ public class Board {
 		return array;
 		
 	}
+<<<<<<< HEAD
 
 
 	public String toString{
@@ -95,5 +106,15 @@ public class Board {
         }
         System.out.format("+-----------------+------+%n");
     }
+=======
+	
+	public int index(int x, int y, int z) throws OutsidePlayingBoardException {
+		if (x < 0 || y < 0 || z < 0 || x >= DIMX || y >= DIMY || z >= DIMZ) {
+			throw new OutsidePlayingBoardException();
+		}
+		return x + y * DIMX + z * DIMX * DIMY;
+	}
+	
+>>>>>>> origin/master
 	
 }
