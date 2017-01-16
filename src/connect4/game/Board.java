@@ -107,7 +107,7 @@ public class Board {
 	}
 
 
-	public void drawLayer(int z) throws OutsidePlayingBoardException {
+	public void drawLayer(int z){
         layer = z;
         System.out.println("Viewing layer: " + z + " out of " + (DIMZ-1));
         String vertFrame = "\n+---+";
@@ -122,10 +122,16 @@ public class Board {
         for(int y = 0; y < DIMY; y++){
             System.out.format("Y %-2d|", y);
 			for(int x = 0; x < DIMX; x++) {
-                if (getField(x, y, z) == null) {
+                Player player = null;
+                try {
+                    player = getField(x, y, z);
+                } catch (OutsidePlayingBoardException e) {
+                    e.printStackTrace();
+                }
+                if (player == null) {
                     name = "";
                 } else {
-                    name = getField(x, y, z).getName();
+                    name = player.getName();
                 }
                 System.out.format(" %-8s |", name);
             }

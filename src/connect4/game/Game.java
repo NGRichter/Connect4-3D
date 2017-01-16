@@ -27,11 +27,7 @@ public class Game {
 		while (rematch) {
 			int i = 0;
 			while(!gameOver()) {
-                try {
-                    board.drawLayer(0);
-                } catch (OutsidePlayingBoardException e) {
-                    e.printStackTrace();
-                }
+                board.drawLayer(0);
                 players.get(i).makeMove(board);
 				i++;
 				i = i % players.size();
