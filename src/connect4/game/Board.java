@@ -156,7 +156,7 @@ public class Board {
                 } else {
                     name = player.getName();
                 }
-                System.out.format(" %-8s |", name);
+                System.out.format(" %-8s |", name.substring(0, Math.min(name.length(), 8)));
             }
 			System.out.println(vertFrame);
 		}
