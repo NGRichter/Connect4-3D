@@ -12,6 +12,7 @@ public class Easy implements Strategy {
 		Random random = new Random();
 		
 		int randomchance = random.nextInt(100);
+		
 		int x = random.nextInt(game.board.getDimX());
 		int y = random.nextInt(game.board.getDimY());
 		try {
