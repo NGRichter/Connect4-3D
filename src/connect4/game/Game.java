@@ -12,7 +12,6 @@ public class Game {
 	private List<Colour> colours = Colour.allColours();
 	private Board board;
 	private int winCondition;
-	private Player winner;
 	
 	public Game(Board board, Player[] players, int win) {
 		for (Player player : players) {
@@ -23,6 +22,7 @@ public class Game {
 	}
 	
 	public void start() {
+		Player winner;
 		boolean rematch = true;
 		while (rematch) {
 			int i = 0;
@@ -31,7 +31,7 @@ public class Game {
 				i++;
 				i = i % players.size();
 			}
-			if (winner != null) {
+			if ((winner = checkWinner()) != null) {
 				System.out.println("Player " + winner + " has won!");
 			} else {
 				System.out.println("Draw");	
@@ -47,7 +47,12 @@ public class Game {
 	}
 	
 	public boolean isWinner(Player player) {
-		return false;
+		Player winner = checkWinner();
+		if (winner == player) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public Player checkWinner() {
@@ -229,24 +234,24 @@ public class Game {
 	}
 	
 	public boolean gameOver() {
-		for (Player player : players) {
-			if (isWinner(player)) {
-				winner = player;
-				return true;
-			}
+		Player winner = checkWinner();
+		if (winner != null) {
+			return true;
+		} else {
+			return isFull();
 		}
-		return isFull();
 	}
 	
 	public boolean wantRematch() {
 		Scanner in = new Scanner(System.in);
 		String input = "";
+		System.out.println("Do you want a rematch? (y/n) ");
 		while (true) {
 			input = in.nextLine();
-			if (input != "y" || input != "n") {
-				System.out.println("Please type \"y\" or \"n\".");
-			} else {
+			if (input.equals("y") || input.equals("n")) {
 				break;
+			} else {
+				System.out.println("Please type \"y\" or \"n\".");
 			}
 		}
 		if (input.equals("y")) {

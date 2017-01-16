@@ -1,6 +1,6 @@
 package connect4.game;
 
-import connect4.exceptions.OutsidePlayingBoardException;
+import connect4.exceptions.*;
 
 public abstract class Player {
 	
@@ -35,7 +35,10 @@ public abstract class Player {
 		try {
 			board.setField(choice, this);		
 		} catch (OutsidePlayingBoardException e) {
-			System.out.println("Wrong location, please try again");
+			System.out.println(e.getMessage());
+			makeMove(board);
+		} catch (NoEmptySpotException e) {
+			System.out.println(e.getMessage());
 			makeMove(board);
 		}
 
