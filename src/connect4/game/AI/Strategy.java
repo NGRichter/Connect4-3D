@@ -4,8 +4,9 @@ import connect4.game.*;
 
 public interface Strategy {
 	
-	public int BLOCKCHANCE = 50;
-	public int WINCHANCE = 50;
+	public int determineMove(Game game, Player player);
 	
-	public int determineMove(Game game);
+	public int getWinChance();
+	
+	public int getBlockChance();
 }

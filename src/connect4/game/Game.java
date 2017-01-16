@@ -233,8 +233,32 @@ public class Game {
 		Player[] playertemp = {player};
 		Game gametemp = new Game(boardtemp, playertemp, winCondition);
 		
-		for (int x = 0; x < board.DIMX; x++) {
-			for (int y = 0; y < board.DIMY; y++) {
+		for (int x = 0; x < board.getDimX(); x++) {
+			for (int y = 0; y < board.getDimY(); y++) {
+				try {
+					boardtemp.setField(x, y, player);
+					if (gametemp.checkWinner() == player) {
+						int[] xy = {x,y};
+						return xy;
+					} else {
+						boardtemp.setFieldToNull(x, y);
+					}
+				} catch (OutsidePlayingBoardException | NoEmptySpotException e) {
+					
+				}
+			}
+		}
+		int[] noWinningMove = {-1,-1};
+		return noWinningMove;
+	}
+	
+	public int[] winningMove(Player player, int condition) {
+		Board boardtemp = board.deepCopy();
+		Player[] playertemp = {player};
+		Game gametemp = new Game(boardtemp, playertemp, condition);
+		
+		for (int x = 0; x < board.getDimX(); x++) {
+			for (int y = 0; y < board.getDimY(); y++) {
 				try {
 					boardtemp.setField(x, y, player);
 					if (gametemp.checkWinner() == player) {

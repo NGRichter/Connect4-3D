@@ -7,21 +7,45 @@ import connect4.game.*;
 
 public class Easy implements Strategy {
 	
-	public int BLOCKCHANCE = 50;
-	public int WINCHANCE = 50;
+	public int adjacentChance = 75;
+	
+	@Override
+	public int determineMove(Game game, Player player) {
+		Random random = new Random();
+		int adjacent = random.nextInt(100);
+		if (adjacent < adjacentChance) {
+			int[] move = adjacent(game, player);
+			try {
+				if (move[0] != -1) {
+					return game.board.index(move[0], move[1], 0);					
+				}
+			} catch (OutsidePlayingBoardException e) {
+				e.printStackTrace();
+			}
+		}
+		while (true) {
+			int x = random.nextInt(game.board.getDimX());
+			int y = random.nextInt(game.board.getDimY());
+			try {
+				return game.board.index(x, y, 0);
+			} catch (OutsidePlayingBoardException e) {
+			}			
+		}
+	}
 
 	@Override
-	public int determineMove(Game game) {
-		Random random = new Random();
-		int x = random.nextInt(game.board.getDimX());
-		int y = random.nextInt(game.board.getDimY());
-		try {
-			return game.board.index(x, y, 0);
-		} catch (OutsidePlayingBoardException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return -1;
+	public int getWinChance() {
+		return 75;
+	}
+
+	@Override
+	public int getBlockChance() {
+		return 75;
+	}
+	
+	public int[] adjacent(Game game, Player player) {
+		int[] adjacent = game.winningMove(player, 2);
+		return adjacent;
 	}
 
 }

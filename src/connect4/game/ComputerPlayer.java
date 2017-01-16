@@ -20,7 +20,7 @@ public class ComputerPlayer extends Player {
 		int randomchance = random.nextInt(100);
 		int[] winner;
 		winner = game.winningMove(this);
-		if (winner[0] != -1 && randomchance < strategy.WINCHANCE) {
+		if (winner[0] != -1 && randomchance < strategy.getWinChance()) {
 			try {
 				return game.board.index(winner[0], winner[1], 0);
 			} catch (OutsidePlayingBoardException e) {
@@ -29,7 +29,7 @@ public class ComputerPlayer extends Player {
 		for (Player player : game.getPlayers()) {
 			if (player != this) {
 				winner = game.winningMove(player);
-				if (winner[0] != -1 && randomchance < strategy.BLOCKCHANCE) {
+				if (winner[0] != -1 && randomchance < strategy.getBlockChance()) {
 					try {
 						return game.board.index(winner[0], winner[1], 0);
 					} catch (OutsidePlayingBoardException e) {
@@ -38,7 +38,7 @@ public class ComputerPlayer extends Player {
 			}
 			
 		}
-		return strategy.determineMove(game);
+		return strategy.determineMove(game, this);
 	}
 
 }

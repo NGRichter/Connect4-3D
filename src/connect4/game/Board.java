@@ -4,9 +4,9 @@ import connect4.exceptions.*;
 public class Board {
 
 	private Player[][][] fields;
-	public final int DIMX;
-	public final int DIMY;
-	public final int DIMZ;
+	private final int DIMX;
+	private final int DIMY;
+	private final int DIMZ;
 	public int layer;
 
 
