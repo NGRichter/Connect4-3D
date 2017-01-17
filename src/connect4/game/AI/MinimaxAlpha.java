@@ -8,12 +8,10 @@ public class MinimaxAlpha extends Player {
 	
 	public Player player;
 	public Player opponent;
-	public int amounts;
 
-	public MinimaxAlpha(String name, Colour colour, int amounts) {
+	public MinimaxAlpha(String name, Colour colour) {
 		super(name, colour);
 		player = this;
-		this.amounts = amounts;
 	}
 
 	@Override
@@ -242,10 +240,10 @@ public class MinimaxAlpha extends Player {
 		int score = evaluate(game);
 		if (score >= 1000) {
 			//System.out.println("I returned the max score");
-			return score - depth * amounts;
+			return score - depth * 30;
 		} else if (score <= -1000) {
 			//System.out.println("I returned the min score");
-			return score + depth * amounts;
+			return score + depth * 30;
 		}
 		if (depth == maxDepth) return score;
 		if (isMax) {
