@@ -46,7 +46,7 @@ public class TUI implements GameView {
 
     @Override
     public void notifyMove(Player player) {
-
+        System.out.println("It's your move, " + player.getName());
     }
 
     @Override
