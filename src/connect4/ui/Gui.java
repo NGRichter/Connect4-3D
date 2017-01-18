@@ -1,4 +1,4 @@
-package connect4.gui;
+package connect4.ui;
 
 public class Gui {
 

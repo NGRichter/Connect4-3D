@@ -1228,7 +1228,7 @@ public enum Colour {
 	private String hex;
 	
 	//Makes the Colour with field hex as a string.
-	private Colour(String hex) {
+	Colour(String hex) {
 		this.hex = hex;
 	}
 	
