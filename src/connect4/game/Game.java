@@ -6,15 +6,20 @@ import java.util.Scanner;
 
 import connect4.exceptions.NoEmptySpotException;
 import connect4.exceptions.OutsidePlayingBoardException;
+import connect4.ui.TUI;
 
 public class Game {
 	
 	private List<Player> players = new ArrayList<Player>();
 	private List<Colour> colours = Colour.allColours();
 	public Board board;
+    private GameView gameView;
 	private int winCondition;
 	
 	public Game(Board board, Player[] players, int win) {
+
+        gameView = new TUI(this);
+
 		for (Player player : players) {
 			this.players.add(player);
 		}
@@ -28,20 +33,14 @@ public class Game {
 		while (rematch) {
 			int i = 0;
 			while(!gameOver()) {
-                board.drawLayer(0);
                 players.get(i).makeMove(this);
 				i++;
 				i = i % players.size();
 			}
-			if ((winner = checkWinner()) != null) {
-				System.out.println("Player " + winner + " has won!");
-			} else {
-				System.out.println("Draw");	
-			}
+			winner = checkWinner();
+            gameView.showResult(winner);
 			rematch = wantRematch();
 		}
-		System.out.println("Thanks for playing!");
-
 	}
 	
 	public List<Player> getPlayers() {
@@ -60,6 +59,10 @@ public class Game {
 			return false;
 		}
 	}
+
+	public Board getBoard(){
+        return board;
+    }
 	
 	public Player checkWinner() {
 		try{
@@ -225,7 +228,7 @@ public class Game {
 				System.out.println("Winnercheck went outside the playing board");
 			}
 		return null;
-		
+
 	}
 	
 	public int[] winningMove(Player player) {

@@ -1,6 +1,6 @@
 package connect4.ui;
 
-public class Gui {
+public class GUI {
 
 
 
