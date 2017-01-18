@@ -46,6 +46,7 @@ public class Client {
         } catch (IOException e) {
             System.out.println("ERROR: could not create a socket on " + addr
                     + " and port " + port);
+            System.exit(0);
         }
 
         // Create Peer object and start the two-way communication

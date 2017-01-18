@@ -41,17 +41,17 @@ public class Server {
             System.out.println("ERROR: Could not create server socket on port "
                     + port);
         }
+        Lobby lobby = new Lobby();
 
         //Create server peer object and start two-way communication
+        while (true) {
         try {
             Socket sock = serversock.accept();
-            Peer serverpeer = new Peer(NAME, sock);
-            Thread streamInputHandler = new Thread(serverpeer);
-            streamInputHandler.start();
-            serverpeer.handleTerminalInput();
-            serverpeer.shutDown();
+            ClientHandler clientHandler = new ClientHandler(lobby, sock);
+            clientHandler.start();
         } catch (IOException e) {
             e.printStackTrace();
+        }
         }
     }
 
