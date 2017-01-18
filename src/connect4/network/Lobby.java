@@ -30,6 +30,7 @@ public class Lobby extends Thread {
 				ready.remove(client);
 			}
 		}
+		client.terminate();
 	}
 	
 	public void startGame(int playerSize) {

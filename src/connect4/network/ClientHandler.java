@@ -20,6 +20,14 @@ public class ClientHandler extends Thread {
 	private boolean isInGame;
 	private boolean isInLobby;
 	private ClientBuffer buffer;
+	private boolean hasChat;
+	private boolean hasSecurity;
+	private boolean hasLeaderboard;
+	private boolean hasChallenge;
+	private int amountPlayers;
+	private int dimensionOfBoard;
+	private boolean noRoof;
+	private boolean terminate;
 	
 	public ClientHandler(Lobby lobby, Socket sock) {
 		this.lobby = lobby;
@@ -35,11 +43,19 @@ public class ClientHandler extends Thread {
 		player = null;
 		name = null;
 		buffer = new ClientBuffer();
+		amountPlayers = 2;
+		dimensionOfBoard = 4;
+		noRoof = false;
+		terminate = false;
 		
 	}
 	
+	public void terminate() {
+		terminate = true;
+	}
+	
 	public void run() {
-		while (true) {
+		while (!terminate) {
 			int tempin;
 			String temp = null;
 			try {
@@ -59,6 +75,62 @@ public class ClientHandler extends Thread {
 		out.write(string);
 		out.flush();
 		
+	}
+	
+	public void setPlayers(int amount) {
+		amountPlayers = amount;
+	}
+	
+	public void setDimension(int dimension) {
+		dimensionOfBoard = dimension;
+	}
+	
+	public void setNoRoof(boolean noroof) {
+		noRoof = noroof;
+	}
+	
+	public int getPlayers() {
+		return amountPlayers;
+	}
+	
+	public int getDimension() {
+		return dimensionOfBoard;
+	}
+	
+	public boolean getNoRoof() {
+		return noRoof;
+	}
+	
+	public void hasChat() {
+		hasChat = true;
+	}
+	
+	public void hasSecurity() {
+		hasSecurity = true;
+	}
+	
+	public void hasLeaderboard() {
+		hasLeaderboard = true;
+	}
+	
+	public void hasChallenge() {
+		hasChallenge = true;
+	}
+	
+	public boolean getChat() {
+		return hasChat;
+	}
+	
+	public boolean getSecurity() {
+		return hasSecurity;
+	}
+	
+	public boolean getChallenge() {
+		return hasChallenge;
+	}
+	
+	public boolean getLeaderboard() {
+		return hasLeaderboard;
 	}
 	
 	public void inLobby() {

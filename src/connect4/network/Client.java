@@ -50,7 +50,6 @@ public class Client {
         }
 
         // Create Peer object and start the two-way communication
-        Peer client = new Peer(NAME, sock);
         Thread streamInputHandler = new Thread(client);
         streamInputHandler.start();
         client.handleTerminalInput();
