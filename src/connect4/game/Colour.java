@@ -2,6 +2,7 @@ package connect4.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public enum Colour {
 	//All colours from wikipedia with duplicate names removed.
@@ -1246,6 +1247,15 @@ public enum Colour {
 	//Returns the hex string.
 	public String getHex() {
 		return hex;
+	}
+	
+	public static Colour random() {
+		Random random = new Random();
+		int temp = 0;
+		while (temp == 0) {
+			temp += random.nextInt(Colour.values().length); 
+		}
+		return Colour.values()[temp];
 	}
 }
 

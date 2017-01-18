@@ -1,59 +1,52 @@
 package connect4.network;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Server {
-
-    private static final String USAGE
-            = "Usage: <port>";
-    private static final String NAME = "server";
-
-
-    public static void main(String[] args){
-
-        //Test if correct amount of arguments.
-        if (args.length != 1){
-            System.out.println(USAGE);
-            System.exit(0);
-        }
-        ServerSocket serversock = null;
-
-        int port = 0;
-
-        //Construct the port
-        try {
-            port = Integer.parseInt(args[0]);
-        } catch (NumberFormatException e) {
-            System.out.println(USAGE);
-            System.out.println("ERROR: port " + args[0]
-                    + " is not an integer");
-            System.exit(0);
-        }
-
-        //Attempt opening server socket
-        try {
-            serversock = new ServerSocket(port);
-        } catch (IOException e) {
-            System.out.println("ERROR: Could not create server socket on port "
-                    + port);
-        }
-        Lobby lobby = new Lobby();
-
-        //Create server peer object and start two-way communication
-        while (true) {
-        try {
-            Socket sock = serversock.accept();
-            ClientHandler clientHandler = new ClientHandler(lobby, sock);
-            clientHandler.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        }
-    }
-
+public class Server extends Thread {
+	
+	private List<ClientHandler> clients;
+	
+	public Server() {
+		clients = new ArrayList<ClientHandler>();
+	}
+	
+	public void run() {
+		while (true) {
+			for (ClientHandler client : clients) {
+				ClientBuffer buffer = client.getBuffer();
+				if (!buffer.isEmpty()) {
+					String temp = buffer.readBuffer();
+					String[] command = temp.split(" ");
+					if (command.length != 0) {
+						if (command[0].equals("Join") && command.length >= 2) {
+							
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void sendError(ClientHandler client, String errorCode) {
+		try {
+			client.handleOutput("Error: " + errorCode);
+		} catch (IOException e) {
+			removeClient(client);
+		}
+	}
+	
+	public void addClient(ClientHandler client) {
+		if (!clients.contains(client)) {
+			clients.add(client);
+		}
+	}
+	
+	public void removeClient(ClientHandler client) {
+		if (clients.contains(client)) {
+			clients.remove(client);
+		}
+	}
 
 }

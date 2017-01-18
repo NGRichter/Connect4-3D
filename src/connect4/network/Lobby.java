@@ -5,25 +5,25 @@ import java.util.List;
 
 public class Lobby extends Thread {
 	
-	public List<Client> clients;
-	public List<Client> ready;
+	public List<ClientHandler> clients;
+	public List<ClientHandler> ready;
 	
 	public Lobby() {
-		clients = new ArrayList<Client>();
-		ready = new ArrayList<Client>();
+		clients = new ArrayList<ClientHandler>();
+		ready = new ArrayList<ClientHandler>();
 	}
 	
-	public void connect(Client client) {
+	public void connect(ClientHandler client) {
 		clients.add(client);
 	}
 	
-	public void ready(Client client) {
+	public void ready(ClientHandler client) {
 		if (clients.contains(client)) {
 			ready.add(client);
 		}
 	}
 	
-	public void disconnect(Client client) {
+	public void disconnect(ClientHandler client) {
 		if (clients.contains(client)) {
 			clients.remove(client);
 			if (ready.contains(client)) {
