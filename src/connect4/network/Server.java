@@ -14,15 +14,23 @@ public class Server extends Thread {
 	
 	public void run() {
 		while (true) {
+			int o = 0;
+			if (clients.isEmpty()) {
+				try {
+					sleep(250);
+				} catch (InterruptedException e) {
+					System.out.println("An interrupt has happened");
+				}
+			}
 			for (ClientHandler client : clients) {
 				ClientBuffer buffer = client.getBuffer();
 				if (!buffer.isEmpty()) {
 					String temp = buffer.readBuffer();
 					String[] command = temp.split(" ");
 					//No command should be empty
-					if (command.length != 0) {
-						//Commands that can be done while client is not in lobby
-						if (!client.getInLobby()) {
+					if (command.length != 0) {			
+						//Commands that can be done while client is not in lobby and not in-game
+						if (!client.getInLobby() && !client.getInGame()) {
 							if (command[0].equals("Join") && command.length >= 2) {
 								client.makePlayer(command[1]);
 								for (int i = 2; i < command.length; i++) {
@@ -36,23 +44,48 @@ public class Server extends Thread {
 										client.hasChallenge();
 									}
 								}
+							} else if (command[0].equals("Login") && command.length == 3) {
+								//TO-DO
+							} else {
+								sendError(client, "Cannot understand: \"" + temp + "\"\nValid commands are: \n\"Join username [chat] [security] [leaderboard] [challenge]\"\n\"Login username password\".");
 							}
-							//Commands if client is in lobby
-						} else if (client.getInLobby()) {
-							if (command[0].equals("Ready")) {
-								if (command.length >= 2) {
-									int players = Integer.parseInt(command[1]);
-									client.setPlayers(players);
+							//Commands clients can do when they have joined
+						} else if (client.getInGame() || client.getInLobby()) {
+							//Commands if client is in lobby							
+							if (client.getInLobby()) {
+								if (command[0].equals("Ready")) {
+									if (command.length >= 2) {
+										int players = Integer.parseInt(command[1]);
+										client.setPlayers(players);
+									}
+									if (command.length >= 3) {
+										int dimension = Integer.parseInt(command[2]);
+										client.setDimension(dimension);
+									}
+									if (command.length == 4) {
+										client.setNoRoof(true);
+									}
+									client.getLobby().ready(client);
+								} else if (command[0].equals("Challenge")) {
+									//TO-DO
+								} else if (command[0].equals("ChallengeDenied")) {
+									//TO-DO
+								} else if (command[0].equals("ChallengeAccept")) {
+									//TO-DO
 								}
-								if (command.length >= 3) {
-									int dimension = Integer.parseInt(command[2]);
-									client.setDimension(dimension);
+									
+								//Commands if client is in-game
+							} else if (client.getInGame()) {
+								if (command[0].equals("Leave")) {
+									//TO-DO
+								} else if (command[0].equals("Move")) {
+									//TO-DO
+								} else if (command[0].equals("Hint")) {
+									//TO-DO
 								}
-								if (command.length == 4) {
-									client.setNoRoof(true);
-								}
-								client.getLobby().ready(client);
-							} else if (command[0].equals("Chat")) {
+							}		 
+							//Commands if client is in game
+							if (command[0].equals("Chat")) {
 								String chatmessage = "Chat " + client.getUserName();
 								for (int i = 1; i < command.length; i++) {
 									chatmessage += " " + command[i];
@@ -66,16 +99,19 @@ public class Server extends Thread {
 										}
 									}
 								}
-							}
-							//Commands if client is in game
-						} else if (client.getInGame()) {
-							if (command[0].equals("Leave")) {
-								//TO-DO
-							} else if (command[0].equals("Move")) {
+							} else if (command[0].equals("Leaderboard")) {
 								//TO-DO
 							}
-						} 
+						}
 					}
+				} else {
+					o++;
+				}
+			}
+			if (o == clients.size()) {
+				try {
+					sleep(250);
+				} catch (InterruptedException e) {
 				}
 			}
 		}
