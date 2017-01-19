@@ -10,6 +10,12 @@ public class Board {
 	public int layer;
 
 
+	/**
+	 * Defines a board, with a 3D-player array, and X,Y,Z dimensions.
+	 * @param x - x-dimension of the board
+	 * @param y - y-dimension of the board
+	 * @param z - z-dimension of the board (height)
+	 */
 	public Board(int x, int y, int z) {
 		fields = new Player[x][y][z];
 		DIMX = x;
@@ -18,6 +24,9 @@ public class Board {
 		layer = 0;
 	}
 
+	/**
+	 * Empties the entire board.
+	 */
 	public void empty() {
 		for (int x = 0; x < DIMX; x++) {
 			for (int y = 0; y < DIMY; y++) {
@@ -27,7 +36,11 @@ public class Board {
 			}
 		}
 	}
-	
+
+	/**
+	 * Creates a copy of the board.
+	 * @return copy of board
+	 */
 	public Board deepCopy() {
 		Board board = new Board(DIMX, DIMY, DIMZ);
 		for (int z = 0; z < DIMZ; z++) {
@@ -40,6 +53,9 @@ public class Board {
 		return board;
 	}
 
+	/**
+	 * TO BE REMOVED
+	 */
 	public void setField(int choice, Player player) throws OutsidePlayingBoardException, NoEmptySpotException {
 		if (choice >= (DIMX * DIMY * DIMZ) || choice < 0) {
 			throw new OutsidePlayingBoardException();
@@ -56,6 +72,14 @@ public class Board {
 		}
 	}
 
+	/**
+	 * Sets a field to a player at given coords, at it's highest empty field.
+	 * @param x - x-coordinate of the field
+	 * @param y - y-coordinate of the field
+	 * @param player - player to occupy the field with
+	 * @throws OutsidePlayingBoardException
+	 * @throws NoEmptySpotException
+	 */
 	public void setField(int x, int y, Player player) throws OutsidePlayingBoardException, NoEmptySpotException {
 		if (x >= DIMX || y >= DIMY || x < 0 || y < 0) {
 			throw new OutsidePlayingBoardException();
@@ -71,7 +95,14 @@ public class Board {
 		}
 		
 	}
-	
+
+
+	/**
+	 * Sets a field at given coords to null, at it's highest non-empty field.
+	 * @param x - x-coordinate of the field
+	 * @param y - y-coordinate of the field
+	 * @throws OutsidePlayingBoardException
+	 */
 	public void setFieldToNull(int x, int y) throws OutsidePlayingBoardException {
 		if (x >= DIMX || y >= DIMY || x < 0 || y < 0) {
 			throw new OutsidePlayingBoardException();
@@ -83,14 +114,26 @@ public class Board {
 		fields[x][y][z] = null;
 		}
 
+	/**
+	 * Requests the X-dimension of the board.
+	 * @return DIMX
+	 */
 	public int getDimX() {
 		return DIMX;
 	}
 
+	/**
+	 * Requests the Y-dimension of the board.
+	 * @return DIMY
+	 */
 	public int getDimY() {
 		return DIMY;
 	}
 
+	/**
+	 * Requests the Z-dimension of the board (height).
+	 * @return DIMZ
+	 */
 	public int getDimZ() {
 		return DIMZ;
 	}
@@ -99,10 +142,21 @@ public class Board {
 		return layer;
 	}
 
+	/**
+	 * Requests a 3D-array of players, representing the board.
+	 * @return 3D player array, 'fields'
+	 */
 	public Player[][][] getFields()	{
 		return fields;
 	}
 
+
+	/**
+	 *
+	 * @param choice
+	 * @return
+	 * @throws OutsidePlayingBoardException
+	 */
 	public Player getField(int choice) throws OutsidePlayingBoardException {
 		Player player;
 		int[] intarray;
@@ -112,6 +166,14 @@ public class Board {
 		return player;
 	}
 
+	/**
+	 * Returns current occupation of field, either player or null.
+	 * @param x - x-coordinate of the field.
+	 * @param y - y-coordinate of the field.
+	 * @param z- z-coordinate of the field.
+	 * @return player or null if no player.
+	 * @throws OutsidePlayingBoardException
+	 */
 	public Player getField(int x, int y, int z) throws OutsidePlayingBoardException {
 		Player player;
 		if (x >= DIMX || y >= DIMY || z >= DIMZ || x < 0 || y < 0 || z < 0) {
@@ -121,6 +183,9 @@ public class Board {
 		return player;
 	}
 
+	/**
+	 * TO BE REMOVED
+	 */
 	public int[] index(int choice) throws OutsidePlayingBoardException {
 		if ((choice < 0) || (choice >= DIMX * DIMY * DIMZ)) {
 			throw new OutsidePlayingBoardException();
@@ -133,7 +198,14 @@ public class Board {
 
 	}
 
-
+	/**
+	 * Converts X,Y,Z coords to an index
+	 * @param x - x-coordinate of the index
+	 * @param y - y-coordinate of the index
+	 * @param z - z-coordinate of the index
+	 * @return index
+	 * @throws OutsidePlayingBoardException
+	 */
 	public int index(int x, int y, int z) throws OutsidePlayingBoardException {
 		if (x < 0 || y < 0 || z < 0 || x >= DIMX || y >= DIMY || z >= DIMZ) {
 			throw new OutsidePlayingBoardException();

@@ -15,7 +15,13 @@ public class Game {
 	public Board board;
     private GameView gameView;
 	private int winCondition;
-	
+
+	/**
+	 * Defines a game with a board, players, and win condition.
+	 * @param board - board for the game to use
+	 * @param players - players that participate in the game
+	 * @param win - amount of 'connects' by a player for the game to be won
+	 */
 	public Game(Board board, Player[] players, int win) {
 
         gameView = new TUI(this);
@@ -26,7 +32,10 @@ public class Game {
 		this.board = board;
 		winCondition = win;
 	}
-	
+
+	/**
+	 * Starts the game.
+	 */
 	public void start() {
 		Player winner;
 		boolean rematch = true;
@@ -46,11 +55,19 @@ public class Game {
 	public List<Player> getPlayers() {
 		return players;
 	}
-	
+
+	/**
+	 * Resets the game by emptying the board.
+	 */
 	public void reset() {
 		board.empty();
 	}
-	
+
+	/**
+	 * Checks if player has won.
+	 * @param player - player to check if won
+	 * @return true or false
+	 */
 	public boolean isWinner(Player player) {
 		Player winner = checkWinner();
 		if (winner == player) {
@@ -60,10 +77,18 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Getter for the board.
+	 * @return board
+	 */
 	public Board getBoard(){
         return board;
     }
-	
+
+	/**
+	 * Checks the board for a winner.
+	 * @return winnning player or null
+	 */
 	public Player checkWinner() {
 		try{
 			for (int z = 0; z < board.getDimZ(); z++) {
@@ -230,7 +255,10 @@ public class Game {
 		return null;
 
 	}
-	
+
+	/**
+	 * TO BE REMOVED
+	 */
 	public int[] winningMove(Player player) {
 		Board boardtemp = board.deepCopy();
 		Player[] playertemp = {player};
@@ -254,7 +282,12 @@ public class Game {
 		int[] noWinningMove = {-1,-1};
 		return noWinningMove;
 	}
-	
+
+	/**
+	 * Checks what next move for player would be the winning move, if any.
+	 * @param player - player to check move for
+	 * @return coordinates of winning move, -1,-1 if none
+	 */
 	public int[] winningMove(Player player, int condition) {
 		Board boardtemp = board.deepCopy();
 		Player[] playertemp = {player};
@@ -278,7 +311,11 @@ public class Game {
 		int[] noWinningMove = {-1,-1};
 		return noWinningMove;
 	}
-	
+
+	/**
+	 * Checks if the board is full.
+	 * @return true or false
+	 */
 	public boolean isFull() {
 		for (int x = 0; x < board.getDimX(); x++) {
 			for (int y = 0; y < board.getDimY(); y++) {
@@ -289,7 +326,11 @@ public class Game {
 		}
 		return true;
 	}
-	
+
+	/**
+	 * Checks if game is over by checking for winner or full board (draw).
+	 * @return true or false
+	 */
 	public boolean gameOver() {
 		Player winner = checkWinner();
 		if (winner != null) {
@@ -298,7 +339,10 @@ public class Game {
 			return isFull();
 		}
 	}
-	
+
+	/**
+	 * TO BE EDITED
+	 */
 	public boolean wantRematch() {
 		Scanner in = new Scanner(System.in);
 		String input = "";

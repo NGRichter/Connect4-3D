@@ -60,7 +60,6 @@ public class TUI implements GameView {
                 vertFrame += "----------+";
                 System.out.format(" X %-6d |", x);
             }
-
             String name = "";
             System.out.println(vertFrame);
             for(int y = 0; y < board.getDimY(); y++){
