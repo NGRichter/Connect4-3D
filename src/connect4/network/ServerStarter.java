@@ -41,9 +41,10 @@ public class ServerStarter {
             System.out.println("ERROR: Could not create server socket on port "
                     + port);
         }
-        Lobby lobby = new Lobby();
         Server server = new Server();
+        Lobby lobby = new Lobby(server);
         server.start();
+        lobby.start();
 
         //Create server peer object and start two-way communication
         while (true) {

@@ -15,7 +15,7 @@ public class Server extends Thread {
 	public void run() {
 		while (true) {
 			int o = 0;
-			if (clients.isEmpty()) {
+			while (clients.isEmpty()) {
 				try {
 					sleep(250);
 				} catch (InterruptedException e) {

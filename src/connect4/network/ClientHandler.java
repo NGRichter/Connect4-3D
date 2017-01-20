@@ -28,6 +28,7 @@ public class ClientHandler extends Thread {
 	private int dimensionOfBoard;
 	private boolean noRoof;
 	private boolean terminate;
+	private GameHandler game;
 	
 	public ClientHandler(Lobby lobby, Socket sock) {
 		this.lobby = lobby;
@@ -47,6 +48,7 @@ public class ClientHandler extends Thread {
 		dimensionOfBoard = 4;
 		noRoof = false;
 		terminate = false;
+		game = null;
 		
 	}
 	
@@ -75,6 +77,14 @@ public class ClientHandler extends Thread {
 		out.write(string);
 		out.flush();
 		
+	}
+	
+	public void setGame(GameHandler game) {
+		this.game = game;
+	}
+	
+	public GameHandler getGame() {
+		return game;
 	}
 	
 	public void setPlayers(int amount) {

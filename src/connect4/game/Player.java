@@ -21,7 +21,7 @@ public abstract class Player {
 	}
 	
 	public String toString() {
-		return name + "(" + colour.name() + ")";
+		return name + " (" + colour.name() + ")";
 	}
 	
 	public abstract int determineMove(Game game);

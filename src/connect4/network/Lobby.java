@@ -7,10 +7,24 @@ public class Lobby extends Thread {
 	
 	public List<ClientHandler> clients;
 	public List<ClientHandler> ready;
+	public List<ClientHandler> inGame;
+	public Server server;
 	
-	public Lobby() {
+	public Lobby(Server server) {
 		clients = new ArrayList<ClientHandler>();
 		ready = new ArrayList<ClientHandler>();
+		this.server = server;
+	}
+	
+	public void addInGame(ClientHandler game) {
+		inGame.add(game);
+		clients.remove(game);
+		ready.remove(game);
+	}
+	
+	public void outGame(ClientHandler client) {
+		inGame.remove(client);
+		clients.add(client);
 	}
 	
 	public void connect(ClientHandler client) {
@@ -24,16 +38,13 @@ public class Lobby extends Thread {
 	}
 	
 	public void disconnect(ClientHandler client) {
-		if (clients.contains(client)) {
-			clients.remove(client);
-			if (ready.contains(client)) {
-				ready.remove(client);
-			}
-		}
+		clients.remove(client);
+		ready.remove(client);
+		inGame.remove(client);
 		client.terminate();
 	}
 	
-	public void startGame(int playerSize) {
+	public void startGame(int playerSize, int dimension, boolean noroof) {
 		if (ready.size() >= playerSize) {
 			Player[] players;
 			for (int i = 0; i < playerSize; i++) {
@@ -41,6 +52,22 @@ public class Lobby extends Thread {
 				
 			}
 		}
+	}
+	
+	public void run() {
+		while (true) {
+			while (ready.isEmpty()) {
+				try {
+					Thread.sleep(250);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			for (ClientHandler client : ready) {
+				
+			}
+		}
+
 	}
 
 }
