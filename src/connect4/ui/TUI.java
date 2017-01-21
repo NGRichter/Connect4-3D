@@ -7,43 +7,130 @@ import connect4.game.GameView;
 import connect4.game.Player;
 import connect4.network.*;
 
-import java.util.Scanner;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class Tui extends Thread implements GameView {
 
 	private Client client;
     private Game game;
+    private Buffer buffertui;
+    private Buffer bufferserver;
 
-    public Tui(Client client){
+    public Tui(){
+    	buffertui = new Buffer();
+    	bufferserver = new Buffer();
+    	TuiInput tuiInput = new TuiInput(buffertui);
+    	tuiInput.start();
+    }
+    
+    public void setClient(Client client) {
     	this.client = client;
     }
 
     /*
     Commands:
-     - join [username]
-     - ready [nr of players (default: 2)] [board dim (default: 4)] [Optional; NoRoof]
+     - singleplayer
+     - connect ip-address port-number
+     - join username
+     - login username password
+     - ready [nr of players (default: 2)] [board dim (default: 4)] [NoRoof (Roof)] (Roof is not in the protocol but only in our implementation) so is -> [win condition (default: 4)]
      - leave
      - move [x] [y]
+     - leaderboard
+     - challenge username
+     - chat [message]
      */
     @Override
-    public void start() {
-        Scanner scan = new Scanner(System.in);
-        while(true){
-                System.out.println("Enter command (Type 'help' for list of commands)");
-                String[] input = scan.nextLine().split(" ");
-                if (input.length == 0){
-                    showError("No command specified");
-                } else if (input[0].equals("join")){
-                    //If game hasn't started
-                } else if (input[0].equals("ready")){
-                    //If game has started
-                }
-                if (input[0].equals("leave")){
+    public void run() {
+    	while (true) {
+    		while(buffertui.isEmpty() && bufferserver.isEmpty()) {
+    			//TO-DO OBSERVER PATTERN
+    			try {
+					Thread.sleep(250);
+				} catch (InterruptedException e) {
+				}
+    		}
+    		if (!buffertui.isEmpty()) {
+        		String input = buffertui.readBuffer();
+        		String[] command = input.split(" ");
+        		if (command.length >= 1) {
+        			if (command[0].equals("help")) {
+        				message("connect ip-address port-number\njoin username\nlogin username password\nready [amount players] [dimension] [NoRoof (Roof)] ([win condition])\nmove x y\nleave\ndisconnect");
+        			} else if (command[0].equals("connect")) {
+        				if (command.length == 3) {
+            				try {
+            					int port = Integer.parseInt(command[2]);
+        						InetAddress address = InetAddress.getByName(command[1]);
+        	    				client.connectServer(port, address);
+        	    				bufferserver = client.getBuffer();
+        					} catch (UnknownHostException e) {
+        						showError("ip-address invalid.");
+        					} catch (NumberFormatException e) {
+        						showError("port-number invalid.");
+        					} catch (IOException e) {
+        						showError("cannot connect to server");
+        					}   					
+        				} else {
+        					showError("please specify an ip-address and a port-number");
+        				}
+        			} else if (command[0].equals("join") && command.length >= 2) {
+        				if (command.length > 2) {
+        					showError("join only wants your username, please do not use spaces");
+        				} else {
+            				if (command[1].length() > 26) {
+            					showError("username can't be more than 26 characters");
+            				} else {
+            					writeServer("Join " + command[1]);   						
+            				}
+        				}		
+        			} else if (command[0].equals("move")) {
+        				if (command.length == 3) {
+        					writeServer("Move " + command[1] + command[2]);	
+        				} else {
+        					showError("\"move X Y\"");
+        				}
+        			} else if (command[0].equals("leave")) {
+        				writeServer("Leave");
+        			} else if (command[0].equals("disconnect")) {
+        				writeServer("Disconnect");
+    					client.serverDisconnected();
+        			} else if (command[0].equals("chat")) {
+        				String chat = "Chat ";
+        				for (int i = 1; i < command.length; i++) {
+        					chat += command[i];
+        				}
+        				writeServer(chat);
+        			} else if (command[0].equals("leaderboard")) {
+        				writeServer("Leaderboard");
+        			} else if (command[0].equals("challenge")) {
+        				if (command.length == 2) {
+        					writeServer("Challenge " + command[1]);
+        				}
+        			} else if (command[0].equals("singleplayer")) {
+        				//TO-DO
+        			}
+        		}    			
+    		}
+    		if (!bufferserver.isEmpty()) {
+    			//TO-DO
+    		}
 
-                } else if (input[0].equals("move")){
-
-                }
-        }
+    	}
+    }
+    
+    public void writeServer(String string) {
+    	try {
+			client.writeServer(string);
+		} catch (IOException e) {
+			showError("no connection to server");
+			client.serverDisconnected();
+		}
+    }
+    
+    public void message(String message) {
+    	System.out.println(message);
     }
 
     @Override
@@ -96,6 +183,6 @@ public class Tui extends Thread implements GameView {
 
     @Override
     public void showError(String message) {
-        System.out.println("ERROR: " + message);
+        System.err.println("ERROR: " + message);
     }
 }

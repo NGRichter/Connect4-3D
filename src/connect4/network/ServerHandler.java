@@ -13,13 +13,13 @@ public class ServerHandler extends Thread {
 	private BufferedReader in;
 	private BufferedWriter out;
 	private boolean terminate = false;
-	private ClientBuffer buffer;
+	private Buffer buffer;
 	
 	public ServerHandler(Socket sock) throws IOException {
 		this.sock = sock;
 		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-		buffer = new ClientBuffer();
+		buffer = new Buffer();
 	}
 	
 	public void terminate() {
@@ -53,7 +53,7 @@ public class ServerHandler extends Thread {
 		return sock;
 	}
 	
-	public ClientBuffer getBuffer(){
+	public Buffer getBuffer(){
 		return buffer;
 	}
 	

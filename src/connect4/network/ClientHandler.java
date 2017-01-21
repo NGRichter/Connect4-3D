@@ -19,7 +19,7 @@ public class ClientHandler extends Thread {
 	private String name;
 	private boolean isInGame;
 	private boolean isInLobby;
-	private ClientBuffer buffer;
+	private Buffer buffer;
 	private boolean hasChat;
 	private boolean hasSecurity;
 	private boolean hasLeaderboard;
@@ -44,7 +44,7 @@ public class ClientHandler extends Thread {
 		isInLobby = false;
 		player = null;
 		name = null;
-		buffer = new ClientBuffer();
+		buffer = new Buffer();
 		amountPlayers = 2;
 		dimensionOfBoard = 4;
 		noRoof = false;
@@ -199,7 +199,7 @@ public class ClientHandler extends Thread {
 		return lobby;
 	}
 	
-	public ClientBuffer getBuffer() {
+	public Buffer getBuffer() {
 		return buffer;
 	}
 	

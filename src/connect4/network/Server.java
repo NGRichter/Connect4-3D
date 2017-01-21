@@ -23,7 +23,7 @@ public class Server extends Thread {
 				}
 			}
 			for (ClientHandler client : clients) {
-				ClientBuffer buffer = client.getBuffer();
+				Buffer buffer = client.getBuffer();
 				if (!buffer.isEmpty()) {
 					String temp = buffer.readBuffer();
 					String[] command = temp.split(" ");

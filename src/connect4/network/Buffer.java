@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ClientBuffer {
+public class Buffer {
 	
 	private boolean isEmpty;
 	private List<String> buffer;
 	private final Lock lock;
 	
-	public ClientBuffer() {
+	public Buffer() {
 		buffer = new ArrayList<String>();
 		isEmpty = true;
 		lock = new ReentrantLock();
