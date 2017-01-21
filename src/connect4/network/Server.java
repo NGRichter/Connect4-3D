@@ -57,13 +57,28 @@ public class Server extends Thread {
 									if (command.length >= 2) {
 										int players = Integer.parseInt(command[1]);
 										client.setPlayers(players);
+									} else {
+										client.setPlayers(2);
 									}
 									if (command.length >= 3) {
 										int dimension = Integer.parseInt(command[2]);
 										client.setDimension(dimension);
+									} else {
+										client.setDimension(4);
 									}
-									if (command.length == 4) {
-										client.setNoRoof(true);
+									if (command.length >= 4) {
+										if (command[3].equals("NoRoof")) {
+											client.setNoRoof(true);											
+										} else {
+											client.setNoRoof(false);
+										}
+
+									} else {
+										client.setNoRoof(false);
+									}
+									if (command.length == 5) {
+										int winCondition = Integer.parseInt(command[4]);
+										client.setWinCondition(winCondition);
 									}
 									client.getLobby().ready(client);
 								} else if (command[0].equals("Challenge")) {

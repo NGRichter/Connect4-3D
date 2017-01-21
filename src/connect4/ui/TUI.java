@@ -5,15 +5,17 @@ import connect4.game.Board;
 import connect4.game.Game;
 import connect4.game.GameView;
 import connect4.game.Player;
+import connect4.network.*;
 
 import java.util.Scanner;
 
-public class TUI implements GameView {
+public class Tui extends Thread implements GameView {
 
+	private Client client;
     private Game game;
 
-    public TUI(Game game){
-        this.game = game;
+    public Tui(Client client){
+    	this.client = client;
     }
 
     /*

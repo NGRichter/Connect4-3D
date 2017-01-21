@@ -1,59 +1,52 @@
 package connect4.network;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
+
+import connect4.game.GameView;
+import connect4.ui.*;
 
 public class Client {
-    private static final String USAGE
-            = "Usage: <address> <port>";
-    private static final String NAME = "client";
+	
+	private Socket sock;
+	private ServerHandler server;
+	private ClientBuffer buffer;
+	private GameView ui;
+	
+	public static void main(String[] args) {
+		if (args.length == 1 && args[0].equals("tui")) {
+			GameView tui = new Tui(this);
+			Client client = new Client(tui);
+		} else if (args.length == 1 && args[0].equals("gui")) {
+			GameView gui = new Gui(this);
+			Client client = new Client(gui);
+		}
+	}
+	
+	public Client(GameView ui) {
+		this.ui = ui;
+		//ui.start();
+	}
 
-    /** Starts a Client application. */
-    public static void main(String[] args) {
-        if (args.length != 2) {
-            System.out.println(USAGE);
-            System.exit(0);
-        }
 
-        InetAddress addr = null;
-        int port = 0;
-        Socket sock = null;
-
-        // Check args[0] - the IP-adress
-        try {
-            addr = InetAddress.getByName(args[0]);
-        } catch (UnknownHostException e) {
-            System.out.println(USAGE);
-            System.out.println("ERROR: host " + args[0] + " unknown");
-            System.exit(0);
-        }
-
-        // Parse args[1] - the port
-        try {
-            port = Integer.parseInt(args[1]);
-        } catch (NumberFormatException e) {
-            System.out.println(USAGE);
-            System.out.println("ERROR: port " + args[1]
-                    + " is not an integer");
-            System.exit(0);
-        }
-
-        // Try to open a Socket to the server
-        try {
-            sock = new Socket(addr, port);
-        } catch (IOException e) {
-            System.out.println("ERROR: could not create a socket on " + addr
-                    + " and port " + port);
-            System.exit(0);
-        }
-
-        // Create Peer object and start the two-way communication
-        Thread streamInputHandler = new Thread(client);
-        streamInputHandler.start();
-        client.handleTerminalInput();
-        client.shutDown();
-    }
-
-} // end of class Client
+	public void connectServer(int port, InetAddress address) throws IOException {
+		sock = new Socket(address, port);
+		server = new ServerHandler(sock);
+		buffer = server.getBuffer();
+		server.start();
+	}
+	
+	public void writeServer(String string) throws IOException {
+		server.handleOutput(string);
+	}
+	
+	public String readServer() {
+		return buffer.readBuffer();
+	}
+	
+}

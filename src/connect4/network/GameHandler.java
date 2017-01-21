@@ -18,7 +18,7 @@ public class GameHandler extends Thread {
 	private int[] nextMove;
 	private boolean terminate = false;
 	
-	public GameHandler(List<ClientHandler> clients, int dimension, boolean noroof) {
+	public GameHandler(List<ClientHandler> clients, int dimension, boolean noroof, int winCondition) {
 		if (noroof) {
 			board = new Board(dimension, dimension, 1000);
 		} else {
@@ -30,7 +30,7 @@ public class GameHandler extends Thread {
 			players[i] = client.getPlayer();
 			i++;
 		}
-		game = new Game(board, players, 4);
+		game = new Game(board, players, winCondition);
 		gamers = clients;
 		nextMove = new int[2];
 

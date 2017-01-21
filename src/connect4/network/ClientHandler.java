@@ -29,6 +29,7 @@ public class ClientHandler extends Thread {
 	private boolean noRoof;
 	private boolean terminate;
 	private GameHandler game;
+	private int winCondition;
 	
 	public ClientHandler(Lobby lobby, Socket sock) {
 		this.lobby = lobby;
@@ -81,6 +82,14 @@ public class ClientHandler extends Thread {
 	
 	public void setGame(GameHandler game) {
 		this.game = game;
+	}
+	
+	public int getWinCondition() {
+		return winCondition;
+	}
+	
+	public void setWinCondition(int win) {
+		winCondition = win;
 	}
 	
 	public GameHandler getGame() {
