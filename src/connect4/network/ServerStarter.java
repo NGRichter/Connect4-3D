@@ -48,14 +48,14 @@ public class ServerStarter {
 
         //Create server peer object and start two-way communication
         while (true) {
-        try {
-            Socket sock = serversock.accept();
-            ClientHandler clientHandler = new ClientHandler(lobby, sock);
-            server.addClient(clientHandler);
-            clientHandler.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            try {
+                Socket sock = serversock.accept();
+                ClientHandler clientHandler = new ClientHandler(lobby, sock);
+                server.addClient(clientHandler);
+                clientHandler.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

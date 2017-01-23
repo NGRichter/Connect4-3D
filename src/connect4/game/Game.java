@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import connect4.exceptions.NoEmptySpotException;
 import connect4.exceptions.OutsidePlayingBoardException;
-import connect4.ui.TUI;
+import connect4.ui.Tui;
 
 public class Game {
 	
@@ -24,8 +24,6 @@ public class Game {
 	 */
 	public Game(Board board, Player[] players, int win) {
 
-        gameView = new TUI(this);
-
 		for (Player player : players) {
 			this.players.add(player);
 		}
@@ -33,25 +31,6 @@ public class Game {
 		winCondition = win;
 	}
 
-	/**
-	 * Starts the game.
-	 */
-	public void start() {
-		Player winner;
-		boolean rematch = true;
-		while (rematch) {
-			int i = 0;
-			while(!gameOver()) {
-                players.get(i).makeMove(this);
-				i++;
-				i = i % players.size();
-			}
-			winner = checkWinner();
-            gameView.showResult(winner);
-			rematch = wantRematch();
-		}
-	}
-	
 	public List<Player> getPlayers() {
 		return players;
 	}
@@ -250,38 +229,12 @@ public class Game {
 				}
 			}
 			} catch (OutsidePlayingBoardException e) {
-				System.out.println("Winnercheck went outside the playing board");
+
 			}
 		return null;
 
 	}
 
-	/**
-	 * TO BE REMOVED
-	 */
-	public int[] winningMove(Player player) {
-		Board boardtemp = board.deepCopy();
-		Player[] playertemp = {player};
-		Game gametemp = new Game(boardtemp, playertemp, winCondition);
-		
-		for (int x = 0; x < board.getDimX(); x++) {
-			for (int y = 0; y < board.getDimY(); y++) {
-				try {
-					boardtemp.setField(x, y, player);
-					if (gametemp.checkWinner() == player) {
-						int[] xy = {x,y};
-						return xy;
-					} else {
-						boardtemp.setFieldToNull(x, y);
-					}
-				} catch (OutsidePlayingBoardException | NoEmptySpotException e) {
-					
-				}
-			}
-		}
-		int[] noWinningMove = {-1,-1};
-		return noWinningMove;
-	}
 
 	/**
 	 * Checks what next move for player would be the winning move, if any.
@@ -340,28 +293,4 @@ public class Game {
 		}
 	}
 
-	/**
-	 * TO BE EDITED
-	 */
-	public boolean wantRematch() {
-		Scanner in = new Scanner(System.in);
-		String input = "";
-		System.out.println("Do you want a rematch? (y/n) ");
-		while (true) {
-			input = in.nextLine();
-			if (input.equals("y") || input.equals("n")) {
-				break;
-			} else {
-				System.out.println("Please type \"y\" or \"n\".");
-			}
-		}
-		if (input.equals("y")) {
-			reset();
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	
 }

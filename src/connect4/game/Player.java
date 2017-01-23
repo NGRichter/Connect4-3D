@@ -32,21 +32,9 @@ public abstract class Player {
 			makeMove(game);
 			return;
 		} else if (choice == -2) {
-				if (game.board.layer < game.board.getDimZ() - 1) {
-					game.board.drawLayer(game.board.layer + 1);
-				} else {
-					System.out.println("You are on the uppermost layer.");
-				}
-				makeMove(game);
-				return;
+			//TO-DO
 		} else if (choice == -3) {
-				if (game.board.layer > 0) {
-					game.board.drawLayer(game.board.layer - 1);
-				} else {
-					System.out.println("You are on the bottommost layer.");
-				}
-				makeMove(game);
-				return;
+			//TO-DO
 		}
 		try {
 			game.board.setField(choice, this);		

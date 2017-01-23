@@ -38,15 +38,13 @@ public class ServerHandler extends Thread {
 				e.printStackTrace();
 			}
 			buffer.writeBuffer(temp);
-			
-			
+
 		}
 	}
 	
 	public void handleOutput(String string) throws IOException {
 		out.write(string);
 		out.flush();
-		
 	}
 	
 	public Socket getSocket() {
