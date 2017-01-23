@@ -22,7 +22,9 @@ public class Client {
 	public static void main(String[] args) {
 		if (args.length == 1 && args[0].equals("tui")) {
 			GameView tui = new Tui();
+			Thread t = new Thread(tui);
 			Client client = new Client(tui);
+			t.start();
 			tui.setClient(client);
 		} else if (args.length == 1 && args[0].equals("gui")) {
 			GameView gui = new Gui();
@@ -33,7 +35,6 @@ public class Client {
 	
 	public Client(GameView ui) {
 		this.ui = ui;
-		ui.run();
 	}
 
 	public GameView getGameView(){
@@ -47,7 +48,12 @@ public class Client {
 	}
 	
 	public void writeServer(String string) throws IOException {
-		server.handleOutput(string);
+		if (server != null) {
+			server.handleOutput(string);			
+		} else {
+			throw new IOException();
+		}
+
 	}
 	
 	public void serverDisconnected() {

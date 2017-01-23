@@ -4,9 +4,8 @@ import connect4.network.client.Client;
 
 import java.util.Observer;
 
-public interface GameView  extends Observer {
+public interface GameView  extends Observer, Runnable {
 
-    void run();
     void drawBoard(Board board);
     void showMessage(String message);
     void showError(String message);

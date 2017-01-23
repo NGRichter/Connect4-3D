@@ -11,10 +11,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.Scanner;
 
-public class Tui extends Thread implements GameView, Observer {
+public class Tui implements GameView {
 
 	private Client client;
     private Game game;
@@ -49,7 +48,7 @@ public class Tui extends Thread implements GameView, Observer {
      - challenge username
      - chat [message]
      */
-    @Override
+    
     public void run() {
         Scanner scan = new Scanner(System.in);
     	while (true) {
