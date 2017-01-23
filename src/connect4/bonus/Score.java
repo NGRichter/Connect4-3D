@@ -10,9 +10,9 @@ public class Score {
 	public int score;
 	public String name;
 	
-	public Score(int year, int month, int day, int score, String name) {
+	public Score(int year, int month, int day, int hour, int minute, int score, String name) {
 		try {
-			this.date = new SimpleDateFormat("dd/MM/yyyy").parse(day + "/" + month + "/" + year);
+			this.date = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(day + "/" + month + "/" + year + " " + hour + ":" + minute);
 		} catch (ParseException e) {
 			System.out.println("Can't create date");
 		}
@@ -21,7 +21,7 @@ public class Score {
 	}
 	
 	public String toString() {
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		return name + " " + score + " " + format.format(date);
 	}
 }

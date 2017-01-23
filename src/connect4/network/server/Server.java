@@ -12,7 +12,7 @@ public class Server extends Thread {
 	private final String ACCOUNTS_FILE_PATH = "Serverdata\\Accounts.txt";
 	private final String LEADERBOARD_FILE_PATH = "Serverdata\\Leaderboard.txt";
 	private Security security;
-	private Leaderboard leaderboard;
+	public Leaderboard leaderboard;
 	
 	public Server() {
 		clients = new ArrayList<ClientHandler>();
@@ -53,8 +53,27 @@ public class Server extends Thread {
 										client.hasChallenge();
 									}
 								}
-							} else if (command[0].equals("Login") && command.length == 3) {
-								//TO-DO
+							} else if (command[0].equals("Security") && command.length == 3) {
+								if (!client.getLoggedIn()) {
+								boolean login = security.login(command[1], command[2]);
+								if (login == true) {
+									client.loggedIn();
+									try {
+										client.handleOutput("Security LoginSuccess");
+									} catch (IOException e) {
+										removeClient(client);
+									}
+								} else {
+									try {
+										client.handleOutput("Security LoginDenied");
+									} catch (IOException e) {
+										removeClient(client);
+									}
+								}									
+								} else {
+									sendError(client, "Already logged in.");
+								}
+
 							} else {
 								sendError(client, "Cannot understand: \"" + temp + "\"\nValid commands are: \n\"Join username [chat] [security] [leaderboard] [challenge]\"\n\"Login username password\".");
 							}
@@ -124,7 +143,16 @@ public class Server extends Thread {
 									}
 								}
 							} else if (command[0].equals("Leaderboard")) {
-								//TO-DO
+								String leaderboardtemp = "Leaderboard";
+								String[] leaderboardarraytemp = leaderboard.topN(10).split(" ");
+								for (int i = 0; i < leaderboardarraytemp.length; i += 4) {
+									leaderboardtemp += " " + leaderboardarraytemp[i] + " " + leaderboardarraytemp[i + 1];
+								}
+								try {
+									client.handleOutput(leaderboardtemp);
+								} catch (IOException e) {
+									removeClient(client);
+								}
 							}
 						}
 					}

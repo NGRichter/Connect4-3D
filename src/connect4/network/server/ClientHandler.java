@@ -30,6 +30,7 @@ public class ClientHandler extends Thread {
 	private boolean terminate;
 	private GameHandler game;
 	private int winCondition;
+	private boolean loggedIn;
 	
 	public ClientHandler(Lobby lobby, Socket sock) {
 		this.lobby = lobby;
@@ -50,6 +51,7 @@ public class ClientHandler extends Thread {
 		noRoof = false;
 		terminate = false;
 		game = null;
+		loggedIn = false;
 	}
 	
 	public void terminate() {
@@ -82,6 +84,14 @@ public class ClientHandler extends Thread {
 		this.game = game;
 	}
 	
+	public void loggedIn() {
+		loggedIn = true;
+	}
+	
+	public boolean getLoggedIn() {
+		return loggedIn;
+	}
+
 	public int getWinCondition() {
 		return winCondition;
 	}

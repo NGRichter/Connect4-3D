@@ -2,9 +2,11 @@ package connect4.network.server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import connect4.bonus.Score;
 import connect4.exceptions.NoEmptySpotException;
 import connect4.exceptions.OutsidePlayingBoardException;
 import connect4.game.*;
@@ -128,6 +130,7 @@ public class GameHandler extends Thread {
 	}
 	
 	public void run() {
+		int turns = 0;
 		Collections.shuffle(gamers);
 		startGame();
 		int i = 0;
@@ -155,6 +158,7 @@ public class GameHandler extends Thread {
 					System.err.println("Gamethread has been interrupted.");
 				}
 			}
+			turns++;
 		}
 		if (terminate) {
 			
@@ -163,7 +167,23 @@ public class GameHandler extends Thread {
 			if (winner == null) {
 				gameOver("Draw");
 			} else {
-				gameOver(winner.getName());			
+				gameOver(winner.getName());
+				for (ClientHandler client : gamers) {
+					if (client.getPlayer() == winner && client.getLoggedIn()) {
+						int scorevalue = board.getDimX() * board.getDimX() * board.getDimX() * game.getWinCondition() - turns * board.getDimX() * game.getWinCondition();
+						if (scorevalue < 0) {
+							scorevalue = 0;
+						}
+						Score score = new Score(Calendar.getInstance().get(Calendar.YEAR),
+								Calendar.getInstance().get(Calendar.MONTH),
+								Calendar.getInstance().get(Calendar.DAY_OF_MONTH),
+								Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
+								Calendar.getInstance().get(Calendar.MINUTE),
+								scorevalue,
+								winner.getName());
+						client.getLobby().server.leaderboard.addScore(score);
+					}
+				}
 			}			
 		}
 

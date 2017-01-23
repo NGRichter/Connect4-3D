@@ -1,29 +1,28 @@
 package connect4.bonus;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.binary.Hex;
 
 public class Security {
 	
 	private Map<String, String> accounts = new HashMap<String, String>();
 	private BufferedReader reader;
-	private PrintWriter writer;
+	private FileWriter writer;
 	
 	public Security(String path) {
 		try {
 			File file = new File(path);
+			writer = new FileWriter(file, true);
 			reader = new BufferedReader(new FileReader(file));
-			writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 			String temp;
 			while ((temp = reader.readLine()) != null) {
 				String[] temp2 = temp.split(" ");
@@ -37,20 +36,31 @@ public class Security {
 	
 	public void register(String username, String password) {
 		String saltedPassword = password + username + username.substring(0, 1);
-		MessageDigest md = DigestUtils.getSha256Digest();
-		byte[] passwordHash = md.digest(saltedPassword.getBytes());
-		accounts.put(username, new String(passwordHash));
-		writer.println(username + " " + passwordHash);
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			byte[] bytearray = md.digest(saltedPassword.getBytes());
+			accounts.put(username, Hex.encodeHexString(bytearray));
+			writer.write(username + " " + Hex.encodeHexString(bytearray));
+			writer.flush();
+		} catch (NoSuchAlgorithmException e) {
+
+		} catch (IOException e) {
+		}
+
 	}
 	
 	public boolean login(String username, String password) {
 		if (accounts.containsKey(username)) {
 			String saltedPassword = password + username + username.substring(0, 1);
-			MessageDigest md = DigestUtils.getSha256Digest();
-			byte[] passwordHash = md.digest(saltedPassword.getBytes());
-			if (accounts.get(username).equals(new String(passwordHash))) {
-				return true;
-			} else {
+			try {
+				MessageDigest md = MessageDigest.getInstance("SHA-256");
+				byte[] bytearray = md.digest(saltedPassword.getBytes());
+				if (accounts.get(username).equals(Hex.encodeHexString(bytearray))) {
+					return true;
+				} else {
+					return false;
+				}
+			} catch (NoSuchAlgorithmException e) {
 				return false;
 			}
 		} else {
