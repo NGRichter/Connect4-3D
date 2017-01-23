@@ -1,4 +1,4 @@
-package connect4.network;
+package connect4.network.server;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +33,6 @@ public class GameHandler extends Thread {
 		game = new Game(board, players, winCondition);
 		gamers = clients;
 		nextMove = new int[2];
-
 	}
 	
 	public Game getGame() {

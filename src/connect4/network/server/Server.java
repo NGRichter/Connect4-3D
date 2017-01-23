@@ -1,4 +1,4 @@
-package connect4.network;
+package connect4.network.server;
 
 import java.io.IOException;
 import java.util.ArrayList;

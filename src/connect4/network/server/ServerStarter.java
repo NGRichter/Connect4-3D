@@ -1,10 +1,8 @@
-package connect4.network;
+package connect4.network.server;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class ServerStarter {
 

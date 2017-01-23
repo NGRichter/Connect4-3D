@@ -1,19 +1,17 @@
 package connect4.game;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import connect4.exceptions.NoEmptySpotException;
 import connect4.exceptions.OutsidePlayingBoardException;
 import connect4.ui.Tui;
 
-public class Game {
+public class Game extends Observable{
 	
 	private List<Player> players = new ArrayList<Player>();
 	private List<Colour> colours = Colour.allColours();
-	public Board board;
-    private GameView gameView;
+    private int playerIndex = 0;
+ 	public Board board;
 	private int winCondition;
 
 	/**
@@ -31,7 +29,8 @@ public class Game {
 		winCondition = win;
 	}
 
-	public List<Player> getPlayers() {
+
+    public List<Player> getPlayers() {
 		return players;
 	}
 
@@ -55,6 +54,23 @@ public class Game {
 			return false;
 		}
 	}
+
+	public void makeNextMove(int x, int y) throws NoEmptySpotException, OutsidePlayingBoardException {
+        Player nextPlayer = players.get(playerIndex % players.size());
+        board.setField(x, y, nextPlayer);
+        playerIndex++;
+        setChanged();
+        notifyObservers(board);
+    }
+
+
+    /**
+     * Getter for the wincondition.
+     * @return wincondition
+     */
+	public int getWinCondition(){
+        return winCondition;
+    }
 
 	/**
 	 * Getter for the board.
@@ -294,3 +310,4 @@ public class Game {
 	}
 
 }
+

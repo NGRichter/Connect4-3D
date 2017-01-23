@@ -1,4 +1,4 @@
-package connect4.network;
+package connect4.network.server;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -50,7 +50,6 @@ public class ClientHandler extends Thread {
 		noRoof = false;
 		terminate = false;
 		game = null;
-		
 	}
 	
 	public void terminate() {
@@ -77,7 +76,6 @@ public class ClientHandler extends Thread {
 	public void handleOutput(String string) throws IOException {
 		out.write(string);
 		out.flush();
-		
 	}
 	
 	public void setGame(GameHandler game) {

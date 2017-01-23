@@ -1,7 +1,9 @@
 package connect4.game;
 import connect4.exceptions.*;
 
-public class Board {
+import java.util.Observable;
+
+public class Board extends Observable {
 
 	private Player[][][] fields;
 	private final int DIMX;

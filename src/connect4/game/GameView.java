@@ -1,13 +1,14 @@
 package connect4.game;
 
-import connect4.network.Client;
+import connect4.network.client.Client;
 
-public interface GameView {
+import java.util.Observer;
+
+public interface GameView  extends Observer {
 
     void run();
-    void notifyMove(Player player);
-    void drawBoard();
-    void showResult(Player player);
+    void drawBoard(Board board);
+    void showMessage(String message);
     void showError(String message);
     void setClient(Client client);
 

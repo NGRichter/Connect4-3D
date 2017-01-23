@@ -5,26 +5,33 @@ import connect4.game.Board;
 import connect4.game.Game;
 import connect4.game.GameView;
 import connect4.game.Player;
-import connect4.network.*;
+import connect4.network.client.Client;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Scanner;
 
-public class Tui extends Thread implements GameView {
+public class Tui extends Thread implements GameView, Observer {
 
 	private Client client;
     private Game game;
-    private Buffer buffertui;
-    private Buffer bufferserver;
 
     public Tui(){
-    	buffertui = new Buffer();
-    	bufferserver = new Buffer();
-    	TuiInput tuiInput = new TuiInput(buffertui);
-    	tuiInput.start();
+
     }
-    
+
+
+	@Override
+	public void update(Observable observable, Object arg) {
+		if (observable instanceof Game){
+			drawBoard((Board) arg);
+		}
+	}
+
+
     public void setClient(Client client) {
     	this.client = client;
     }
@@ -44,37 +51,34 @@ public class Tui extends Thread implements GameView {
      */
     @Override
     public void run() {
+        Scanner scan = new Scanner(System.in);
     	while (true) {
-    		while(buffertui.isEmpty() && bufferserver.isEmpty()) {
-    			//TO-DO OBSERVER PATTERN
-    			try {
-					Thread.sleep(250);
-				} catch (InterruptedException e) {
-				}
-    		}
-    		if (!buffertui.isEmpty()) {
-        		String input = buffertui.readBuffer();
-        		String[] command = input.split(" ");
+        		String[] command = scan.nextLine().split(" ");
         		if (command.length >= 1) {
+
+                    //Requests a list of possible commands.
         			if (command[0].equals("help")) {
         				message("connect ip-address port-number\njoin username\nlogin username password\nready [amount players] [dimension] [NoRoof (Roof)] ([win condition])\nmove x y\nleave\ndisconnect");
+
+        			//Connect to a server.
         			} else if (command[0].equals("connect")) {
         				if (command.length == 3) {
             				try {
             					int port = Integer.parseInt(command[2]);
         						InetAddress address = InetAddress.getByName(command[1]);
         	    				client.connectServer(port, address);
-        	    				bufferserver = client.getBuffer();
         					} catch (UnknownHostException e) {
         						showError("ip-address invalid.");
         					} catch (NumberFormatException e) {
         						showError("port-number invalid.");
         					} catch (IOException e) {
         						showError("cannot connect to server");
-        					}   					
+        					}
         				} else {
         					showError("please specify an ip-address and a port-number");
         				}
+
+        			//Join the game, with a username.
         			} else if (command[0].equals("join") && command.length >= 2) {
         				if (command.length > 2) {
         					showError("join only wants your username, please do not use spaces");
@@ -84,26 +88,38 @@ public class Tui extends Thread implements GameView {
             				} else {
             					writeServer("Join " + command[1]);   						
             				}
-        				}		
+        				}
+
+        			//Make a move, on coordinates x and y.
         			} else if (command[0].equals("move")) {
         				if (command.length == 3) {
         					writeServer("Move " + command[1] + command[2]);	
         				} else {
         					showError("\"move X Y\"");
         				}
+
+        			//Leave the game and return to the lobby.
         			} else if (command[0].equals("leave")) {
         				writeServer("Leave");
+
+                    //Disconnects from the server.
         			} else if (command[0].equals("disconnect")) {
         				writeServer("Disconnect");
     					client.serverDisconnected();
+
+                    //Sends a chatmessage to the server.
         			} else if (command[0].equals("chat")) {
         				String chat = "Chat ";
         				for (int i = 1; i < command.length; i++) {
         					chat += command[i];
         				}
         				writeServer(chat);
+
+                    //Requests the leaderboard from the server.
         			} else if (command[0].equals("leaderboard")) {
         				writeServer("Leaderboard");
+
+                    //Requests the challenge from the server.
         			} else if (command[0].equals("challenge")) {
         				if (command.length == 2) {
         					writeServer("Challenge " + command[1]);
@@ -113,34 +129,27 @@ public class Tui extends Thread implements GameView {
         			}
         		}    			
     		}
-    		if (!bufferserver.isEmpty()) {
-    			//TO-DO
-    		}
-
     	}
-    }
     
     public void writeServer(String string) {
-    	try {
-			client.writeServer(string);
-		} catch (IOException e) {
-			showError("no connection to server");
-			client.serverDisconnected();
-		}
+        try {
+            client.writeServer(string);
+        } catch (IOException e) {
+            showError("no connection to server.");
+            client.serverDisconnected();
+        } catch (NullPointerException e) {
+            showError("no connection to server.");
+            e.printStackTrace();
+            client.serverDisconnected();
+        }
     }
-    
+
     public void message(String message) {
     	System.out.println(message);
     }
 
     @Override
-    public void notifyMove(Player player) {
-        System.out.println("It's your move, " + player.getName());
-    }
-
-    @Override
-    public void drawBoard() {
-        Board board = game.getBoard();
+    public void drawBoard(Board board) {
         for (int z = board.getDimZ(); z >= 0; z--){
             System.out.println("Layer: " + z + " out of " + (board.getDimZ()-1));
             String vertFrame = "\n+---+";
@@ -173,16 +182,13 @@ public class Tui extends Thread implements GameView {
     }
 
     @Override
-    public void showResult(Player player) {
-        if (player != null) {
-            System.out.println("MATCH ENDED: Player " + player.getName() + " has won!");
-        } else if (player == null){
-            System.out.println("MATCH ENDED: It's a draw!");
-        }
+    public void showMessage(String message) {
+        System.out.println(message);
     }
 
     @Override
     public void showError(String message) {
         System.err.println("ERROR: " + message);
     }
+
 }

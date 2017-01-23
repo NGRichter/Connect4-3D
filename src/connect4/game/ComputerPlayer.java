@@ -19,7 +19,7 @@ public class ComputerPlayer extends Player {
 		Random random = new Random();		
 		int randomchance = random.nextInt(100);
 		int[] winner;
-		winner = game.winningMove(this);
+		winner = game.winningMove(this, game.getWinCondition());
 		if (winner[0] != -1 && randomchance < strategy.getWinChance()) {
 			try {
 				return game.board.index(winner[0], winner[1], 0);
@@ -28,7 +28,7 @@ public class ComputerPlayer extends Player {
 		}
 		for (Player player : game.getPlayers()) {
 			if (player != this) {
-				winner = game.winningMove(player);
+				winner = game.winningMove(player, game.getWinCondition());
 				if (winner[0] != -1 && randomchance < strategy.getBlockChance()) {
 					try {
 						return game.board.index(winner[0], winner[1], 0);
