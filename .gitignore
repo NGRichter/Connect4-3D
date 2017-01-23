@@ -1,4 +1,5 @@
 /bin/
+/Serverdata/
 
 # Eclipse project files
 .classpath
