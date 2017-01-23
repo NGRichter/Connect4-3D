@@ -4,15 +4,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import connect4.bonus.*;
+
 public class Server extends Thread {
 	
 	private List<ClientHandler> clients;
+	private final String ACCOUNTS_FILE_PATH = "Serverdata\\Accounts.txt";
+	private final String LEADERBOARD_FILE_PATH = "Serverdata\\Leaderboard.txt";
+	private Security security;
+	private Leaderboard leaderboard;
 	
 	public Server() {
 		clients = new ArrayList<ClientHandler>();
 	}
 	
 	public void run() {
+		security = new Security(ACCOUNTS_FILE_PATH);
+		leaderboard = new Leaderboard(LEADERBOARD_FILE_PATH);
+		
 		while (true) {
 			int o = 0;
 			while (clients.isEmpty()) {
