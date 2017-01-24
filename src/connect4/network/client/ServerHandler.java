@@ -37,7 +37,7 @@ public class ServerHandler extends Thread {
 	public void run() {
 		while (!terminate) {
 			int receivelength;
-			String receive = null;
+			String receive = "";
 			try {
 				while ((receivelength = in.read()) != -1) {
 					receive += (char) receivelength;

@@ -61,7 +61,7 @@ public class ClientHandler extends Thread {
 	public void run() {
 		while (!terminate) {
 			int tempin;
-			String temp = null;
+			String temp = "";
 			try {
 				while ((tempin = in.read()) != -1) {
 					temp += (char) tempin;
