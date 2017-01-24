@@ -23,22 +23,26 @@ public class Server extends Thread {
 		leaderboard = new Leaderboard(LEADERBOARD_FILE_PATH);
 
 		while (true) {
-			int o = 0;
-			while (clients.isEmpty()) {
+
+            int o = 0;
+
+            while (clients.isEmpty()) {
 				try {
 					sleep(250);
 				} catch (InterruptedException e) {
-					System.err.println("Server has been interruped.");
+					showError("Server has been interrupted.");
 				}
 			}
+
 			for (ClientHandler client : clients) {
 				Buffer buffer = client.getBuffer();
 				if (!buffer.isEmpty()) {
 					String temp = buffer.readBuffer();
-                    System.out.println(temp);
 					String[] command = temp.split(" ");
 					//No command should be empty
-					if (command.length != 0) {			
+					if (command.length != 0) {
+
+                        //Client wants to join.
 						if (command[0].equals("Join") && command.length >= 2) {
 							if (client.getInLobby() || client.getInGame()) {
 								sendError(client, "You have already joined.");
@@ -46,20 +50,38 @@ public class Server extends Thread {
 							client.makePlayer(command[1]);
 							client.inLobby();
 							client.getLobby().connect(client);
-                            System.out.println("Player " + command[1] + " has joined the lobby.");
+                            String lobbyMsg = command[1] + " has joined the lobby";
+                            if (command.length > 2){
+                                lobbyMsg += " with:";
+                            }
 							for (int i = 2; i < command.length; i++) {
 								if (command[i].equals("chat")) {
 									client.hasChat();
+                                    lobbyMsg += " chat";
 								} else if (command[i].equals("security")) {
 									client.hasSecurity();
+                                    lobbyMsg += " security";
 								} else if (command[i].equals("leaderboard")) {
 									client.hasLeaderboard();
+                                    lobbyMsg += " leaderboard";
 								} else if (command[i].equals("challenge")) {
 									client.hasChallenge();
+                                    lobbyMsg += " challenge";
 								}
 							}
+							lobbyMsg += ".";
+                            showMessage(lobbyMsg);
+
+						//Client wants to disconnect.
 						} else if (command[0].equals("Disconnect")) {
-							removeClient(client);
+                            String clientName = "A client";
+                            if (client.getPlayer() != null){
+                                clientName = client.getPlayer().getName();
+                            }
+                            removeClient(client);
+                            showMessage(clientName + " has disconnected from the server.");
+
+                        //Client wants to specify security options.
 						} else if (command[0].equals("Security") && command.length == 3) {
 							if (!client.getLoggedIn()) {
 							boolean login = security.login(command[1], command[2]);
@@ -80,6 +102,8 @@ public class Server extends Thread {
 							} else {
 								sendError(client, "Already logged in.");
 							}
+
+						//Client is ready.
 						} else if (command[0].equals("Ready")) {
 							if (client.getInLobby()) {
 								if (command.length >= 2) {
@@ -109,18 +133,24 @@ public class Server extends Thread {
 									client.setWinCondition(winCondition);
 								}
 								client.getLobby().ready(client);
+                                showMessage(client.getPlayer().getName() + " is ready.");
 							} else {
 								sendError(client, "You are not in the lobby.");
 							}
-							
+
+                        //Client wants to challenge.
 						} else if (command[0].equals("Challenge")) {
 							//TO-DO
 						} else if (command[0].equals("ChallengeDenied")) {
 							//TO-DO
 						} else if (command[0].equals("ChallengeAccept")) {
 							//TO-DO
+
+                        //Client wants to leave the game.
 						} else if (command[0].equals("Leave")) {
 							//TO-DO
+
+                        //Client wants to make a move.
 						} else if (command[0].equals("Move")) {
 							if (client.getGame() != null) {
 								try {
@@ -131,10 +161,14 @@ public class Server extends Thread {
 									sendError(client, "Invalid syntax please send integers.");
 								}
 							}
+
+						//Client requests a hint.
 						} else if (command[0].equals("Hint")) {
-							//TO-DO		 
+							//TO-DO
+
+                        //Client sends a chat message.
 						} else if (command[0].equals("Chat")) {
-							String chatmessage = "Chat " + client.getUserName();
+							String chatmessage = client.getUserName() + ": ";
 							for (int i = 1; i < command.length; i++) {
 								chatmessage += " " + command[i];
 							}
@@ -147,6 +181,8 @@ public class Server extends Thread {
 									}
 								}
 							}
+
+						//Client requests the leaderboard.
 						} else if (command[0].equals("Leaderboard")) {
 							String leaderboardtemp = "Leaderboard";
 							String[] leaderboardarraytemp = leaderboard.topN(10).split(" ");
@@ -174,7 +210,14 @@ public class Server extends Thread {
 			}
 		}
 	}
-							
+
+	public void showError(String error){
+        System.err.println(error);
+    }
+
+	public void showMessage(String message){
+        System.out.println(message);
+    }
 	
 	public void sendError(ClientHandler client, String errorCode) {
 		try {
@@ -191,10 +234,10 @@ public class Server extends Thread {
 	}
 	
 	public void removeClient(ClientHandler client) {
-		if (clients.contains(client)) {
-			client.getLobby().disconnect(client);
-			clients.remove(client);
-		}
+        if (clients.contains(client)) {
+            client.getLobby().disconnect(client);
+            clients.remove(client);
+        }
 	}
 
 }
