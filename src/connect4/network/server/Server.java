@@ -35,11 +35,12 @@ public class Server extends Thread {
 				Buffer buffer = client.getBuffer();
 				if (!buffer.isEmpty()) {
 					String temp = buffer.readBuffer();
+                    System.out.println(temp);
 					String[] command = temp.split(" ");
 					//No command should be empty
 					if (command.length != 0) {			
 						//Commands that can be done while client is not in lobby and not in-game
-						if (!client.getInLobby() && !client.getInGame()) {
+						if (!client.getInLobby() || !client.getInGame()) {
 							if (command[0].equals("Join") && command.length >= 2) {
 								client.makePlayer(command[1]);
                                 System.out.println("Player " + command[1] + " has joined the lobby.");
@@ -79,7 +80,7 @@ public class Server extends Thread {
 								sendError(client, "cannot understand: \"" + temp + "\"\nValid commands are: \n\"Join username [chat] [security] [leaderboard] [challenge]\"\n\"Login username password\".");
 							}
 							//Commands clients can do when they have joined
-						} else if (client.getInGame() || client.getInLobby()) {
+						} else if (client.getInLobby()) {
 							//Commands if client is in lobby							
 							if (client.getInLobby()) {
 								if (command[0].equals("Ready")) {

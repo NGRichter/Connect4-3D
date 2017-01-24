@@ -110,7 +110,7 @@ public class Tui implements GameView {
                         //Make a move, on coordinates x and y. 'move <x> <y>'
         			} else if (command[0].equals("move")) {
         				if (command.length == 3) {
-        					writeServer("Move " + command[1] + command[2]);	
+        					writeServer("Move " + command[1] + " " + command[2]);
         				} else {
         					showError("incorrect syntax. Use: 'move <X> <Y>'.");
         				}
