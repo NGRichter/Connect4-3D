@@ -129,7 +129,12 @@ public class Tui implements GameView {
                         if (command.length > 1) {
                             String chat = "Chat ";
                             for (int i = 1; i < command.length; i++) {
-                                chat += command[i];
+                            	if (i == command.length - 1) {
+                            		chat += command[i];
+                            	} else {
+                                    chat += command[i] + " ";                           		
+                            	}
+
                             }
                             writeServer(chat);
                         }
@@ -146,6 +151,13 @@ public class Tui implements GameView {
         			//Starts a singleplayer game
         			} else if (command[0].equals("singleplayer")) {
         				//TO-DO
+        				
+        			} else if (command[0].equals("manual")) {
+        				String manual = "";
+        				for (int i = 1; i < command.length; i++) {
+        					manual += command[i] + " ";
+        				}
+        				writeServer(manual);
         			} else {
                         showError("Unknown command. Type 'help' for a list of commands.");
                     }

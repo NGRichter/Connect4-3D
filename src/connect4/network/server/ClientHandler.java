@@ -64,7 +64,6 @@ public class ClientHandler extends Thread {
 			try {
 				temp = in.readLine();
 			} catch (IOException e) {
-				e.printStackTrace();
 				terminate = true;
 				break;
 			}

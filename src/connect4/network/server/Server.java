@@ -40,7 +40,11 @@ public class Server extends Thread {
 					//No command should be empty
 					if (command.length != 0) {			
 						if (command[0].equals("Join") && command.length >= 2) {
+							if (client.getInLobby() || client.getInGame()) {
+								sendError(client, "You have already joined.");
+							}
 							client.makePlayer(command[1]);
+							client.inLobby();
                             System.out.println("Player " + command[1] + " has joined the lobby.");
 							for (int i = 2; i < command.length; i++) {
 								if (command[i].equals("chat")) {
@@ -53,6 +57,8 @@ public class Server extends Thread {
 									client.hasChallenge();
 								}
 							}
+						} else if (command[0].equals("Disconnect")) {
+							removeClient(client);
 						} else if (command[0].equals("Security") && command.length == 3) {
 							if (!client.getLoggedIn()) {
 							boolean login = security.login(command[1], command[2]);
@@ -74,33 +80,38 @@ public class Server extends Thread {
 								sendError(client, "Already logged in.");
 							}
 						} else if (command[0].equals("Ready")) {
-							if (command.length >= 2) {
-								int players = Integer.parseInt(command[1]);
-								client.setPlayers(players);
-							} else {
-								client.setPlayers(2);
-							}
-							if (command.length >= 3) {
-								int dimension = Integer.parseInt(command[2]);
-								client.setDimension(dimension);
-							} else {
-								client.setDimension(4);
-							}
-							if (command.length >= 4) {
-								if (command[3].equals("NoRoof")) {
-									client.setNoRoof(true);											
+							if (client.getInLobby()) {
+								if (command.length >= 2) {
+									int players = Integer.parseInt(command[1]);
+									client.setPlayers(players);
+								} else {
+									client.setPlayers(2);
+								}
+								if (command.length >= 3) {
+									int dimension = Integer.parseInt(command[2]);
+									client.setDimension(dimension);
+								} else {
+									client.setDimension(4);
+								}
+								if (command.length >= 4) {
+									if (command[3].equals("NoRoof")) {
+										client.setNoRoof(true);											
+									} else {
+										client.setNoRoof(false);
+									}
+
 								} else {
 									client.setNoRoof(false);
 								}
-
+								if (command.length == 5) {
+									int winCondition = Integer.parseInt(command[4]);
+									client.setWinCondition(winCondition);
+								}
+								client.getLobby().ready(client);
 							} else {
-								client.setNoRoof(false);
+								sendError(client, "You are not in the lobby.");
 							}
-							if (command.length == 5) {
-								int winCondition = Integer.parseInt(command[4]);
-								client.setWinCondition(winCondition);
-							}
-							client.getLobby().ready(client);
+							
 						} else if (command[0].equals("Challenge")) {
 							//TO-DO
 						} else if (command[0].equals("ChallengeDenied")) {
@@ -110,7 +121,15 @@ public class Server extends Thread {
 						} else if (command[0].equals("Leave")) {
 							//TO-DO
 						} else if (command[0].equals("Move")) {
-							//TO-DO
+							if (client.getGame() != null) {
+								try {
+									int x = Integer.parseInt(command[1]);
+									int y = Integer.parseInt(command[2]);
+									client.getGame().getMove(x, y, client);
+								} catch (NumberFormatException e) {
+									sendError(client, "Invalid syntax please send integers.");
+								}
+							}
 						} else if (command[0].equals("Hint")) {
 							//TO-DO		 
 						} else if (command[0].equals("Chat")) {
