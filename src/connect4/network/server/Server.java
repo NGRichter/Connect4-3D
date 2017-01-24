@@ -42,6 +42,7 @@ public class Server extends Thread {
 						if (!client.getInLobby() && !client.getInGame()) {
 							if (command[0].equals("Join") && command.length >= 2) {
 								client.makePlayer(command[1]);
+                                System.out.println("Player " + command[1] + " has joined the lobby.");
 								for (int i = 2; i < command.length; i++) {
 									if (command[i].equals("chat")) {
 										client.hasChat();
