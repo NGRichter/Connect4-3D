@@ -100,9 +100,9 @@ public class Tui implements GameView {
                         } else if (command.length == 2) {
                             writeServer("Ready " + command[1]);
                         } else if (command.length == 3) {
-                            writeServer("Ready " + command[1] + command[2]);
+                            writeServer("Ready " + command[1] + " " + command[2]);
                         } else if (command.length == 4) {
-                            writeServer("Ready " + command[1] + command[2] + command[3]);
+                            writeServer("Ready " + command[1] + " " + command[2] + " " + command[3]);
                         } else {
                             showError("incorrect syntax. Use: 'ready' for default match or 'ready <player amount> <board dimension> <noRoof>' for custom ruleset.");
                         }

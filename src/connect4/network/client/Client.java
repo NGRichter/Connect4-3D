@@ -18,6 +18,11 @@ public class Client {
 	private int boardDim = 4;
 	private int winCondition;
 	private boolean noRoof;
+	private boolean isConnected;
+	private boolean inLobby;
+	private boolean isReady;
+	private boolean inGame;
+
 	
 	public static void main(String[] args) {
 		if (args.length == 1 && args[0].equals("tui")) {

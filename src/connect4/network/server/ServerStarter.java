@@ -52,6 +52,7 @@ public class ServerStarter {
                 ClientHandler clientHandler = new ClientHandler(lobby, sock);
                 server.addClient(clientHandler);
                 clientHandler.start();
+                System.out.println("A client has connected to the server.");
             } catch (IOException e) {
                 e.printStackTrace();
             }

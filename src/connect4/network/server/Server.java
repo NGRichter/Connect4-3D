@@ -76,7 +76,7 @@ public class Server extends Thread {
 								}
 
 							} else {
-								sendError(client, "Cannot understand: \"" + temp + "\"\nValid commands are: \n\"Join username [chat] [security] [leaderboard] [challenge]\"\n\"Login username password\".");
+								sendError(client, "cannot understand: \"" + temp + "\"\nValid commands are: \n\"Join username [chat] [security] [leaderboard] [challenge]\"\n\"Login username password\".");
 							}
 							//Commands clients can do when they have joined
 						} else if (client.getInGame() || client.getInLobby()) {
@@ -172,7 +172,7 @@ public class Server extends Thread {
 	
 	public void sendError(ClientHandler client, String errorCode) {
 		try {
-			client.handleOutput("Error " + errorCode);
+			client.handleOutput(errorCode);
 		} catch (IOException e) {
 			removeClient(client);
 		}
