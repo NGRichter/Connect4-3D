@@ -93,14 +93,18 @@ public class Tui implements GameView {
             				}
         				}
 
-        			//Toggle ready for a match by certain rules. 'ready <player amount> <board dimension> <noRoof (Optional)>'
+        			//Toggle ready for a match by certain rules. 'ready <player amount> <board dimension> <noRoof>'
                     } else if (command[0].equals("ready")) {
-                        if (command.length == 3) {
+                        if (command.length == 1) {
+                            writeServer("Ready");
+                        } else if (command.length == 2) {
+                            writeServer("Ready " + command[1]);
+                        } else if (command.length == 3) {
                             writeServer("Ready " + command[1] + command[2]);
                         } else if (command.length == 4) {
                             writeServer("Ready " + command[1] + command[2] + command[3]);
                         } else {
-                            showError("incorrect syntax. Use: 'ready <player amount> <board dimension> <noRoof (Optional)>'.");
+                            showError("incorrect syntax. Use: 'ready' for default match or 'ready <player amount> <board dimension> <noRoof>' for custom ruleset.");
                         }
 
                         //Make a move, on coordinates x and y. 'move <x> <y>'
