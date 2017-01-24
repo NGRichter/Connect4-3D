@@ -35,7 +35,12 @@ public class Server extends Thread {
 				Buffer buffer = client.getBuffer();
 				if (!buffer.isEmpty()) {
 					String temp = buffer.readBuffer();
-                    System.out.println(temp);
+					if (client.getUserName() == null) {
+						System.out.println(client.getSocket().getInetAddress().getHostAddress() + ": " + temp);
+					} else {
+	                    System.out.println(client.getUserName() + ": " + temp);
+					}
+
 					String[] command = temp.split(" ");
 					//No command should be empty
 					if (command.length != 0) {			

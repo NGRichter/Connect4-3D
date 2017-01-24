@@ -15,9 +15,9 @@ public class GameHandler extends Thread {
 	
 	private Game game;
 	private Board board;
-	private List<ClientHandler> gamers = new ArrayList<ClientHandler>();
+	private List<ClientHandler> gamers;
 	private ClientHandler next;
-	private int[] nextMove;
+	private int[] nextMove = {-1, -1};
 	private boolean terminate = false;
 	
 	public GameHandler(List<ClientHandler> clients, int dimension, boolean noroof, int winCondition) {
@@ -28,13 +28,15 @@ public class GameHandler extends Thread {
 		}
 		Player[] players = new Player[clients.size()];
 		int i = 0;
+		String message = "";
 		for (ClientHandler client : clients) {
 			players[i] = client.getPlayer();
 			i++;
+			message += client.getPlayer().getName() + " ";
 		}
 		game = new Game(board, players, winCondition);
 		gamers = clients;
-		nextMove = new int[2];
+		System.out.println("A game has started with " + message);
 	}
 	
 	public Game getGame() {
@@ -150,6 +152,8 @@ public class GameHandler extends Thread {
 				} catch (OutsidePlayingBoardException | NoEmptySpotException e) {
 					try {
 						next.handleOutput("Error The spot you specified is either not on the board or has no empty spot above");
+						nextMove[0] = -1;
+						nextMove[1] = -1;
 					} catch (IOException e1) {
 						disconnectGame(next);
 					}

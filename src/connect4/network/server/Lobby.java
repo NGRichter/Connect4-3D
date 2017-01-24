@@ -13,6 +13,7 @@ public class Lobby extends Thread {
 	public Lobby(Server server) {
 		clients = new ArrayList<ClientHandler>();
 		ready = new ArrayList<ClientHandler>();
+		inGame = new ArrayList<ClientHandler>();
 		this.server = server;
 	}
 	

@@ -52,6 +52,7 @@ public class ClientHandler extends Thread {
 		terminate = false;
 		game = null;
 		loggedIn = false;
+		winCondition = 4;
 	}
 	
 	public void terminate() {

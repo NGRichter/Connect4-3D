@@ -102,4 +102,8 @@ public class Client {
 	public boolean gameIsActive(){
 		return game != null;
 	}
+	
+	public Game getGame() {
+		return game;
+	}
 }

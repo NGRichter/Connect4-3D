@@ -51,11 +51,12 @@ public class ServerHandler extends Thread {
             if(command[0].equals("StartGame")) {
                 List<String> usernames = new ArrayList<>();
                 for (String username : command) {
-                    if (!command.equals("StartGame")) {
+                    if (!username.equals("StartGame")) {
                         usernames.add(username);
                     }
                 }
                 client.startClientGame(usernames);
+                game = client.getGame();
 
             //Notifies the client of a move.
             } else if(command[0].equals("NotifyMove")){
@@ -70,7 +71,7 @@ public class ServerHandler extends Thread {
             //Notify client that game has ended.
             } else if(command[0].equals("GameOver")) {
                 if(command[1].equals("Winner") && command.length == 3){
-                    client.getGameView().showMessage(command[1] + command[2]);
+                    client.getGameView().showMessage(command[1] + " " + command[2]);
                 } else {
                     client.getGameView().showMessage(command[1]);
                 }

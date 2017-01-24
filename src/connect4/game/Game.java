@@ -245,7 +245,6 @@ public class Game extends Observable{
 				}
 			}
 			} catch (OutsidePlayingBoardException e) {
-
 			}
 		return null;
 
