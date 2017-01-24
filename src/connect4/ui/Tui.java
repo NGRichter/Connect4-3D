@@ -50,16 +50,20 @@ public class Tui implements GameView {
      */
     
     public void run() {
+		showMessage("Welcome to the Connect4-3D TUI client by Nick & Julian.\nType 'help' for a list of commands.");
         Scanner scan = new Scanner(System.in);
     	while (true) {
         		String[] command = scan.nextLine().split(" ");
         		if (command.length >= 1) {
 
-                    //Requests a list of possible commands.
+                    //Fixes uppercase use in commands.
+                    command[0] = command[0].toLowerCase();
+
+                    //Requests a list of possible commands. 'help'
         			if (command[0].equals("help")) {
         				message("connect ip-address port-number\njoin username\nlogin username password\nready [amount players] [dimension] [NoRoof (Roof)] ([win condition])\nmove x y\nleave\ndisconnect");
 
-        			//Connect to a server.
+        			//Connect to a server. 'connect <ip-adress> <port>'
         			} else if (command[0].equals("connect")) {
         				if (command.length == 3) {
             				try {
@@ -74,46 +78,47 @@ public class Tui implements GameView {
         						showError("cannot connect to server");
         					}
         				} else {
-        					showError("please specify an ip-address and a port-number");
+        					showError("incorrect syntax. Use: 'connect <ip-address> <port>'.");
         				}
 
-        			//Join the game, with a username.
-        			} else if (command[0].equals("join") && command.length >= 2) {
-        				if (command.length > 2) {
-        					showError("join only wants your username, please do not use spaces");
+        			//Join the game, with a username. 'join <username>'
+        			} else if (command[0].equals("join")) {
+        				if (command.length > 2 || command.length == 1) {
+        					showError("incorrect syntax. Use: 'join <username>'.");
         				} else {
             				if (command[1].length() > 26) {
-            					showError("username can't be more than 26 characters");
+            					showError("username can't exceed 26 characters.");
             				} else {
             					writeServer("Join " + command[1]);   						
             				}
         				}
 
-        			//Make a move, on coordinates x and y.
+        			//Make a move, on coordinates x and y. 'move <x> <y>'
         			} else if (command[0].equals("move")) {
         				if (command.length == 3) {
         					writeServer("Move " + command[1] + command[2]);	
         				} else {
-        					showError("\"move X Y\"");
+        					showError("incorrect syntax. Use: 'move <X> <Y>'.");
         				}
 
-        			//Leave the game and return to the lobby.
+        			//Leave the game and return to the lobby. 'leave'
         			} else if (command[0].equals("leave")) {
         				writeServer("Leave");
 
-                    //Disconnects from the server.
+                    //Disconnects from the server. 'disconnect'
         			} else if (command[0].equals("disconnect")) {
         				writeServer("Disconnect");
     					client.serverDisconnected();
 
-                    //Sends a chatmessage to the server.
+                    //Sends a chatmessage to the server. 'chat <message>'
         			} else if (command[0].equals("chat")) {
-        				String chat = "Chat ";
-        				for (int i = 1; i < command.length; i++) {
-        					chat += command[i];
-        				}
-        				writeServer(chat);
-
+                        if (command.length > 1) {
+                            String chat = "Chat ";
+                            for (int i = 1; i < command.length; i++) {
+                                chat += command[i];
+                            }
+                            writeServer(chat);
+                        }
                     //Requests the leaderboard from the server.
         			} else if (command[0].equals("leaderboard")) {
         				writeServer("Leaderboard");
@@ -123,9 +128,13 @@ public class Tui implements GameView {
         				if (command.length == 2) {
         					writeServer("Challenge " + command[1]);
         				}
+
+        			//Starts a singleplayer game
         			} else if (command[0].equals("singleplayer")) {
         				//TO-DO
-        			}
+        			} else {
+                        showError("Unknown command. Type 'help' for a list of commands.");
+                    }
         		}    			
     		}
     	}

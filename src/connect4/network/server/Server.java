@@ -21,14 +21,14 @@ public class Server extends Thread {
 	public void run() {
 		security = new Security(ACCOUNTS_FILE_PATH);
 		leaderboard = new Leaderboard(LEADERBOARD_FILE_PATH);
-		
+
 		while (true) {
 			int o = 0;
 			while (clients.isEmpty()) {
 				try {
 					sleep(250);
 				} catch (InterruptedException e) {
-					System.out.println("An interrupt has happened");
+					System.err.println("Server has been interruped.");
 				}
 			}
 			for (ClientHandler client : clients) {

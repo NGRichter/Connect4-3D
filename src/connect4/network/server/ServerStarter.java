@@ -26,9 +26,8 @@ public class ServerStarter {
         try {
             port = Integer.parseInt(args[0]);
         } catch (NumberFormatException e) {
-            System.out.println(USAGE);
-            System.out.println("ERROR: port " + args[0]
-                    + " is not an integer");
+            System.err.println("ERROR: port " + args[0]
+                    + " is not an integer.");
             System.exit(0);
         }
 
@@ -36,13 +35,15 @@ public class ServerStarter {
         try {
             serversock = new ServerSocket(port);
         } catch (IOException e) {
-            System.out.println("ERROR: Could not create server socket on port "
+            System.err.println("ERROR: Could not create server socket on port "
                     + port);
         }
         Server server = new Server();
         Lobby lobby = new Lobby(server);
         server.start();
+        System.out.println("Server started on port " + port);
         lobby.start();
+        System.out.println("Lobby initialized.");
 
         //Create server peer object and start two-way communication
         while (true) {
@@ -57,5 +58,8 @@ public class ServerStarter {
         }
     }
 
+    public void showMessage(String message){
+        System.out.println(message);
+    }
 
 }
