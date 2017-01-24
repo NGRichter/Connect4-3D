@@ -152,22 +152,6 @@ public class Board extends Observable {
 		return fields;
 	}
 
-
-	/**
-	 *
-	 * @param choice
-	 * @return
-	 * @throws OutsidePlayingBoardException
-	 */
-	public Player getField(int choice) throws OutsidePlayingBoardException {
-		Player player;
-		int[] intarray;
-		intarray = index(choice);
-		player = fields[intarray[0]][intarray[1]][intarray[2]];
-
-		return player;
-	}
-
 	/**
 	 * Returns current occupation of field, either player or null.
 	 * @param x - x-coordinate of the field.

@@ -11,7 +11,7 @@ import java.util.Observable;
 public class Gui extends Thread implements GameView {
 
 	@Override
-	public void drawBoard(Board board) {
+	public void drawBoard() {
 
 	}
 

@@ -6,7 +6,7 @@ import java.util.Observer;
 
 public interface GameView  extends Observer, Runnable {
 
-    void drawBoard(Board board);
+    void drawBoard();
     void showMessage(String message);
     void showError(String message);
     void setClient(Client client);

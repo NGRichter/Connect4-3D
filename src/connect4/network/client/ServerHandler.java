@@ -63,6 +63,7 @@ public class ServerHandler extends Thread {
                 if (command.length == 3){
                     try {
                         game.makeNextMove(Integer.parseInt(command[1]), Integer.parseInt(command[2]));
+                        client.getGameView().drawBoard();
                     } catch (NoEmptySpotException | OutsidePlayingBoardException e) {
                         e.printStackTrace();
                     }

@@ -59,8 +59,6 @@ public class Game extends Observable{
         Player nextPlayer = players.get(playerIndex % players.size());
         board.setField(x, y, nextPlayer);
         playerIndex++;
-        setChanged();
-        notifyObservers(board);
     }
 
 
