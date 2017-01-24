@@ -58,8 +58,4 @@ public class ServerStarter {
         }
     }
 
-    public void showMessage(String message){
-        System.out.println(message);
-    }
-
 }
