@@ -32,7 +32,6 @@ public class Lobby extends Thread {
 		if (!clients.contains(client)) {
 			clients.add(client);			
 		}
-
 	}
 	
 	public void ready(ClientHandler client) {
