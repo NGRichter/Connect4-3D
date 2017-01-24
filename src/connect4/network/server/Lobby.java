@@ -62,7 +62,7 @@ public class Lobby extends Thread {
 				GameHandler game = new GameHandler(same, first.getDimension(), first.getNoRoof(), first.getWinCondition());
 				for (ClientHandler client : same) {
 					client.setGame(game);
-					ready.remove(client);
+					addInGame(client);
 				}
 				game.start();
 				break;

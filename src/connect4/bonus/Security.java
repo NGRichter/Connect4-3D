@@ -40,7 +40,7 @@ public class Security {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			byte[] bytearray = md.digest(saltedPassword.getBytes());
 			accounts.put(username, Hex.encodeHexString(bytearray));
-			writer.write(username + " " + Hex.encodeHexString(bytearray));
+			writer.write("\n" + username + " " + Hex.encodeHexString(bytearray));
 			writer.flush();
 		} catch (NoSuchAlgorithmException e) {
 

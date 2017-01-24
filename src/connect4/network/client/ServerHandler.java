@@ -36,16 +36,16 @@ public class ServerHandler extends Thread {
 	
 	public void run() {
 		while (!terminate) {
-			String recieve = null;
+			String receive = null;
 			try {
-				recieve = in.readLine();
+				receive = in.readLine();
 			} catch (IOException e) {
 				terminate = true;
 				break;
 			}
-			System.out.println(recieve);
+			System.out.println(receive);
 
-			String[] command = recieve.split(" ");
+			String[] command = receive.split(" ");
 
             //Starts a game with given playerlist.
             if(command[0].equals("StartGame")) {
@@ -78,13 +78,13 @@ public class ServerHandler extends Thread {
             //Notify client of connection lost.
             } else if(command[0].equals("ConnectionLost")) {
                 if(command.length == 2){
-                    client.getGameView().showError(recieve);
+                    client.getGameView().showError(receive);
                     client.stopClientGame();
                 }
 
             //Notify client of an error that occurred.
             } else if(command[0].equals("Error")) {
-                client.getGameView().showError(recieve);
+                client.getGameView().showError(receive);
             }
 		}
 	}

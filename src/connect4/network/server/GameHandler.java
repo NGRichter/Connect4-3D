@@ -66,6 +66,7 @@ public class GameHandler extends Thread {
 				client.inLobby();
 				client.outGame();
 				client.setGame(null);
+				client.getLobby().outGame(client);
 			} catch (IOException e) {
 				client.getLobby().server.removeClient(client);
 			}
@@ -81,6 +82,7 @@ public class GameHandler extends Thread {
 					client.inLobby();
 					client.outGame();
 					client.setGame(null);
+					client.getLobby().outGame(client);
 				} catch (IOException e) {
 					client.getLobby().server.removeClient(client);
 				}
@@ -92,6 +94,7 @@ public class GameHandler extends Thread {
 					client.inLobby();
 					client.outGame();
 					client.setGame(null);
+					client.getLobby().outGame(client);
 				} catch (IOException e) {
 					client.getLobby().server.removeClient(client);
 				}
@@ -186,6 +189,5 @@ public class GameHandler extends Thread {
 				}
 			}			
 		}
-
 	}
 }
