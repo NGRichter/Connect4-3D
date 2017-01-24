@@ -2,6 +2,7 @@ package connect4.network.server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import connect4.bonus.*;
@@ -235,7 +236,10 @@ public class Server extends Thread {
 	
 	public void removeClient(ClientHandler client) {
         if (clients.contains(client)) {
-            client.getLobby().disconnect(client);
+            if (client.getInLobby()){
+                client.getLobby().disconnect(client);
+            }
+            //Mag niet, omdat er door clients wordt geiterate.
             clients.remove(client);
         }
 	}
