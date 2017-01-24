@@ -60,14 +60,13 @@ public class ClientHandler extends Thread {
 	
 	public void run() {
 		while (!terminate) {
-			int tempin;
-			String temp = "";
+			String temp = null;
 			try {
-				while ((tempin = in.read()) != -1) {
-					temp += (char) tempin;
-				}
+				temp = in.readLine();
 			} catch (IOException e) {
 				e.printStackTrace();
+				terminate = true;
+				break;
 			}
 			buffer.writeBuffer(temp);
 			
@@ -77,6 +76,7 @@ public class ClientHandler extends Thread {
 	
 	public void handleOutput(String string) throws IOException {
 		out.write(string);
+		out.newLine();
 		out.flush();
 	}
 	

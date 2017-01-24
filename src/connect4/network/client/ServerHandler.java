@@ -36,14 +36,13 @@ public class ServerHandler extends Thread {
 	
 	public void run() {
 		while (!terminate) {
-			int receivelength;
-			String receive = "";
+			String receive = null;
 			try {
-				while ((receivelength = in.read()) != -1) {
-					receive += (char) receivelength;
-				}
+				receive = in.readLine();
 			} catch (IOException e) {
 				e.printStackTrace();
+				terminate = true;
+				break;
 			}
 
 			String[] command = receive.split(" ");
@@ -92,6 +91,7 @@ public class ServerHandler extends Thread {
 	
 	public void handleOutput(String string) throws IOException {
 		out.write(string);
+		out.newLine();
 		out.flush();
 	}
 	
