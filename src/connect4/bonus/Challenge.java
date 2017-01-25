@@ -26,9 +26,9 @@ public class Challenge extends Thread {
 			client.setHasBeenChallenged(true);
 			try {
 				if (noRoof) {
-					client.handleOutput("ChallengeRequest " + dimension + " " + clients.size() + " NoRoof " + challenger.getUserName());
+					client.handleOutput("ChallengeRequest " + dimension + " " + (clients.size() + 1) + " NoRoof " + challenger.getUserName());
 				} else {
-					client.handleOutput("ChallengeRequest " + dimension + " " + clients.size() + " " + challenger.getUserName());
+					client.handleOutput("ChallengeRequest " + dimension + " " + (clients.size() + 1) + " " + challenger.getUserName());
 				}
 			} catch (IOException e) {
 				terminate = true;

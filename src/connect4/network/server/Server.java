@@ -166,7 +166,7 @@ public class Server extends Thread {
 									int dimension = Integer.parseInt(command[1]);
 									int players = Integer.parseInt(command[2]);
 									if (command[3].equals("NoRoof")) {
-										if (command.length == 4 + players) {
+										if (command.length == 4 + players - 1) {
 											List<ClientHandler> challenge = new ArrayList<>();
 											for (ClientHandler player : clients) {
 												if (player.getInLobby() && !player.getHasBeenChallenged()) {
@@ -188,7 +188,7 @@ public class Server extends Thread {
 											sendError(client, "Amount of players does not correspond with the amount of usernames");
 										}
 									} else {
-										if (command.length == 3 + players) {
+										if (command.length == 3 + players - 1) {
 											List<ClientHandler> challenge = new ArrayList<>();
 											for (ClientHandler player : clients) {
 												if (player.getInLobby() && !player.getHasBeenChallenged()) {

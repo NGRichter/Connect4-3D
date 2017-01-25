@@ -211,4 +211,25 @@ public class Board extends Observable {
 		return x + y * DIMX + z * DIMX * DIMY;
 	}
 
+	/**
+	 * Return true if board is empty, false if it is not.
+	 * @return true if empty, false if not
+	 */
+	public boolean isEmpty() {
+		for (int z = 0; z < DIMZ; z++) {
+			for (int y = 0; y < DIMY; y++) {
+				for (int x = 0; x < DIMX; x++) {
+					try {
+						if (getField(x,y,z) != null) {
+							return false;
+						}
+					} catch (OutsidePlayingBoardException e) {
+
+					}
+				}
+			}
+		}
+		return true;
+	}
+
 }

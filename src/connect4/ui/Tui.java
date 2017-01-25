@@ -24,6 +24,7 @@ public class Tui implements GameView {
 		if (observable instanceof Game){
             drawBoard();
 			showMessage(object + " has made a move.");
+			showMessage("It is the turn of " + ((Game) observable).getCurrentPlayer().getName());
 		}
 	}
 
@@ -76,8 +77,10 @@ public class Tui implements GameView {
                         } else if (cmdlength == 4) {
                             writeServer("Join " + command[1] + " " + command[2] + " " + command[3]);
                         } else if (cmdlength == 5) {
-                            writeServer("Join " + command[1] + " " + command[2] + " " + command[3] + "" + command[4]);
-                        }
+                            writeServer("Join " + command[1] + " " + command[2] + " " + command[3] + " " + command[4]);
+                        } else if (cmdlength == 6) {
+                        	writeServer("Join " + command[1] + " " + command[2] + " " + command[3] + " " + command[4] + " " + command[5]);
+						}
                     }
 
                 //Toggle ready for a match by certain rules. 'ready <player amount> <board dimension> <noRoof>'
@@ -209,6 +212,9 @@ public class Tui implements GameView {
                 System.out.println(vertFrame);
             }
         }
+        if (board.isEmpty()) {
+			showMessage("It is the turn of " + client.getGame().getCurrentPlayer().getName());
+		}
     }
 
     @Override

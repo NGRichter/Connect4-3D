@@ -66,6 +66,10 @@ public class Game extends Observable {
 		notifyObservers(nextPlayer.getName());
 	}
 
+	public Player getCurrentPlayer() {
+		return players.get(playerIndex % players.size());
+	}
+
 
 	/**
 	 * Getter for the wincondition.
