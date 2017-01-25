@@ -1,5 +1,6 @@
 package connect4.network.server;
 
+import connect4.bonus.Challenge;
 import connect4.game.Colour;
 import connect4.game.HumanPlayer;
 import connect4.game.Player;
@@ -29,6 +30,8 @@ public class ClientHandler extends Thread {
 	private GameHandler game;
 	private int winCondition;
 	private boolean loggedIn;
+	private Challenge challengeGame;
+	private boolean hasBeenChallenged;
 
 	public ClientHandler(Lobby lobby, Socket sock) {
 		this.lobby = lobby;
@@ -51,6 +54,8 @@ public class ClientHandler extends Thread {
 		game = null;
 		loggedIn = false;
 		winCondition = 4;
+		challengeGame = null;
+		hasBeenChallenged = false;
 	}
 
 	public void terminate() {
@@ -208,6 +213,22 @@ public class ClientHandler extends Thread {
 
 	public Buffer getBuffer() {
 		return buffer;
+	}
+
+	public void setChallengeGame(Challenge challenge) {
+		this.challengeGame = challenge;
+	}
+
+	public Challenge getChallengeGame() {
+		return challengeGame;
+	}
+
+	public boolean getHasBeenChallenged() {
+		return hasBeenChallenged;
+	}
+
+	public void setHasBeenChallenged(boolean hasBeenChallenged) {
+		this.hasBeenChallenged = hasBeenChallenged;
 	}
 
 	public void makePlayer(String name) {

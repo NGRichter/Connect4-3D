@@ -11,9 +11,9 @@ public class Lobby extends Thread {
 	public Server server;
 
 	public Lobby(Server server) {
-		clients = new ArrayList<ClientHandler>();
-		ready = new ArrayList<ClientHandler>();
-		inGame = new ArrayList<ClientHandler>();
+		clients = new ArrayList<>();
+		ready = new ArrayList<>();
+		inGame = new ArrayList<>();
 		this.server = server;
 	}
 
@@ -26,6 +26,10 @@ public class Lobby extends Thread {
 	public void outGame(ClientHandler client) {
 		inGame.remove(client);
 		clients.add(client);
+	}
+
+	public void outReady(ClientHandler client) {
+		ready.remove(client);
 	}
 
 	public void connect(ClientHandler client) {
@@ -73,11 +77,10 @@ public class Lobby extends Thread {
 
 	public void run() {
 		while (true) {
-			while (ready.isEmpty() || ready.size() == 1) {
-				try {
-					Thread.sleep(250);
-				} catch (InterruptedException e) {
-				}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				System.out.println("Lobby has been interrupted");
 			}
 			int begin = 10;
 			int end = 0;

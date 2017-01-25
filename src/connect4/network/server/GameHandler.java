@@ -20,6 +20,7 @@ public class GameHandler extends Thread {
 	private ClientHandler next;
 	private int[] nextMove = {-1, -1};
 	private boolean terminate = false;
+	private boolean wantHint = false;
 
 	public GameHandler(List<ClientHandler> clients, int dimension, boolean noroof, int winCondition) {
 		if (noroof) {
@@ -42,6 +43,18 @@ public class GameHandler extends Thread {
 
 	public Game getGame() {
 		return game;
+	}
+
+	public void wantHint(ClientHandler client) {
+		if (client == next) {
+			wantHint = true;
+		} else {
+			try {
+				client.handleOutput("Error Not your turn");
+			} catch (IOException e) {
+				disconnectGame(client);
+			}
+		}
 	}
 
 	public void startGame() {
@@ -161,6 +174,33 @@ public class GameHandler extends Thread {
 				}
 			} else {
 				try {
+					if (wantHint) {
+						foundHint:
+						for(int o= 0; o < game.getWinCondition() - 1; o++) {
+							int[] winningMove = game.winningMove(next.getPlayer(), game.getWinCondition() - o);
+							if (winningMove[0] != -1) {
+								try {
+									next.handleOutput("Hint " + winningMove[0] + " " + winningMove[1]);
+								} catch (IOException e) {
+									disconnectGame(next);
+								}
+								continue foundHint;
+							} else {
+								for (Player player : game.getPlayers()) {
+									winningMove = game.winningMove(player, game.getWinCondition() - o);
+									if (winningMove[0] != -1) {
+										try {
+											next.handleOutput("Hint " + winningMove[0] + " " + winningMove[1]);
+										} catch (IOException e) {
+											disconnectGame(next);
+										}
+										continue foundHint;
+									}
+								}
+							}
+						}
+					}
+					wantHint = false;
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					System.err.println("Gamethread has been interrupted.");
