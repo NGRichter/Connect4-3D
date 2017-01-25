@@ -33,9 +33,9 @@ public class MinimaxAlpha extends Player {
 	public int evaluate(Game game) {
 		int amount = 0;
 		if (game.checkWinner() == player) {
-			amount += 1000;
+			return 1000;
 		} else if (game.checkWinner() == opponent) {
-			amount -= 1000;
+			return -1000;
 		}
 		int amountplayer = checkIfThreeInARow(game.board, player);
 		int amountopponent = checkIfThreeInARow(game.board, opponent);
