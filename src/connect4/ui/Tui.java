@@ -18,10 +18,6 @@ public class Tui implements GameView {
 	private Client client;
     private Game game;
 
-    public Tui(){
-
-    }
-
 
 	@Override
 	public void update(Observable observable, Object object) {
@@ -30,28 +26,10 @@ public class Tui implements GameView {
 			showMessage(object + " has made a move.");
 		}
 	}
-
-
-    public void setClient(Client client) {
-    	this.client = client;
-    }
-
-    /*
-    Commands:
-     - singleplayer
-     - connect ip-address port-number
-     - join username
-     - login username password
-     - ready [nr of players (default: 2)] [board dim (default: 4)] [NoRoof (Roof)] (Roof is not in the protocol but only in our implementation) so is -> [win condition (default: 4)]
-     - leave
-     - move [x] [y]
-     - leaderboard
-     - challenge username
-     - chat [message]
-     */
     
     public void run() {
         showMessage("Welcome to the Connect4-3D TUI client by Nick & Julian.\nType 'help' for a list of commands.");
+
         Scanner scan = new Scanner(System.in);
         while (true) {
             String[] command = scan.nextLine().split(" ");
@@ -63,7 +41,7 @@ public class Tui implements GameView {
 
                 //Requests a list of possible commands. 'help'
                 if (command[0].equals("help")) {
-                    message("connect ip-address port-number\njoin username\nlogin username password\nready [amount players] [dimension] [NoRoof (Roof)] ([win condition])\nmove x y\nleave\ndisconnect");
+                    showMessage("connect ip-address port-number\njoin username\nlogin username password\nready [amount players] [dimension] [NoRoof (Roof)] ([win condition])\nmove x y\nleave\ndisconnect");
 
                 //Connect to a server. 'connect <ip-adress> <port>'
                 } else if (command[0].equals("connect")) {
@@ -190,8 +168,10 @@ public class Tui implements GameView {
         }
     }
 
-    public void message(String message) {
-    	System.out.println(message);
+    @Override
+    public void setClient(Client client) {
+        this.client = client;
+        showError("Client changed!");
     }
 
     @Override

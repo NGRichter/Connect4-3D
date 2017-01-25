@@ -27,14 +27,16 @@ public class Client {
 	public static void main(String[] args) {
 		if (args.length == 1 && args[0].equals("tui")) {
 			GameView tui = new Tui();
-			Thread t = new Thread(tui);
+			Thread tuiThread = new Thread(tui);
 			Client client = new Client(tui);
-			t.start();
+			tuiThread.start();
 			tui.setClient(client);
 		} else if (args.length == 1 && args[0].equals("gui")) {
 			GameView gui = new Gui();
 			Client client = new Client(gui);
-			gui.setClient(client);
+            Thread guiThread = new Thread(gui);
+            guiThread.start();
+            gui.setClient(client);
 		}
 	}
 

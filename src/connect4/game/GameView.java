@@ -8,7 +8,8 @@ public interface GameView  extends Observer, Runnable {
 
     void drawBoard();
     void showMessage(String message);
-    void showError(String message);
+    void showError(String error);
+    void writeServer(String command);
     void setClient(Client client);
 
 }
