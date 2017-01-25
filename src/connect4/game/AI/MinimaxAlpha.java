@@ -2,10 +2,13 @@ package connect4.game.AI;
 
 import connect4.exceptions.NoEmptySpotException;
 import connect4.exceptions.OutsidePlayingBoardException;
-import connect4.game.*;
+import connect4.game.Board;
+import connect4.game.Colour;
+import connect4.game.Game;
+import connect4.game.Player;
 
 public class MinimaxAlpha extends Player {
-	
+
 	public Player player;
 	public Player opponent;
 
@@ -26,8 +29,8 @@ public class MinimaxAlpha extends Player {
 		}
 		return findBestMove(game, 6);
 	}
-	
-	public int evaluate (Game game) {
+
+	public int evaluate(Game game) {
 		int amount = 0;
 		if (game.checkWinner() == player) {
 			amount += 1000;
@@ -39,12 +42,12 @@ public class MinimaxAlpha extends Player {
 		amount += amountplayer * 100;
 		amount += amountopponent * -100;
 		return amount;
-		
+
 	}
-	
+
 	public int checkIfThreeInARow(Board board, Player player) {
 		int amount = 0;
-		try{
+		try {
 			for (int z = 0; z < board.getDimZ(); z++) {
 				for (int y = 0; y < board.getDimY(); y++) {
 					for (int x = 0; x < board.getDimX(); x++) {
@@ -75,7 +78,7 @@ public class MinimaxAlpha extends Player {
 									}
 								}
 								if (z + 4 - 1 < board.getDimZ()) {//If there are enough spaces up also check the diagonal up/right.
-									for (int i = 0; i < 3 -1; i++) {
+									for (int i = 0; i < 3 - 1; i++) {
 										if (board.getField(x + i, y, z + i) == board.getField(x + i + 1, y, z + i + 1)) {
 											if (i + 1 == 3 - 1) {
 												if (board.getField(x + i + 2, y, z + i + 2) == null) {
@@ -112,13 +115,12 @@ public class MinimaxAlpha extends Player {
 											}
 										}
 									}
-									
+
 								}
-								
+
 							}
-							
-							
-							
+
+
 							if (y + 4 - 1 < board.getDimY()) {//If there are enough spaces to the bottom.
 								for (int i = 0; i < 3 - 1; i++) {
 									if (board.getField(x, y + i, z) == board.getField(x, y + i + 1, z)) {
@@ -171,11 +173,11 @@ public class MinimaxAlpha extends Player {
 									}
 								}
 							}
-							
+
 							if (z + 4 - 1 < board.getDimZ()) {
 								for (int i = 0; i < 3 - 1; i++) {
 									if (board.getField(x, y, z + i) == board.getField(x, y, z + i + 1)) {
-										if (i + 1 == 3 -1) {
+										if (i + 1 == 3 - 1) {
 											if (board.getField(x, y, z + i + 2) == null) {
 												amount++;
 											}
@@ -187,7 +189,7 @@ public class MinimaxAlpha extends Player {
 								if (x - 4 + 1 >= 0) {
 									for (int i = 0; i < 3 - 1; i++) {
 										if (board.getField(x - i, y, z + i) == board.getField(x - i - 1, y, z + i + 1)) {
-											if (i + 1 == 3 -1) {
+											if (i + 1 == 3 - 1) {
 												if (board.getField(x - i - 2, y, z + i + 2) == null) {
 													amount++;
 												}
@@ -199,7 +201,7 @@ public class MinimaxAlpha extends Player {
 									if (y - 4 + 1 >= 0) {
 										for (int i = 0; i < 3 - 1; i++) {
 											if (board.getField(x - i, y - i, z + i) == board.getField(x - i - 1, y - i - 1, z + i + 1)) {
-												if (i + 1 == 3 -1) {
+												if (i + 1 == 3 - 1) {
 													if (board.getField(x - i - 2, y - i - 2, z + i + 2) == null) {
 														amount++;
 													}
@@ -213,7 +215,7 @@ public class MinimaxAlpha extends Player {
 								if (y - 4 + 1 >= 0) {
 									for (int i = 0; i < 3 - 1; i++) {
 										if (board.getField(x, y - i, z + i) == board.getField(x, y - i - 1, z + i + 1)) {
-											if (i + 1 == 3 -1) {
+											if (i + 1 == 3 - 1) {
 												if (board.getField(x, y - i - 2, z + i + 2) == null) {
 													amount++;
 												}
@@ -225,17 +227,17 @@ public class MinimaxAlpha extends Player {
 								}
 							}
 						}
-						
+
 					}
 				}
 			}
-			} catch (OutsidePlayingBoardException e) {
-				System.out.println("Winner to see if 3 on a row went outside the playing board");
-			}
+		} catch (OutsidePlayingBoardException e) {
+			System.out.println("Winner to see if 3 on a row went outside the playing board");
+		}
 		return amount;
-		
+
 	}
-	
+
 	public int minimax(int maxDepth, int depth, boolean isMax, Game game, int alpha, int beta) {
 		int score = evaluate(game);
 		if (score >= 1000) {
@@ -290,7 +292,7 @@ public class MinimaxAlpha extends Player {
 			return best;
 		}
 	}
-	
+
 	public int findBestMove(Game game, int maxDepth) {
 		int bestVal = -10000;
 		int[] move = new int[2];
@@ -316,7 +318,7 @@ public class MinimaxAlpha extends Player {
 		}
 		try {
 			if (move[0] != -1) {
-				return game.board.index(move[0], move[1], 0);			
+				return game.board.index(move[0], move[1], 0);
 			}
 		} catch (OutsidePlayingBoardException e) {
 			e.printStackTrace();

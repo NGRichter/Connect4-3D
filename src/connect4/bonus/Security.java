@@ -1,23 +1,23 @@
 package connect4.bonus;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import org.apache.commons.codec.binary.Hex;
+
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.codec.binary.Hex;
-
 public class Security {
-	
+
 	private Map<String, String> accounts = new HashMap<String, String>();
 	private BufferedReader reader;
 	private FileWriter writer;
-	
+
+	/**
+	 * Makes a new security object which reads all data from a storage file and puts it in a map.
+	 * @param path - path to the storage file
+	 */
 	public Security(String path) {
 		try {
 			File file = new File(path);
@@ -33,7 +33,12 @@ public class Security {
 		}
 
 	}
-	
+
+	/**
+	 * Registers a username and password, writes it to the storage file.
+	 * @param username - username that you want registered
+	 * @param password - password you want registered
+	 */
 	public void register(String username, String password) {
 		String saltedPassword = password + username + username.substring(0, 1);
 		try {
@@ -48,7 +53,14 @@ public class Security {
 		}
 
 	}
-	
+
+	/**
+	 * Verifies if the username and password specified is the same as stored.
+	 * If username is not stored yet register the user.
+	 * @param username
+	 * @param password
+	 * @return true if successfully logged in or registered, false if password is not the same as stored
+	 */
 	public boolean login(String username, String password) {
 		if (accounts.containsKey(username)) {
 			String saltedPassword = password + username + username.substring(0, 1);

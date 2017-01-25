@@ -1,24 +1,26 @@
 package connect4.game;
 
-import java.util.*;
-
 import connect4.exceptions.NoEmptySpotException;
 import connect4.exceptions.OutsidePlayingBoardException;
-import connect4.ui.Tui;
 
-public class Game extends Observable{
-	
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+
+public class Game extends Observable {
+
+	public Board board;
 	private List<Player> players = new ArrayList<Player>();
 	private List<Colour> colours = Colour.allColours();
-    private int playerIndex = 0;
- 	public Board board;
+	private int playerIndex = 0;
 	private int winCondition;
 
 	/**
 	 * Defines a game with a board, players, and win condition.
-	 * @param board - board for the game to use
+	 *
+	 * @param board   - board for the game to use
 	 * @param players - players that participate in the game
-	 * @param win - amount of 'connects' by a player for the game to be won
+	 * @param win     - amount of 'connects' by a player for the game to be won
 	 */
 	public Game(Board board, Player[] players, int win) {
 
@@ -30,7 +32,7 @@ public class Game extends Observable{
 	}
 
 
-    public List<Player> getPlayers() {
+	public List<Player> getPlayers() {
 		return players;
 	}
 
@@ -43,6 +45,7 @@ public class Game extends Observable{
 
 	/**
 	 * Checks if player has won.
+	 *
 	 * @param player - player to check if won
 	 * @return true or false
 	 */
@@ -56,36 +59,39 @@ public class Game extends Observable{
 	}
 
 	public void makeNextMove(int x, int y) throws NoEmptySpotException, OutsidePlayingBoardException {
-        Player nextPlayer = players.get(playerIndex % players.size());
-        board.setField(x, y, nextPlayer);
-        playerIndex++;
+		Player nextPlayer = players.get(playerIndex % players.size());
+		board.setField(x, y, nextPlayer);
+		playerIndex++;
 		setChanged();
 		notifyObservers(nextPlayer.getName());
-    }
+	}
 
 
-    /**
-     * Getter for the wincondition.
-     * @return wincondition
-     */
-	public int getWinCondition(){
-        return winCondition;
-    }
+	/**
+	 * Getter for the wincondition.
+	 *
+	 * @return wincondition
+	 */
+	public int getWinCondition() {
+		return winCondition;
+	}
 
 	/**
 	 * Getter for the board.
+	 *
 	 * @return board
 	 */
-	public Board getBoard(){
-        return board;
-    }
+	public Board getBoard() {
+		return board;
+	}
 
 	/**
 	 * Checks the board for a winner.
-	 * @return winnning player or null
+	 *
+	 * @return winning player or null
 	 */
 	public Player checkWinner() {
-		try{
+		try {
 			for (int z = 0; z < board.getDimZ(); z++) {
 				for (int y = 0; y < board.getDimY(); y++) {
 					for (int x = 0; x < board.getDimX(); x++) {
@@ -100,7 +106,7 @@ public class Game extends Observable{
 										break;
 									}
 								}
-								if (y + winCondition - 1 < board.getDimY()) {
+								if (y + winCondition - 1 < board.getDimY()) {//If there are enough spaces vertically down. Checks if there is a diagonal.
 									for (int i = 0; i < winCondition - 1; i++) {
 										if (board.getField(x + i, y + i, z) == board.getField(x + i + 1, y + i + 1, z)) {
 											if (i + 1 == winCondition - 1) {
@@ -112,7 +118,7 @@ public class Game extends Observable{
 									}
 								}
 								if (z + winCondition - 1 < board.getDimZ()) {//If there are enough spaces up also check the diagonal up/right.
-									for (int i = 0; i < winCondition -1; i++) {
+									for (int i = 0; i < winCondition - 1; i++) {
 										if (board.getField(x + i, y, z + i) == board.getField(x + i + 1, y, z + i + 1)) {
 											if (i + 1 == winCondition - 1) {
 												return board.getField(x, y, z);
@@ -143,13 +149,12 @@ public class Game extends Observable{
 											}
 										}
 									}
-									
+
 								}
-								
+
 							}
-							
-							
-							
+
+
 							if (y + winCondition - 1 < board.getDimY()) {//If there are enough spaces to the bottom.
 								for (int i = 0; i < winCondition - 1; i++) {
 									if (board.getField(x, y + i, z) == board.getField(x, y + i + 1, z)) {
@@ -194,11 +199,11 @@ public class Game extends Observable{
 									}
 								}
 							}
-							
+
 							if (z + winCondition - 1 < board.getDimZ()) {
 								for (int i = 0; i < winCondition - 1; i++) {
 									if (board.getField(x, y, z + i) == board.getField(x, y, z + i + 1)) {
-										if (i + 1 == winCondition -1) {
+										if (i + 1 == winCondition - 1) {
 											return board.getField(x, y, z);
 										}
 									} else {
@@ -208,7 +213,7 @@ public class Game extends Observable{
 								if (x - winCondition + 1 >= 0) {
 									for (int i = 0; i < winCondition - 1; i++) {
 										if (board.getField(x - i, y, z + i) == board.getField(x - i - 1, y, z + i + 1)) {
-											if (i + 1 == winCondition -1) {
+											if (i + 1 == winCondition - 1) {
 												return board.getField(x, y, z);
 											}
 										} else {
@@ -218,7 +223,7 @@ public class Game extends Observable{
 									if (y - winCondition + 1 >= 0) {
 										for (int i = 0; i < winCondition - 1; i++) {
 											if (board.getField(x - i, y - i, z + i) == board.getField(x - i - 1, y - i - 1, z + i + 1)) {
-												if (i + 1 == winCondition -1) {
+												if (i + 1 == winCondition - 1) {
 													return board.getField(x, y, z);
 												}
 											} else {
@@ -230,7 +235,7 @@ public class Game extends Observable{
 								if (y - winCondition + 1 >= 0) {
 									for (int i = 0; i < winCondition - 1; i++) {
 										if (board.getField(x, y - i, z + i) == board.getField(x, y - i - 1, z + i + 1)) {
-											if (i + 1 == winCondition -1) {
+											if (i + 1 == winCondition - 1) {
 												return board.getField(x, y, z);
 											}
 										} else {
@@ -240,48 +245,51 @@ public class Game extends Observable{
 								}
 							}
 						}
-						
+
 					}
 				}
 			}
-			} catch (OutsidePlayingBoardException e) {
-			}
+		} catch (OutsidePlayingBoardException e) {
+		}
 		return null;
 
 	}
 
 
 	/**
-	 * Checks what next move for player would be the winning move, if any.
+	 * Checks what the next move for the player would be if there is a winning move.
+	 *
 	 * @param player - player to check move for
-	 * @return coordinates of winning move, -1,-1 if none
+	 * @param condition - win condition of the game
+	 * @return coordinates of a winning move or {-1,-1} if none
 	 */
 	public int[] winningMove(Player player, int condition) {
 		Board boardtemp = board.deepCopy();
 		Player[] playertemp = {player};
 		Game gametemp = new Game(boardtemp, playertemp, condition);
-		
+
 		for (int x = 0; x < board.getDimX(); x++) {
 			for (int y = 0; y < board.getDimY(); y++) {
 				try {
 					boardtemp.setField(x, y, player);
 					if (gametemp.checkWinner() == player) {
-						int[] xy = {x,y};
+						int[] xy = {x, y};
 						return xy;
 					} else {
 						boardtemp.setFieldToNull(x, y);
 					}
 				} catch (OutsidePlayingBoardException | NoEmptySpotException e) {
-					
+
 				}
 			}
 		}
-		int[] noWinningMove = {-1,-1};
+		int[] noWinningMove = {-1, -1};
 		return noWinningMove;
 	}
 
 	/**
 	 * Checks if the board is full.
+	 *
 	 * @return true or false
 	 */
 	public boolean isFull() {
@@ -297,6 +305,7 @@ public class Game extends Observable{
 
 	/**
 	 * Checks if game is over by checking for winner or full board (draw).
+	 *
 	 * @return true or false
 	 */
 	public boolean gameOver() {

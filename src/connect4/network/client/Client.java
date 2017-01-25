@@ -1,12 +1,13 @@
 package connect4.network.client;
 
+import connect4.game.*;
+import connect4.ui.Gui;
+import connect4.ui.Tui;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
-
-import connect4.game.*;
-import connect4.ui.*;
 
 public class Client {
 
@@ -23,7 +24,11 @@ public class Client {
 	private boolean isReady;
 	private boolean inGame;
 
-	
+
+	public Client(GameView ui) {
+		this.ui = ui;
+	}
+
 	public static void main(String[] args) {
 		if (args.length == 1 && args[0].equals("tui")) {
 			GameView tui = new Tui();
@@ -40,76 +45,69 @@ public class Client {
 		}
 	}
 
-
 	public void startClientGame(List<String> usernames) {
 		Player[] players = new Player[usernames.size()];
 		int i = 0;
-		for(String username : usernames){
+		for (String username : usernames) {
 			players[i] = new HumanPlayer(username, Colour.random());
 			i++;
 		}
 		int boardHeight = boardDim;
-		if(noRoof){
+		if (noRoof) {
 			boardHeight = 1000;
 		}
 		game = new Game(new Board(boardDim, boardDim, boardHeight), players, winCondition);
 		game.addObserver(ui);
-        ui.drawBoard();
+		ui.drawBoard();
 	}
 
-
-
-	public Client(GameView ui) {
-		this.ui = ui;
+	public GameView getGameView() {
+		return ui;
 	}
-
-	public GameView getGameView(){
-        return ui;
-    }
 
 	public void connectServer(int port, InetAddress address) throws IOException {
 		sock = new Socket(address, port);
 		server = new ServerHandler(sock, this);
 		server.start();
 	}
-	
+
 	public void writeServer(String string) throws IOException {
 		if (server != null) {
-			server.handleOutput(string);			
+			server.handleOutput(string);
 		} else {
 			throw new IOException();
 		}
 
 	}
-	
+
 	public void serverDisconnected() {
 		server = null;
 	}
 
-	public void setBoardDim(int dim){
-		this.boardDim = dim;
-	}
-
-	public int getBoardDim(){
+	public int getBoardDim() {
 		return boardDim;
 	}
 
-	public void setWinCondition(int wincondition){
-        this.winCondition = wincondition;
-    }
+	public void setBoardDim(int dim) {
+		this.boardDim = dim;
+	}
 
-    public int getWinCondition(){
-        return winCondition;
-    }
+	public int getWinCondition() {
+		return winCondition;
+	}
 
-	public void stopClientGame(){
+	public void setWinCondition(int wincondition) {
+		this.winCondition = wincondition;
+	}
+
+	public void stopClientGame() {
 		game = null;
 	}
 
-	public boolean gameIsActive(){
+	public boolean gameIsActive() {
 		return game != null;
 	}
-	
+
 	public Game getGame() {
 		return game;
 	}

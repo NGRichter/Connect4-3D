@@ -1225,37 +1225,54 @@ public enum Colour {
 	ZAFFRE("#0014A8"),
 	ZINNWALDITE_BROWN("#2C1608"),
 	ZOMP("#39A78E");
-	
+
 	private String hex;
-	
-	//Makes the Colour with field hex as a string.
+
+	/**
+	 * Makes the Colour with field hex as a string.
+	 *
+	 * @param hex - hex value.
+	 */
 	Colour(String hex) {
 		this.hex = hex;
 	}
-	
-	//Returns a list of all the colours except VOID.
+
+	/**
+	 * Makes a list of all colours except VOID.
+	 *
+	 * @return all colours.
+	 */
 	public static List<Colour> allColours() {
 		List<Colour> colours = new ArrayList<Colour>();
 		for (Colour c : Colour.values()) {
 			if (!(c == Colour.VOID)) {
-				colours.add(c);				
+				colours.add(c);
 			}
 		}
 		return colours;
 	}
-	
-	//Returns the hex string.
-	public String getHex() {
-		return hex;
-	}
-	
+
+	/**
+	 * Picks a random colour from all values;
+	 *
+	 * @return a random colour.
+	 */
 	public static Colour random() {
 		Random random = new Random();
 		int temp = 0;
 		while (temp == 0) {
-			temp += random.nextInt(Colour.values().length); 
+			temp += random.nextInt(Colour.values().length);
 		}
 		return Colour.values()[temp];
+	}
+
+	/**
+	 * Returns the hex value associated with the colour.
+	 *
+	 * @return hex value.
+	 */
+	public String getHex() {
+		return hex;
 	}
 }
 

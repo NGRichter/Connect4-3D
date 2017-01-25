@@ -26,7 +26,7 @@ public class Tui implements GameView {
 			showMessage(object + " has made a move.");
 		}
 	}
-    
+
     public void run() {
         showMessage("Welcome to the Connect4-3D TUI client by Nick & Julian.\nType 'help' for a list of commands.");
 
