@@ -1,30 +1,31 @@
 package connect4.network.server;
 
+import connect4.bonus.Score;
+import connect4.exceptions.NoEmptySpotException;
+import connect4.exceptions.OutsidePlayingBoardException;
+import connect4.game.Board;
+import connect4.game.Game;
+import connect4.game.Player;
+
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
-import connect4.bonus.Score;
-import connect4.exceptions.NoEmptySpotException;
-import connect4.exceptions.OutsidePlayingBoardException;
-import connect4.game.*;
-
 public class GameHandler extends Thread {
-	
+
 	private Game game;
 	private Board board;
 	private List<ClientHandler> gamers;
 	private ClientHandler next;
 	private int[] nextMove = {-1, -1};
 	private boolean terminate = false;
-	
+
 	public GameHandler(List<ClientHandler> clients, int dimension, boolean noroof, int winCondition) {
 		if (noroof) {
 			board = new Board(dimension, dimension, 1000);
 		} else {
-			board = new Board(dimension, dimension, dimension);			
+			board = new Board(dimension, dimension, dimension);
 		}
 		Player[] players = new Player[clients.size()];
 		int i = 0;
@@ -38,11 +39,11 @@ public class GameHandler extends Thread {
 		gamers = clients;
 		System.out.println("A game has started with " + message);
 	}
-	
+
 	public Game getGame() {
 		return game;
 	}
-	
+
 	public void startGame() {
 		String startgame = "StartGame";
 		for (ClientHandler client : gamers) {
@@ -56,11 +57,11 @@ public class GameHandler extends Thread {
 			}
 		}
 	}
-	
+
 	public void stopGame() {
 		terminate = true;
 	}
-	
+
 	public void disconnectGame(ClientHandler disconnect) {
 		for (ClientHandler client : gamers) {
 			try {
@@ -75,7 +76,7 @@ public class GameHandler extends Thread {
 		}
 		stopGame();
 	}
-	
+
 	public void gameOver(String winner) {
 		if (winner.equals("Draw")) {
 			for (ClientHandler client : gamers) {
@@ -104,7 +105,7 @@ public class GameHandler extends Thread {
 		}
 		stopGame();
 	}
-	
+
 	public void getMove(int x, int y, ClientHandler client) {
 		if (client != next) {
 			try {
@@ -112,7 +113,7 @@ public class GameHandler extends Thread {
 			} catch (IOException e) {
 				disconnectGame(client);
 			}
-		} else if (nextMove[0] != -1){
+		} else if (nextMove[0] != -1) {
 			try {
 				client.handleOutput("Error You already send your command or there is something wrong with the server.");
 			} catch (IOException e) {
@@ -123,7 +124,7 @@ public class GameHandler extends Thread {
 			nextMove[1] = y;
 		}
 	}
-	
+
 	public void notifyMove(int x, int y) {
 		for (ClientHandler client : gamers) {
 			try {
@@ -133,7 +134,7 @@ public class GameHandler extends Thread {
 			}
 		}
 	}
-	
+
 	public void run() {
 		int turns = 0;
 		Collections.shuffle(gamers);
@@ -168,7 +169,7 @@ public class GameHandler extends Thread {
 			turns++;
 		}
 		if (terminate) {
-			
+
 		} else {
 			Player winner = game.checkWinner();
 			if (winner == null) {
@@ -191,7 +192,7 @@ public class GameHandler extends Thread {
 						client.getLobby().server.leaderboard.addScore(score);
 					}
 				}
-			}			
+			}
 		}
 	}
 }

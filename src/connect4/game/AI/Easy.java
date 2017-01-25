@@ -1,14 +1,15 @@
 package connect4.game.AI;
 
+import connect4.exceptions.OutsidePlayingBoardException;
+import connect4.game.Game;
+import connect4.game.Player;
+
 import java.util.Random;
 
-import connect4.exceptions.OutsidePlayingBoardException;
-import connect4.game.*;
-
 public class Easy implements Strategy {
-	
+
 	public int adjacentChance = 75;
-	
+
 	@Override
 	public int determineMove(Game game, Player player) {
 		Random random = new Random();
@@ -17,7 +18,7 @@ public class Easy implements Strategy {
 			int[] move = adjacent(game, player);
 			try {
 				if (move[0] != -1) {
-					return game.board.index(move[0], move[1], 0);					
+					return game.board.index(move[0], move[1], 0);
 				}
 			} catch (OutsidePlayingBoardException e) {
 				e.printStackTrace();
@@ -29,7 +30,7 @@ public class Easy implements Strategy {
 			try {
 				return game.board.index(x, y, 0);
 			} catch (OutsidePlayingBoardException e) {
-			}			
+			}
 		}
 	}
 
@@ -42,7 +43,7 @@ public class Easy implements Strategy {
 	public int getBlockChance() {
 		return 75;
 	}
-	
+
 	public int[] adjacent(Game game, Player player) {
 		int[] adjacent = game.winningMove(player, 2);
 		return adjacent;

@@ -16,28 +16,28 @@ import java.util.Scanner;
 public class Tui implements GameView {
 
 	private Client client;
-    private Game game;
+	private Game game;
 
-    public Tui(){
+	public Tui() {
 
-    }
+	}
 
 
 	@Override
 	public void update(Observable observable, Object object) {
-		if (observable instanceof Game){
-            drawBoard();
+		if (observable instanceof Game) {
+			drawBoard();
 			showMessage(object + " has made a move.");
 		}
 	}
 
 
-    public void setClient(Client client) {
-    	this.client = client;
-    }
+	public void setClient(Client client) {
+		this.client = client;
+	}
 
     /*
-    Commands:
+	Commands:
      - singleplayer
      - connect ip-address port-number
      - join username
@@ -49,196 +49,196 @@ public class Tui implements GameView {
      - challenge username
      - chat [message]
      */
-    
-    public void run() {
-        showMessage("Welcome to the Connect4-3D TUI client by Nick & Julian.\nType 'help' for a list of commands.");
-        Scanner scan = new Scanner(System.in);
-        while (true) {
-            String[] command = scan.nextLine().split(" ");
-            int cmdlength = command.length;
-            if (cmdlength >= 1) {
 
-                //Fixes uppercase use in commands.
-                command[0] = command[0].toLowerCase();
+	public void run() {
+		showMessage("Welcome to the Connect4-3D TUI client by Nick & Julian.\nType 'help' for a list of commands.");
+		Scanner scan = new Scanner(System.in);
+		while (true) {
+			String[] command = scan.nextLine().split(" ");
+			int cmdlength = command.length;
+			if (cmdlength >= 1) {
 
-                //Requests a list of possible commands. 'help'
-                if (command[0].equals("help")) {
-                    message("connect ip-address port-number\njoin username\nlogin username password\nready [amount players] [dimension] [NoRoof (Roof)] ([win condition])\nmove x y\nleave\ndisconnect");
+				//Fixes uppercase use in commands.
+				command[0] = command[0].toLowerCase();
 
-                //Connect to a server. 'connect <ip-adress> <port>'
-                } else if (command[0].equals("connect")) {
-                    if (cmdlength == 3) {
-                        try {
-                            int port = Integer.parseInt(command[2]);
-                            InetAddress address = InetAddress.getByName(command[1]);
-                            client.connectServer(port, address);
-                        } catch (UnknownHostException e) {
-                            showError("ip-address invalid.");
-                        } catch (NumberFormatException e) {
-                            showError("port-number invalid.");
-                        } catch (IOException e) {
-                            showError("cannot connect to server");
-                        }
-                    } else {
-                        showError("incorrect syntax. Use: 'connect <ip-address> <port>'.");
-                    }
+				//Requests a list of possible commands. 'help'
+				if (command[0].equals("help")) {
+					message("connect ip-address port-number\njoin username\nlogin username password\nready [amount players] [dimension] [NoRoof (Roof)] ([win condition])\nmove x y\nleave\ndisconnect");
 
-                //Join the game, with a username. 'join <username> (chat) (security) (challenge)'
-                } else if (command[0].equals("join")) {
-                    if (cmdlength == 1) {
-                        showError("incorrect syntax. Use: 'join <username>'.");
-                    } else if (cmdlength >= 2) {
-                        if (command[1].length() > 26) {
-                            showError("username can't exceed 26 characters.");
-                        }
-                        if (cmdlength == 2) {
-                            writeServer("Join " + command[1]);
-                        } else if (cmdlength == 3) {
-                            writeServer("Join " + command[1] + " " + command[2]);
-                        } else if (cmdlength == 4) {
-                            writeServer("Join " + command[1] + " " + command[2] + " " + command[3]);
-                        } else if (cmdlength == 5) {
-                            writeServer("Join " + command[1] + " " + command[2] + " " + command[3] + "" + command[4]);
-                        }
-                    }
+					//Connect to a server. 'connect <ip-adress> <port>'
+				} else if (command[0].equals("connect")) {
+					if (cmdlength == 3) {
+						try {
+							int port = Integer.parseInt(command[2]);
+							InetAddress address = InetAddress.getByName(command[1]);
+							client.connectServer(port, address);
+						} catch (UnknownHostException e) {
+							showError("ip-address invalid.");
+						} catch (NumberFormatException e) {
+							showError("port-number invalid.");
+						} catch (IOException e) {
+							showError("cannot connect to server");
+						}
+					} else {
+						showError("incorrect syntax. Use: 'connect <ip-address> <port>'.");
+					}
 
-                //Toggle ready for a match by certain rules. 'ready <player amount> <board dimension> <noRoof>'
-                } else if (command[0].equals("ready")) {
-                    if (cmdlength == 1) {
-                        writeServer("Ready");
-                    } else if (cmdlength == 2) {
-                       writeServer("Ready " + command[1]);
-                    } else if (cmdlength == 3) {
-                        writeServer("Ready " + command[1] + " " + command[2]);
-                    } else if (cmdlength == 4) {
-                        writeServer("Ready " + command[1] + " " + command[2] + " " + command[3]);
-                    } else {
-                        showError("incorrect syntax. Use: 'ready' for default match or 'ready <player amount> <board dimension> <noRoof>' for custom ruleset.");
-                    }
+					//Join the game, with a username. 'join <username> (chat) (security) (challenge)'
+				} else if (command[0].equals("join")) {
+					if (cmdlength == 1) {
+						showError("incorrect syntax. Use: 'join <username>'.");
+					} else if (cmdlength >= 2) {
+						if (command[1].length() > 26) {
+							showError("username can't exceed 26 characters.");
+						}
+						if (cmdlength == 2) {
+							writeServer("Join " + command[1]);
+						} else if (cmdlength == 3) {
+							writeServer("Join " + command[1] + " " + command[2]);
+						} else if (cmdlength == 4) {
+							writeServer("Join " + command[1] + " " + command[2] + " " + command[3]);
+						} else if (cmdlength == 5) {
+							writeServer("Join " + command[1] + " " + command[2] + " " + command[3] + "" + command[4]);
+						}
+					}
 
-                //Make a move, on coordinates x and y. 'move <x> <y>'
-                } else if (command[0].equals("move")) {
-                    if (cmdlength == 3) {
-                        writeServer("Move " + command[1] + " " + command[2]);
-                    } else {
-                        showError("incorrect syntax. Use: 'move <X> <Y>'.");
-                    }
+					//Toggle ready for a match by certain rules. 'ready <player amount> <board dimension> <noRoof>'
+				} else if (command[0].equals("ready")) {
+					if (cmdlength == 1) {
+						writeServer("Ready");
+					} else if (cmdlength == 2) {
+						writeServer("Ready " + command[1]);
+					} else if (cmdlength == 3) {
+						writeServer("Ready " + command[1] + " " + command[2]);
+					} else if (cmdlength == 4) {
+						writeServer("Ready " + command[1] + " " + command[2] + " " + command[3]);
+					} else {
+						showError("incorrect syntax. Use: 'ready' for default match or 'ready <player amount> <board dimension> <noRoof>' for custom ruleset.");
+					}
 
-                //Leave the game and return to the lobby. 'leave'
-                } else if (command[0].equals("leave")) {
-                    writeServer("Leave");
+					//Make a move, on coordinates x and y. 'move <x> <y>'
+				} else if (command[0].equals("move")) {
+					if (cmdlength == 3) {
+						writeServer("Move " + command[1] + " " + command[2]);
+					} else {
+						showError("incorrect syntax. Use: 'move <X> <Y>'.");
+					}
 
-                //Disconnects from the server. 'disconnect'
-                } else if (command[0].equals("disconnect")) {
-                    writeServer("Disconnect");
-                    client.serverDisconnected();
+					//Leave the game and return to the lobby. 'leave'
+				} else if (command[0].equals("leave")) {
+					writeServer("Leave");
 
-                //Sends a chatmessage to the server. 'chat <message>'
-                } else if (command[0].equals("chat")) {
-                    if (cmdlength > 1) {
-                        String chat = "Chat ";
-                        for (int i = 1; i < cmdlength; i++) {
-                            if (i == cmdlength - 1) {
-                                chat += command[i];
-                            } else {
-                                chat += command[i] + " ";
-                            }
-                        }
-                        writeServer(chat);
-                    }
+					//Disconnects from the server. 'disconnect'
+				} else if (command[0].equals("disconnect")) {
+					writeServer("Disconnect");
+					client.serverDisconnected();
 
-                //Requests the leaderboard from the server.
-                } else if (command[0].equals("leaderboard")) {
-                    writeServer("Leaderboard");
+					//Sends a chatmessage to the server. 'chat <message>'
+				} else if (command[0].equals("chat")) {
+					if (cmdlength > 1) {
+						String chat = "Chat ";
+						for (int i = 1; i < cmdlength; i++) {
+							if (i == cmdlength - 1) {
+								chat += command[i];
+							} else {
+								chat += command[i] + " ";
+							}
+						}
+						writeServer(chat);
+					}
 
-                //Requests the challenge from the server.
-                } else if (command[0].equals("challenge")) {
-                    if (cmdlength == 2) {
-                        writeServer("Challenge " + command[1]);
-                    }
+					//Requests the leaderboard from the server.
+				} else if (command[0].equals("leaderboard")) {
+					writeServer("Leaderboard");
 
-                 //Starts a singleplayer game
-                } else if (command[0].equals("singleplayer")) {
-                    //TO-DO
+					//Requests the challenge from the server.
+				} else if (command[0].equals("challenge")) {
+					if (cmdlength == 2) {
+						writeServer("Challenge " + command[1]);
+					}
 
-                //Sends a manual command to the server. Geen idee waarom.
-                } else if (command[0].equals("manual")) {
-                    String manual = "";
-                    for (int i = 1; i < cmdlength; i++) {
-                        manual += command[i] + " ";
-                    }
-                    writeServer(manual);
+					//Starts a singleplayer game
+				} else if (command[0].equals("singleplayer")) {
+					//TO-DO
 
-                //If entered command is unknown, offer help.
-                } else {
-                    showError("Unknown command. Type 'help' for a list of commands.");
-                }
-            }
-        }
-    }
+					//Sends a manual command to the server. Geen idee waarom.
+				} else if (command[0].equals("manual")) {
+					String manual = "";
+					for (int i = 1; i < cmdlength; i++) {
+						manual += command[i] + " ";
+					}
+					writeServer(manual);
 
-    public void writeServer(String string) {
-        try {
-            client.writeServer(string);
-        } catch (IOException e) {
-            showError("no connection to server.");
-            client.serverDisconnected();
-        } catch (NullPointerException e) {
-            showError("no connection to server.");
-            e.printStackTrace();
-            client.serverDisconnected();
-        }
-    }
+					//If entered command is unknown, offer help.
+				} else {
+					showError("Unknown command. Type 'help' for a list of commands.");
+				}
+			}
+		}
+	}
 
-    public void message(String message) {
-    	System.out.println(message);
-    }
+	public void writeServer(String string) {
+		try {
+			client.writeServer(string);
+		} catch (IOException e) {
+			showError("no connection to server.");
+			client.serverDisconnected();
+		} catch (NullPointerException e) {
+			showError("no connection to server.");
+			e.printStackTrace();
+			client.serverDisconnected();
+		}
+	}
 
-    @Override
-    public void drawBoard() {
-        Board board = client.getGame().getBoard();
-        for (int i = 0; i < 5; i++){
-            System.out.println("+-------------------------------------------------------------------------+");
-        }
-        for (int z = (board.getDimZ()-1); z < board.getDimZ() && z >= 0; z--){
-            System.out.println("Layer: " + z + " out of " + (board.getDimZ() - 1));
-            String vertFrame = "\n+---+";
-            System.out.print("+---+");
-            for (int x = 0; x < board.getDimX(); x++) {
-                vertFrame += "----------+";
-                System.out.format(" X %-6d |", x);
-            }
-            String name = "";
-            System.out.println(vertFrame);
-            for (int y = 0; y < board.getDimY(); y++) {
-                System.out.format("Y %-2d|", y);
-                for (int x = 0; x < board.getDimX(); x++) {
-                    Player player = null;
-                    try {
-                        player = board.getField(x, y, z);
-                    } catch (OutsidePlayingBoardException e) {
-                        e.printStackTrace();
-                    }
-                    if (player == null) {
-                        name = "";
-                    } else {
-                        name = player.getName();
-                    }
-                    System.out.format(" %-8s |", name.substring(0, Math.min(name.length(), 8)));
-                }
-                System.out.println(vertFrame);
-            }
-        }
-    }
+	public void message(String message) {
+		System.out.println(message);
+	}
 
-    @Override
-    public void showMessage(String message) {
-        System.out.println(message);
-    }
+	@Override
+	public void drawBoard() {
+		Board board = client.getGame().getBoard();
+		for (int i = 0; i < 5; i++) {
+			System.out.println("+-------------------------------------------------------------------------+");
+		}
+		for (int z = (board.getDimZ() - 1); z < board.getDimZ() && z >= 0; z--) {
+			System.out.println("Layer: " + z + " out of " + (board.getDimZ() - 1));
+			String vertFrame = "\n+---+";
+			System.out.print("+---+");
+			for (int x = 0; x < board.getDimX(); x++) {
+				vertFrame += "----------+";
+				System.out.format(" X %-6d |", x);
+			}
+			String name = "";
+			System.out.println(vertFrame);
+			for (int y = 0; y < board.getDimY(); y++) {
+				System.out.format("Y %-2d|", y);
+				for (int x = 0; x < board.getDimX(); x++) {
+					Player player = null;
+					try {
+						player = board.getField(x, y, z);
+					} catch (OutsidePlayingBoardException e) {
+						e.printStackTrace();
+					}
+					if (player == null) {
+						name = "";
+					} else {
+						name = player.getName();
+					}
+					System.out.format(" %-8s |", name.substring(0, Math.min(name.length(), 8)));
+				}
+				System.out.println(vertFrame);
+			}
+		}
+	}
 
-    @Override
-    public void showError(String message) {
-        System.err.println("ERROR: " + message);
-    }
+	@Override
+	public void showMessage(String message) {
+		System.out.println(message);
+	}
+
+	@Override
+	public void showError(String message) {
+		System.err.println("ERROR: " + message);
+	}
 
 }

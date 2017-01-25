@@ -6,17 +6,17 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Buffer {
-	
+
+	private final Lock lock;
 	private boolean isEmpty;
 	private List<String> buffer;
-	private final Lock lock;
-	
+
 	public Buffer() {
 		buffer = new ArrayList<String>();
 		isEmpty = true;
 		lock = new ReentrantLock();
 	}
-	
+
 	public String readBuffer() {
 		synchronized (lock) {
 			if (buffer.size() >= 1) {
@@ -28,11 +28,11 @@ public class Buffer {
 				return temp;
 			} else {
 				return null;
-			}			
+			}
 		}
 
 	}
-	
+
 	public void writeBuffer(String string) {
 		synchronized (lock) {
 			if (buffer.isEmpty()) {
@@ -41,7 +41,7 @@ public class Buffer {
 			buffer.add(string);
 		}
 	}
-	
+
 	public boolean isEmpty() {
 		synchronized (lock) {
 			return isEmpty;

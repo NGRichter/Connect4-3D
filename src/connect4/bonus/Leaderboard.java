@@ -1,23 +1,17 @@
 package connect4.bonus;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class Leaderboard {
-	
+
 	public List<Score> scores = new ArrayList<Score>();
 	private BufferedReader reader;
 	private FileWriter writer;
-	
+
 	public Leaderboard(String path) {
 		try {
 			File file = new File(path);
@@ -35,7 +29,7 @@ public class Leaderboard {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void addScore(Score score) {
 		scores.add(score);
 		try {
@@ -45,7 +39,7 @@ public class Leaderboard {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String topN(int n) {
 		String leaderboard = "";
 		sortScore();
@@ -54,7 +48,7 @@ public class Leaderboard {
 		}
 		return leaderboard;
 	}
-	
+
 	public String aboveN(int n) {
 		String leaderboard = "";
 		sortScore();
@@ -65,7 +59,7 @@ public class Leaderboard {
 		}
 		return leaderboard;
 	}
-	
+
 	public String belowN(int n) {
 		String leaderboard = "";
 		sortScore();
@@ -76,7 +70,7 @@ public class Leaderboard {
 		}
 		return leaderboard;
 	}
-	
+
 	public int averageScore() {
 		int leaderboard = 0;
 		int i = 0;
@@ -86,7 +80,7 @@ public class Leaderboard {
 		}
 		return leaderboard / i;
 	}
-	
+
 	public int averageScoreToday() {
 		int leaderboard = 0;
 		int i = 0;
@@ -96,9 +90,9 @@ public class Leaderboard {
 				i++;
 			}
 		}
-		return leaderboard / i;		
+		return leaderboard / i;
 	}
-	
+
 	public String scoresToday() {
 		String leaderboard = "";
 		sortScore();
@@ -109,17 +103,17 @@ public class Leaderboard {
 		}
 		return leaderboard;
 	}
-	
+
 	public String bestToday() {
 		sortScore();
 		for (Score score : scores) {
 			if (isToday(score.date)) {
-				return score.toString() + "\n"; 
+				return score.toString() + "\n";
 			}
 		}
 		return "No score today";
 	}
-	
+
 	public String bestOfPerson(String name) {
 		sortScore();
 		for (Score score : scores) {
@@ -129,7 +123,7 @@ public class Leaderboard {
 		}
 		return "Person has no score";
 	}
-	
+
 	public void sortScore() {
 		Score temp;
 		for (int i = 0; i < scores.size(); i++) {
@@ -142,7 +136,7 @@ public class Leaderboard {
 			}
 		}
 	}
-	
+
 	public void sortTime() {
 		Score temp;
 		for (int i = 0; i < scores.size() - 1; i++) {
@@ -153,9 +147,9 @@ public class Leaderboard {
 					scores.set(o - 1, temp);
 				}
 			}
-		}		
+		}
 	}
-	
+
 	public String toString() {
 		String leaderboard = "";
 		for (Score score : scores) {
@@ -163,7 +157,7 @@ public class Leaderboard {
 		}
 		return leaderboard;
 	}
-	
+
 	public boolean isToday(Date date) {
 		Calendar cal1 = Calendar.getInstance();
 		Calendar cal2 = Calendar.getInstance();

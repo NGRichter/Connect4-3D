@@ -1,11 +1,12 @@
 package connect4.game;
-import java.util.Random;
 
 import connect4.exceptions.OutsidePlayingBoardException;
-import connect4.game.AI.*;
+import connect4.game.AI.Strategy;
+
+import java.util.Random;
 
 public class ComputerPlayer extends Player {
-	
+
 	public Strategy strategy;
 
 	public ComputerPlayer(String name, Colour colour, Strategy strategy) {
@@ -16,7 +17,7 @@ public class ComputerPlayer extends Player {
 
 	@Override
 	public int determineMove(Game game) {
-		Random random = new Random();		
+		Random random = new Random();
 		int randomchance = random.nextInt(100);
 		int[] winner;
 		winner = game.winningMove(this, game.getWinCondition());
@@ -34,9 +35,9 @@ public class ComputerPlayer extends Player {
 						return game.board.index(winner[0], winner[1], 0);
 					} catch (OutsidePlayingBoardException e) {
 					}
-				}			
+				}
 			}
-			
+
 		}
 		return strategy.determineMove(game, this);
 	}

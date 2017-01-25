@@ -1,19 +1,22 @@
 package connect4.game;
-import connect4.exceptions.*;
+
+import connect4.exceptions.NoEmptySpotException;
+import connect4.exceptions.OutsidePlayingBoardException;
 
 import java.util.Observable;
 
 public class Board extends Observable {
 
-	private Player[][][] fields;
 	private final int DIMX;
 	private final int DIMY;
 	private final int DIMZ;
 	public int layer;
+	private Player[][][] fields;
 
 
 	/**
 	 * Defines a board, with a 3D-player array, and X,Y,Z dimensions.
+	 *
 	 * @param x - x-dimension of the board
 	 * @param y - y-dimension of the board
 	 * @param z - z-dimension of the board (height)
@@ -41,6 +44,7 @@ public class Board extends Observable {
 
 	/**
 	 * Creates a copy of the board.
+	 *
 	 * @return copy of board
 	 */
 	public Board deepCopy() {
@@ -76,8 +80,9 @@ public class Board extends Observable {
 
 	/**
 	 * Sets a field to a player at given coords, at it's highest empty field.
-	 * @param x - x-coordinate of the field
-	 * @param y - y-coordinate of the field
+	 *
+	 * @param x      - x-coordinate of the field
+	 * @param y      - y-coordinate of the field
 	 * @param player - player to occupy the field with
 	 * @throws OutsidePlayingBoardException
 	 * @throws NoEmptySpotException
@@ -95,12 +100,13 @@ public class Board extends Observable {
 		} else {
 			throw new NoEmptySpotException();
 		}
-		
+
 	}
 
 
 	/**
 	 * Sets a field at given coords to null, at it's highest non-empty field.
+	 *
 	 * @param x - x-coordinate of the field
 	 * @param y - y-coordinate of the field
 	 * @throws OutsidePlayingBoardException
@@ -114,10 +120,11 @@ public class Board extends Observable {
 			z -= 1;
 		}
 		fields[x][y][z] = null;
-		}
+	}
 
 	/**
 	 * Requests the X-dimension of the board.
+	 *
 	 * @return DIMX
 	 */
 	public int getDimX() {
@@ -126,6 +133,7 @@ public class Board extends Observable {
 
 	/**
 	 * Requests the Y-dimension of the board.
+	 *
 	 * @return DIMY
 	 */
 	public int getDimY() {
@@ -134,6 +142,7 @@ public class Board extends Observable {
 
 	/**
 	 * Requests the Z-dimension of the board (height).
+	 *
 	 * @return DIMZ
 	 */
 	public int getDimZ() {
@@ -146,16 +155,18 @@ public class Board extends Observable {
 
 	/**
 	 * Requests a 3D-array of players, representing the board.
+	 *
 	 * @return 3D player array, 'fields'
 	 */
-	public Player[][][] getFields()	{
+	public Player[][][] getFields() {
 		return fields;
 	}
 
 	/**
 	 * Returns current occupation of field, either player or null.
-	 * @param x - x-coordinate of the field.
-	 * @param y - y-coordinate of the field.
+	 *
+	 * @param x  - x-coordinate of the field.
+	 * @param y  - y-coordinate of the field.
 	 * @param z- z-coordinate of the field.
 	 * @return player or null if no player.
 	 * @throws OutsidePlayingBoardException
@@ -179,13 +190,14 @@ public class Board extends Observable {
 		int x = choice % DIMX;
 		int y = (choice / DIMX) % DIMY;
 		int z = choice / (DIMX * DIMY);
-		int[] array = {x,y,z};
+		int[] array = {x, y, z};
 		return array;
 
 	}
 
 	/**
 	 * Converts X,Y,Z coords to an index
+	 *
 	 * @param x - x-coordinate of the index
 	 * @param y - y-coordinate of the index
 	 * @param z - z-coordinate of the index

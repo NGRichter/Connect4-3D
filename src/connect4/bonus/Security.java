@@ -1,23 +1,19 @@
 package connect4.bonus;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import org.apache.commons.codec.binary.Hex;
+
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.codec.binary.Hex;
-
 public class Security {
-	
+
 	private Map<String, String> accounts = new HashMap<String, String>();
 	private BufferedReader reader;
 	private FileWriter writer;
-	
+
 	public Security(String path) {
 		try {
 			File file = new File(path);
@@ -33,7 +29,7 @@ public class Security {
 		}
 
 	}
-	
+
 	public void register(String username, String password) {
 		String saltedPassword = password + username + username.substring(0, 1);
 		try {
@@ -48,7 +44,7 @@ public class Security {
 		}
 
 	}
-	
+
 	public boolean login(String username, String password) {
 		if (accounts.containsKey(username)) {
 			String saltedPassword = password + username + username.substring(0, 1);
