@@ -10,7 +10,7 @@ public class Board extends Observable {
 	private final int DIMX;
 	private final int DIMY;
 	private final int DIMZ;
-	public int layer;
+	private int layer;
 	private Player[][][] fields;
 
 
@@ -79,13 +79,13 @@ public class Board extends Observable {
 	}
 
 	/**
-	 * Sets a field to a player at given coords, at it's highest empty field.
+	 * Sets a field to a player at given coordinates, at it's highest empty field.
 	 *
 	 * @param x      - x-coordinate of the field
 	 * @param y      - y-coordinate of the field
 	 * @param player - player to occupy the field with
-	 * @throws OutsidePlayingBoardException
-	 * @throws NoEmptySpotException
+	 * @throws OutsidePlayingBoardException if x and/or y is outside the board.
+	 * @throws NoEmptySpotException if there is no empty spot at the highest 'altitude'/'layer'/'slice'/'z-level'.
 	 */
 	public void setField(int x, int y, Player player) throws OutsidePlayingBoardException, NoEmptySpotException {
 		if (x >= DIMX || y >= DIMY || x < 0 || y < 0) {
@@ -105,11 +105,11 @@ public class Board extends Observable {
 
 
 	/**
-	 * Sets a field at given coords to null, at it's highest non-empty field.
+	 * Sets a field at given coordinates to null, at it's highest non-empty field.
 	 *
 	 * @param x - x-coordinate of the field
 	 * @param y - y-coordinate of the field
-	 * @throws OutsidePlayingBoardException
+	 * @throws OutsidePlayingBoardException if x and/or y is outside the board.
 	 */
 	public void setFieldToNull(int x, int y) throws OutsidePlayingBoardException {
 		if (x >= DIMX || y >= DIMY || x < 0 || y < 0) {
@@ -154,7 +154,7 @@ public class Board extends Observable {
 	}
 
 	/**
-	 * Requests a 3D-array of players, representing the board.
+	 * Requests the 3D-array of players, representing the board.
 	 *
 	 * @return 3D player array, 'fields'
 	 */
@@ -169,7 +169,7 @@ public class Board extends Observable {
 	 * @param y  - y-coordinate of the field.
 	 * @param z- z-coordinate of the field.
 	 * @return player or null if no player.
-	 * @throws OutsidePlayingBoardException
+	 * @throws OutsidePlayingBoardException if x, y and/or z is outside the board.
 	 */
 	public Player getField(int x, int y, int z) throws OutsidePlayingBoardException {
 		Player player;
@@ -196,13 +196,13 @@ public class Board extends Observable {
 	}
 
 	/**
-	 * Converts X,Y,Z coords to an index
+	 * Converts X,Y,Z coordinates to an index
 	 *
 	 * @param x - x-coordinate of the index
 	 * @param y - y-coordinate of the index
 	 * @param z - z-coordinate of the index
 	 * @return index
-	 * @throws OutsidePlayingBoardException
+	 * @throws OutsidePlayingBoardException if x, y and/or z is outside the board.
 	 */
 	public int index(int x, int y, int z) throws OutsidePlayingBoardException {
 		if (x < 0 || y < 0 || z < 0 || x >= DIMX || y >= DIMY || z >= DIMZ) {

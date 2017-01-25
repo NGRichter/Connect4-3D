@@ -1228,12 +1228,20 @@ public enum Colour {
 
 	private String hex;
 
-	//Makes the Colour with field hex as a string.
+	/**
+	 * Makes the Colour with field hex as a string.
+	 *
+	 * @param hex - hex value.
+	 */
 	Colour(String hex) {
 		this.hex = hex;
 	}
 
-	//Returns a list of all the colours except VOID.
+	/**
+	 * Makes a list of all colours except VOID.
+	 *
+	 * @return all colours.
+	 */
 	public static List<Colour> allColours() {
 		List<Colour> colours = new ArrayList<Colour>();
 		for (Colour c : Colour.values()) {
@@ -1244,6 +1252,11 @@ public enum Colour {
 		return colours;
 	}
 
+	/**
+	 * Picks a random colour from all values;
+	 *
+	 * @return a random colour.
+	 */
 	public static Colour random() {
 		Random random = new Random();
 		int temp = 0;
@@ -1253,7 +1266,11 @@ public enum Colour {
 		return Colour.values()[temp];
 	}
 
-	//Returns the hex string.
+	/**
+	 * Returns the hex value associated with the colour.
+	 *
+	 * @return hex value.
+	 */
 	public String getHex() {
 		return hex;
 	}

@@ -88,7 +88,7 @@ public class Game extends Observable {
 	/**
 	 * Checks the board for a winner.
 	 *
-	 * @return winnning player or null
+	 * @return winning player or null
 	 */
 	public Player checkWinner() {
 		try {
@@ -106,7 +106,7 @@ public class Game extends Observable {
 										break;
 									}
 								}
-								if (y + winCondition - 1 < board.getDimY()) {
+								if (y + winCondition - 1 < board.getDimY()) {//If there are enough spaces vertically down. Checks if there is a diagonal.
 									for (int i = 0; i < winCondition - 1; i++) {
 										if (board.getField(x + i, y + i, z) == board.getField(x + i + 1, y + i + 1, z)) {
 											if (i + 1 == winCondition - 1) {
@@ -257,10 +257,11 @@ public class Game extends Observable {
 
 
 	/**
-	 * Checks what next move for player would be the winning move, if any.
+	 * Checks what the next move for the player would be if there is a winning move.
 	 *
 	 * @param player - player to check move for
-	 * @return coordinates of winning move, -1,-1 if none
+	 * @param condition - win condition of the game
+	 * @return coordinates of a winning move or {-1,-1} if none
 	 */
 	public int[] winningMove(Player player, int condition) {
 		Board boardtemp = board.deepCopy();

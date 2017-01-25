@@ -8,11 +8,16 @@ import java.util.List;
 
 public class Leaderboard {
 
-	public List<Score> scores = new ArrayList<Score>();
+	public List<Score> scores;
 	private BufferedReader reader;
 	private FileWriter writer;
 
+	/**
+	 * Makes a leaderboard that reads initial values from a storage file.
+	 * @param path - path to the storage file
+	 */
 	public Leaderboard(String path) {
+		scores = new ArrayList<>();
 		try {
 			File file = new File(path);
 			writer = new FileWriter(file, true);
@@ -30,6 +35,10 @@ public class Leaderboard {
 		}
 	}
 
+	/**
+	 * Adds a score to the list.
+	 * @param score - score to be added
+	 */
 	public void addScore(Score score) {
 		scores.add(score);
 		try {
@@ -40,6 +49,11 @@ public class Leaderboard {
 		}
 	}
 
+	/**
+	 * Makes a string consisting of the top N places.
+	 * @param n - how many places you want
+	 * @return string with \n after every place
+	 */
 	public String topN(int n) {
 		String leaderboard = "";
 		sortScore();
@@ -49,6 +63,11 @@ public class Leaderboard {
 		return leaderboard;
 	}
 
+	/**
+	 * Makes a string consisting of the scores above a certain value N.
+	 * @param n - the value which the scores should be above
+	 * @return string with \n after every place
+	 */
 	public String aboveN(int n) {
 		String leaderboard = "";
 		sortScore();
@@ -60,6 +79,11 @@ public class Leaderboard {
 		return leaderboard;
 	}
 
+	/**
+	 * Makes a string consisting of the scores below a certain value N.
+	 * @param n - the value which the scores should be below
+	 * @return string with \n after every place
+	 */
 	public String belowN(int n) {
 		String leaderboard = "";
 		sortScore();
@@ -71,6 +95,10 @@ public class Leaderboard {
 		return leaderboard;
 	}
 
+	/**
+	 * Returns an integer with the average score of all the scores.
+	 * @return int of average score of all-time
+	 */
 	public int averageScore() {
 		int leaderboard = 0;
 		int i = 0;
@@ -81,6 +109,10 @@ public class Leaderboard {
 		return leaderboard / i;
 	}
 
+	/**
+	 * Returns an integer with the average score of all the scores of today.
+	 * @return int of average score of today
+	 */
 	public int averageScoreToday() {
 		int leaderboard = 0;
 		int i = 0;
@@ -93,6 +125,10 @@ public class Leaderboard {
 		return leaderboard / i;
 	}
 
+	/**
+	 * Makes a string consisting of all the scores of today
+	 * @return string with \n after every place
+	 */
 	public String scoresToday() {
 		String leaderboard = "";
 		sortScore();
@@ -104,6 +140,10 @@ public class Leaderboard {
 		return leaderboard;
 	}
 
+	/**
+	 * Makes a string with the best score of today.
+	 * @return string of best score
+	 */
 	public String bestToday() {
 		sortScore();
 		for (Score score : scores) {
@@ -114,6 +154,11 @@ public class Leaderboard {
 		return "No score today";
 	}
 
+	/**
+	 * Makes a string with the best score of a person.
+	 * @param name - name of person
+	 * @return string of best score of that person
+	 */
 	public String bestOfPerson(String name) {
 		sortScore();
 		for (Score score : scores) {
@@ -124,7 +169,10 @@ public class Leaderboard {
 		return "Person has no score";
 	}
 
-	public void sortScore() {
+	/**
+	 * Sorts the score list from best to worst.
+	 */
+	private void sortScore() {
 		Score temp;
 		for (int i = 0; i < scores.size(); i++) {
 			for (int o = 1; o < scores.size() - i; o++) {
@@ -137,6 +185,9 @@ public class Leaderboard {
 		}
 	}
 
+	/**
+	 * Sorts the score list from newest to oldest.
+	 */
 	public void sortTime() {
 		Score temp;
 		for (int i = 0; i < scores.size() - 1; i++) {
@@ -150,6 +201,10 @@ public class Leaderboard {
 		}
 	}
 
+	/**
+	 * Makes a string of all the scores ever made.
+	 * @return string with \n after every place
+	 */
 	public String toString() {
 		String leaderboard = "";
 		for (Score score : scores) {
@@ -158,6 +213,11 @@ public class Leaderboard {
 		return leaderboard;
 	}
 
+	/**
+	 * Calculates if the date is today.
+	 * @param date - the date you want to know if it is today
+	 * @return true if it is today, false if it is not today
+	 */
 	public boolean isToday(Date date) {
 		Calendar cal1 = Calendar.getInstance();
 		Calendar cal2 = Calendar.getInstance();

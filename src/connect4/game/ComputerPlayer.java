@@ -9,12 +9,24 @@ public class ComputerPlayer extends Player {
 
 	public Strategy strategy;
 
+	/**
+	 * Makes a computerplayer that will play using a given strategy.
+	 * @param name - Name of the computerplayer
+	 * @param colour - The colour of the computerplayer
+	 * @param strategy - The strategy of the computerplayer
+	 */
+
 	public ComputerPlayer(String name, Colour colour, Strategy strategy) {
 		super(name, colour);
 		this.strategy = strategy;
 
 	}
 
+	/**
+	 * Determines the index of the place the computerplayer wants to play.
+	 * @param game - The game in which the computer player plays
+	 * @return index at which the computerplayer wants to play
+	 */
 	@Override
 	public int determineMove(Game game) {
 		Random random = new Random();
