@@ -43,7 +43,6 @@ public class ServerHandler extends Thread {
 				terminate = true;
 				break;
 			}
-			System.out.println(receive);
 
 			String[] command = receive.split(" ");
 
@@ -63,7 +62,6 @@ public class ServerHandler extends Thread {
                 if (command.length == 3){
                     try {
                         game.makeNextMove(Integer.parseInt(command[1]), Integer.parseInt(command[2]));
-                        client.getGameView().drawBoard();
                     } catch (NoEmptySpotException | OutsidePlayingBoardException e) {
                         e.printStackTrace();
                     }
@@ -72,9 +70,9 @@ public class ServerHandler extends Thread {
             //Notify client that game has ended.
             } else if(command[0].equals("GameOver")) {
                 if(command[1].equals("Winner") && command.length == 3){
-                    client.getGameView().showMessage(command[1] + " " + command[2]);
+                    client.getGameView().showMessage("The game is over.\n" + command[2] + " has won the match!");
                 } else {
-                    client.getGameView().showMessage(command[1]);
+                    client.getGameView().showMessage("The game is over.\nIt's a draw!");
                 }
 
             //Notify client of connection lost.
@@ -87,6 +85,11 @@ public class ServerHandler extends Thread {
             //Notify client of an error that occurred.
             } else if(command[0].equals("Error")) {
                 client.getGameView().showError(receive);
+
+
+            //If not a command, assume chat message & print.
+            } else {
+                client.getGameView().showMessage(receive);
             }
 		}
 	}

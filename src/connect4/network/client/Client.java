@@ -37,7 +37,26 @@ public class Client {
 			gui.setClient(client);
 		}
 	}
-	
+
+
+	public void startClientGame(List<String> usernames) {
+		Player[] players = new Player[usernames.size()];
+		int i = 0;
+		for(String username : usernames){
+			players[i] = new HumanPlayer(username, Colour.random());
+			i++;
+		}
+		int boardHeight = boardDim;
+		if(noRoof){
+			boardHeight = 1000;
+		}
+		game = new Game(new Board(boardDim, boardDim, boardHeight), players, winCondition);
+		game.addObserver(ui);
+        ui.drawBoard();
+	}
+
+
+
 	public Client(GameView ui) {
 		this.ui = ui;
 	}
@@ -80,20 +99,6 @@ public class Client {
     public int getWinCondition(){
         return winCondition;
     }
-
-	public void startClientGame(List<String> usernames) {
-		Player[] players = new Player[usernames.size()];
-		int i = 0;
-		for(String username : usernames){
-			players[i] = new HumanPlayer(username, Colour.random());
-			i++;
-		}
-		int boardHeight = boardDim;
-		if(noRoof){
-			boardHeight = 1000;
-		}
-		game = new Game(new Board(boardDim, boardDim, boardHeight), players, winCondition);
-	}
 
 	public void stopClientGame(){
 		game = null;

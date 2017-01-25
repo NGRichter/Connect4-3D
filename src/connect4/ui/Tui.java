@@ -24,9 +24,10 @@ public class Tui implements GameView {
 
 
 	@Override
-	public void update(Observable observable, Object arg) {
+	public void update(Observable observable, Object object) {
 		if (observable instanceof Game){
-			drawBoard();
+            drawBoard();
+			showMessage(object + " has made a move.");
 		}
 	}
 
@@ -196,6 +197,9 @@ public class Tui implements GameView {
     @Override
     public void drawBoard() {
         Board board = client.getGame().getBoard();
+        for (int i = 0; i < 5; i++){
+            System.out.println("+-------------------------------------------------------------------------+");
+        }
         for (int z = (board.getDimZ()-1); z < board.getDimZ() && z >= 0; z--){
             System.out.println("Layer: " + z + " out of " + (board.getDimZ() - 1));
             String vertFrame = "\n+---+";
