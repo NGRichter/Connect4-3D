@@ -25,20 +25,20 @@ public abstract class Player {
 		return name + " (" + colour.name() + ")";
 	}
 
-	public abstract int determineMove(Game game);
+	public abstract int[] determineMove(Game game);
 
 	public void makeMove(Game game) {
-		int choice = determineMove(game);
-		if (choice == -1) {
+		int[] choice = determineMove(game);
+		if (choice[0] == -1) {
 			makeMove(game);
 			return;
-		} else if (choice == -2) {
+		} else if (choice[0] == -2) {
 			//TO-DO
-		} else if (choice == -3) {
+		} else if (choice[0] == -3) {
 			//TO-DO
 		}
 		try {
-			game.board.setField(choice, this);
+			game.board.setField(choice[0], choice[1], this);
 		} catch (OutsidePlayingBoardException e) {
 			System.out.println(e.getMessage());
 			makeMove(game);

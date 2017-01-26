@@ -106,7 +106,7 @@ public class GameHandler extends Thread {
 		} else {
 			for (ClientHandler client : gamers) {
 				try {
-					client.handleOutput("GameOver " + winner);
+					client.handleOutput("GameOver Winner " + winner);
 					client.inLobby();
 					client.outGame();
 					client.setGame(null);
@@ -163,6 +163,7 @@ public class GameHandler extends Thread {
 					i = i % gamers.size();
 					next = gamers.get(i);
 					nextMove[0] = -1;
+					turns++;
 				} catch (OutsidePlayingBoardException | NoEmptySpotException e) {
 					try {
 						next.handleOutput("Error The spot you specified is either not on the board or has no empty spot above");
@@ -206,7 +207,6 @@ public class GameHandler extends Thread {
 					System.err.println("Gamethread has been interrupted.");
 				}
 			}
-			turns++;
 		}
 		if (terminate) {
 

@@ -41,6 +41,7 @@ public class Game extends Observable {
 	 */
 	public void reset() {
 		board.empty();
+		playerIndex = 0;
 	}
 
 	/**

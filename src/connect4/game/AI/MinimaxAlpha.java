@@ -18,7 +18,7 @@ public class MinimaxAlpha extends Player {
 	}
 
 	@Override
-	public int determineMove(Game game) {
+	public int[] determineMove(Game game) {
 		if (game.getPlayers().size() == 2) {
 			for (Player players : game.getPlayers()) {
 				if (players == this) {
@@ -293,7 +293,7 @@ public class MinimaxAlpha extends Player {
 		}
 	}
 
-	public int findBestMove(Game game, int maxDepth) {
+	public int[] findBestMove(Game game, int maxDepth) {
 		int bestVal = -10000;
 		int[] move = new int[2];
 		move[0] = -1;
@@ -316,13 +316,6 @@ public class MinimaxAlpha extends Player {
 				}
 			}
 		}
-		try {
-			if (move[0] != -1) {
-				return game.board.index(move[0], move[1], 0);
-			}
-		} catch (OutsidePlayingBoardException e) {
-			e.printStackTrace();
-		}
-		return -1;
+		return move;
 	}
 }

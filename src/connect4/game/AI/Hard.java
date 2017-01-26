@@ -11,37 +11,27 @@ public class Hard implements Strategy {
 	public int adjacentChance = 70;
 
 	@Override
-	public int determineMove(Game game, Player player) {
+	public int[] determineMove(Game game, Player player) {
 		Random random = new Random();
 		int adjacent2 = random.nextInt(100);
 		if (adjacent2 < adjacentChance) {
 			int[] move = adjacent2(game, player);
 			if (move[0] != -1) {
-				try {
-					return game.board.index(move[0], move[1], 0);
-				} catch (OutsidePlayingBoardException e) {
-					e.printStackTrace();
-				}
+				return move;
 			}
 		}
 		int adjacent = random.nextInt(100);
 		if (adjacent < adjacentChance || adjacent2 < adjacentChance) {
 			int[] move2 = adjacent(game, player);
 			if (move2[0] != -1) {
-				try {
-					return game.board.index(move2[0], move2[1], 0);
-				} catch (OutsidePlayingBoardException e) {
-					e.printStackTrace();
-				}
+				return move2;
 			}
 		}
 		while (true) {
 			int x = random.nextInt(game.board.getDimX());
 			int y = random.nextInt(game.board.getDimY());
-			try {
-				return game.board.index(x, y, 0);
-			} catch (OutsidePlayingBoardException e) {
-			}
+			int[] xy = {x,y};
+			return xy;
 		}
 	}
 

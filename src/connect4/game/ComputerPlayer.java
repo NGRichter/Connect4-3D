@@ -28,25 +28,19 @@ public class ComputerPlayer extends Player {
 	 * @return index at which the computerplayer wants to play
 	 */
 	@Override
-	public int determineMove(Game game) {
+	public int[] determineMove(Game game) {
 		Random random = new Random();
 		int randomchance = random.nextInt(100);
 		int[] winner;
 		winner = game.winningMove(this, game.getWinCondition());
 		if (winner[0] != -1 && randomchance < strategy.getWinChance()) {
-			try {
-				return game.board.index(winner[0], winner[1], 0);
-			} catch (OutsidePlayingBoardException e) {
-			}
+			return winner;
 		}
 		for (Player player : game.getPlayers()) {
 			if (player != this) {
 				winner = game.winningMove(player, game.getWinCondition());
 				if (winner[0] != -1 && randomchance < strategy.getBlockChance()) {
-					try {
-						return game.board.index(winner[0], winner[1], 0);
-					} catch (OutsidePlayingBoardException e) {
-					}
+					return winner;
 				}
 			}
 

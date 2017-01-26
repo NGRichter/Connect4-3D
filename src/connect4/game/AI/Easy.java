@@ -11,26 +11,20 @@ public class Easy implements Strategy {
 	public int adjacentChance = 75;
 
 	@Override
-	public int determineMove(Game game, Player player) {
+	public int[] determineMove(Game game, Player player) {
 		Random random = new Random();
 		int adjacent = random.nextInt(100);
 		if (adjacent < adjacentChance) {
 			int[] move = adjacent(game, player);
-			try {
 				if (move[0] != -1) {
-					return game.board.index(move[0], move[1], 0);
+					return move;
 				}
-			} catch (OutsidePlayingBoardException e) {
-				e.printStackTrace();
-			}
 		}
 		while (true) {
 			int x = random.nextInt(game.board.getDimX());
 			int y = random.nextInt(game.board.getDimY());
-			try {
-				return game.board.index(x, y, 0);
-			} catch (OutsidePlayingBoardException e) {
-			}
+			int[] xy = {x, y};
+			return xy;
 		}
 	}
 

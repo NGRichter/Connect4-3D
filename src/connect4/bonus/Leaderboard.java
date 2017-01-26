@@ -42,8 +42,13 @@ public class Leaderboard {
 	public void addScore(Score score) {
 		scores.add(score);
 		try {
-			writer.write("\n" + score.toString());
-			writer.flush();
+			if (scores.size() == 1) {
+				writer.write(score.toString());
+				writer.flush();
+			} else {
+				writer.write("\n" + score.toString());
+				writer.flush();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

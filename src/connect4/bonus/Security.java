@@ -45,8 +45,14 @@ public class Security {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			byte[] bytearray = md.digest(saltedPassword.getBytes());
 			accounts.put(username, Hex.encodeHexString(bytearray));
-			writer.write("\n" + username + " " + Hex.encodeHexString(bytearray));
-			writer.flush();
+			if (accounts.size() == 1) {
+				writer.write(username + " " + Hex.encodeHexString(bytearray));
+				writer.flush();
+			} else {
+				writer.write("\n" + username + " " + Hex.encodeHexString(bytearray));
+				writer.flush();
+			}
+
 		} catch (NoSuchAlgorithmException e) {
 
 		} catch (IOException e) {
