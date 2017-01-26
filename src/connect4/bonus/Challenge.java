@@ -11,12 +11,20 @@ import java.util.Map;
 
 public class Challenge extends Thread {
 
-	private Map<ClientHandler, Boolean> clients;
+	private /*@ spec_public @*/ Map<ClientHandler, Boolean> clients;
 	private int dimension;
 	private boolean noRoof;
 	private ClientHandler challenger;
 	private boolean terminate = false;
 
+	/**
+	 * Makes a new challenge.
+	 * Will start a game if all challenged clients accepted.
+	 * @param clients - List of clients that are challenged
+	 * @param dimension - Dimension of game
+	 * @param noRoof - If the game should have a roof
+	 * @param challenger - The client that has challenged the others
+	 */
 	public Challenge(List<ClientHandler> clients, int dimension, boolean noRoof, ClientHandler challenger) {
 		System.out.println("Challenge created by " + challenger.getUserName());
 		this.clients = new HashMap<>();
@@ -52,6 +60,10 @@ public class Challenge extends Thread {
 		this.challenger = challenger;
 	}
 
+	/**
+	 * Will start a game when all participant have accepted.
+	 * The thread will sleep for 250 milliseconds between checking to limit cpu usage.
+	 */
 	public void run() {
 		while(!terminate) {
 			boolean allReady = true;
@@ -78,6 +90,12 @@ public class Challenge extends Thread {
 		}
 	}
 
+	/**
+	 * If a client has accepted the challenge this will set a value to true.
+	 * @param accept - The client that has accepted
+	 */
+	//@ requires accept != null;
+	//@ ensures clients.get(accept) == true;
 	public void acceptChallenge(ClientHandler accept) {
 		if (!accept.getInGame()) {
 			clients.put(accept, true);
@@ -88,6 +106,12 @@ public class Challenge extends Thread {
 
 	}
 
+	/**
+	 * If a client has denied the challenge this will send everyone a message saying the challenge has been cancelled.
+	 * It will terminate this thread.
+	 * @param denied - The client that denied the challenge
+	 */
+	//@ requires denied != null;
 	public void denyChallenge(ClientHandler denied) {
 		System.out.println("Challenge denied by " + denied.getUserName());
 		terminate = true;

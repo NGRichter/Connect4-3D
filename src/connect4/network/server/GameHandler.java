@@ -14,14 +14,23 @@ import java.util.List;
 
 public class GameHandler extends Thread {
 
-	private Game game;
-	private Board board;
+	private /*@ spec_public @*/ Game game;
+	private /*@ spec_public @*/ Board board;
 	private List<ClientHandler> gamers;
-	private ClientHandler next;
-	private int[] nextMove = {-1, -1};
-	private boolean terminate = false;
-	private boolean wantHint = false;
+	private /*@ spec_public @*/ ClientHandler next;
+	private /*@ spec_public @*/ int[] nextMove = {-1, -1};
+	private /*@ spec_public @*/ boolean terminate = false;
+	private /*@ spec_public @*/ boolean wantHint = false;
 
+	/**
+	 * Makes a new Game.
+	 * @param clients - The list of clients that are going to play the game
+	 * @param dimension - The dimensions of the game
+	 * @param noroof - True if clients want no roof, false if they are the dimension as the roof
+	 * @param winCondition - The win condition of the game (default = 4)
+	 */
+	//@ requires \forall int i; i >= 0 && i < clients.size(); clients.get(i) != null;
+	//@ requires dimension > 0 && winCondition > 0 && clients.size() >= 2;
 	public GameHandler(List<ClientHandler> clients, int dimension, boolean noroof, int winCondition) {
 		if (noroof) {
 			board = new Board(dimension, dimension, 1000);
@@ -41,10 +50,21 @@ public class GameHandler extends Thread {
 		System.out.println("A game has started with " + message);
 	}
 
+	/**
+	 * Returns the game object.
+	 * @return Game - Game object
+	 */
+	//@ ensures game != null;
 	public Game getGame() {
 		return game;
 	}
 
+	/**
+	 * Sets a boolean to true so the thread knows the current client wants a hint.
+	 * @param client - The client that asks for a hint
+	 */
+	//@ requires client == next;
+	//@ ensures wantHint == true;
 	public void wantHint(ClientHandler client) {
 		if (client == next) {
 			wantHint = true;
@@ -57,6 +77,9 @@ public class GameHandler extends Thread {
 		}
 	}
 
+	/**
+	 * Sends a message to all clients participating in the game.
+	 */
 	public void startGame() {
 		String startgame = "StartGame";
 		for (ClientHandler client : gamers) {
@@ -67,14 +90,25 @@ public class GameHandler extends Thread {
 				client.handleOutput(startgame);
 			} catch (IOException e) {
 				System.err.println(client.getUserName() + " not reachable");
+				disconnectGame(client);
 			}
 		}
 	}
 
+	/**
+	 * Stops the thread
+	 */
+	//@ ensures terminate == true;
 	public void stopGame() {
 		terminate = true;
 	}
 
+	/**
+	 * When a client disconnects or leaves this method is called.
+	 * It will send every client a message saying that the game ended.
+	 * @param disconnect - Client that disconnected
+	 */
+	//@ requires disconnect != null;
 	public void disconnectGame(ClientHandler disconnect) {
 		for (ClientHandler client : gamers) {
 			try {
@@ -90,6 +124,11 @@ public class GameHandler extends Thread {
 		stopGame();
 	}
 
+	/**
+	 * When the game is over this method will tell everyone who the winner is or if it is a draw.
+	 * @param winner - String with the username of the winner or "Draw" if a draw
+	 */
+	//@ requires winner != null;
 	public void gameOver(String winner) {
 		if (winner.equals("Draw")) {
 			for (ClientHandler client : gamers) {
@@ -119,6 +158,15 @@ public class GameHandler extends Thread {
 		stopGame();
 	}
 
+	/**
+	 * Method used by the server to set nextMove[] to the next move.
+	 * Will only change it if it is the client's turn. 
+	 * @param x - The x value of the move
+	 * @param y - The y value of the move
+	 * @param client - The client that wants to make a move
+	 */
+	//@ requires client == next && x >= 0 && y >= 0;
+	//@ ensures nextMove[0] == x && nextMove[1] == y;
 	public void getMove(int x, int y, ClientHandler client) {
 		if (client != next) {
 			try {
@@ -138,6 +186,12 @@ public class GameHandler extends Thread {
 		}
 	}
 
+	/**
+	 * This method will notify all clients of the recent move.
+	 * @param x - The x value of the move
+	 * @param y - The y value of the move
+	 */
+	//@ requires x >= 0 && x < board.getDimX() && y >= 0 && y < board.getDimY();
 	public void notifyMove(int x, int y) {
 		for (ClientHandler client : gamers) {
 			try {
@@ -148,6 +202,15 @@ public class GameHandler extends Thread {
 		}
 	}
 
+	/**
+	 * Controller for the game.
+	 * Shuffles the playerlist.
+	 * Tries to make a move when nextMove[0] is not -1 anymore.
+	 * When a move is made set nextMove[0] back to -1 to indicate that the move has been processed.
+	 * If the client wants a hint the wantHint boolean becomes true and this thread will give back an x and y value.
+	 * If the game is over and there is a winner notify everyone about it.
+	 * If the winner has logged in also make a leaderboard score.
+	 */
 	public void run() {
 		int turns = 0;
 		Collections.shuffle(gamers);

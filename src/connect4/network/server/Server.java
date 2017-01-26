@@ -1,20 +1,20 @@
 package connect4.network.server;
 
-import connect4.bonus.Challenge;
-import connect4.bonus.Leaderboard;
-import connect4.bonus.Security;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import connect4.bonus.Challenge;
+import connect4.bonus.Leaderboard;
+import connect4.bonus.Security;
 
 public class Server extends Thread {
 
 	private final String ACCOUNTS_FILE_PATH = "Serverdata\\Accounts.txt";
 	private final String LEADERBOARD_FILE_PATH = "Serverdata\\Leaderboard.txt";
 	public Leaderboard leaderboard;
-	private List<ClientHandler> clients;
-	private List<ClientHandler> toBeRemoved = new ArrayList<>();
+	private /*@ spec_public @*/ List<ClientHandler> clients;
+	private /*@ spec_public @*/ List<ClientHandler> toBeRemoved = new ArrayList<>();
 	private Security security;
 
 	public Server() {
@@ -340,6 +340,7 @@ public class Server extends Thread {
 	 * @param client - The client you want to send an error message to
 	 * @param errorCode - The error message to want to send
 	 */
+	//@ requires client != null;
 	public void sendError(ClientHandler client, String errorCode) {
 		try {
 			client.handleOutput(errorCode);
@@ -353,6 +354,7 @@ public class Server extends Thread {
 	 * @param client - The client you want to send an error message to
 	 * @param message - The message to want to send
 	 */
+	//@ requires client != null;
 	public void sendMessage(ClientHandler client, String message) {
 		try {
 			client.handleOutput(message);
@@ -366,7 +368,7 @@ public class Server extends Thread {
 	 * Used by the ServerStarter
 	 * @param client - The client you want to add
 	 */
-	//@requires !clients.contains(client)
+	//@ ensures clients.contains(client);
 	public void addClient(ClientHandler client) {
 		if (!clients.contains(client)) {
 			clients.add(client);
@@ -379,6 +381,7 @@ public class Server extends Thread {
 	 * scrolling through the clients.
 	 * @param client - The client you want removed
 	 */
+	//@ ensures toBeRemoved.contains(client);
 	public void removeClient(ClientHandler client) {
 		toBeRemoved.add(client);
 	}

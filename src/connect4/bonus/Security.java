@@ -39,6 +39,7 @@ public class Security {
 	 * @param username - username that you want registered
 	 * @param password - password you want registered
 	 */
+	//@ requires username != null && password != null;
 	public void register(String username, String password) {
 		String saltedPassword = password + username + username.substring(0, 1);
 		try {
@@ -67,6 +68,7 @@ public class Security {
 	 * @param password
 	 * @return true if successfully logged in or registered, false if password is not the same as stored
 	 */
+	//@ requires username != null && password != null;
 	public boolean login(String username, String password) {
 		if (accounts.containsKey(username)) {
 			String saltedPassword = password + username + username.substring(0, 1);

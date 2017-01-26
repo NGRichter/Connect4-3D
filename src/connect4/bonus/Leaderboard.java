@@ -8,8 +8,7 @@ import java.util.List;
 
 public class Leaderboard {
 
-	public List<Score> scores;
-	private BufferedReader reader;
+	private /*@ spec_public @*/ List<Score> scores;
 	private FileWriter writer;
 
 	/**
@@ -21,7 +20,7 @@ public class Leaderboard {
 		try {
 			File file = new File(path);
 			writer = new FileWriter(file, true);
-			reader = new BufferedReader(new FileReader(file));
+			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String temp;
 			while ((temp = reader.readLine()) != null) {
 				String[] temp2 = temp.split(" ");
@@ -30,6 +29,7 @@ public class Leaderboard {
 				Score score = new Score(Integer.parseInt(temp3[2]), Integer.parseInt(temp3[1]), Integer.parseInt(temp3[0]), Integer.parseInt(temp4[0]), Integer.parseInt(temp4[1]), Integer.parseInt(temp2[1]), temp2[0]);
 				scores.add(score);
 			}
+			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -37,8 +37,11 @@ public class Leaderboard {
 
 	/**
 	 * Adds a score to the list.
+	 * Writes it to the file.
 	 * @param score - score to be added
 	 */
+	//@ requires score != null;
+	//@ ensures scores.contains(score);
 	public void addScore(Score score) {
 		scores.add(score);
 		try {
@@ -59,6 +62,7 @@ public class Leaderboard {
 	 * @param n - how many places you want
 	 * @return string with \n after every place
 	 */
+	//@ requires n >= 0;
 	public String topN(int n) {
 		String leaderboard = "";
 		sortScore();
@@ -73,6 +77,7 @@ public class Leaderboard {
 	 * @param n - the value which the scores should be above
 	 * @return string with \n after every place
 	 */
+	//@ requires n >= 0;
 	public String aboveN(int n) {
 		String leaderboard = "";
 		sortScore();
@@ -89,6 +94,7 @@ public class Leaderboard {
 	 * @param n - the value which the scores should be below
 	 * @return string with \n after every place
 	 */
+	//@ requires n >= 0;
 	public String belowN(int n) {
 		String leaderboard = "";
 		sortScore();

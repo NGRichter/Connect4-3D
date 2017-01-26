@@ -127,6 +127,7 @@ public class Board extends Observable {
 	 *
 	 * @return DIMX
 	 */
+	//@ pure
 	public int getDimX() {
 		return DIMX;
 	}
@@ -136,6 +137,7 @@ public class Board extends Observable {
 	 *
 	 * @return DIMY
 	 */
+	//@ pure
 	public int getDimY() {
 		return DIMY;
 	}
@@ -145,6 +147,7 @@ public class Board extends Observable {
 	 *
 	 * @return DIMZ
 	 */
+	//@ pure
 	public int getDimZ() {
 		return DIMZ;
 	}

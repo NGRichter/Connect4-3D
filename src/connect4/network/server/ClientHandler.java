@@ -8,14 +8,17 @@ import connect4.game.Player;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * This class represents the clients that are connected to the server.
+ */
 public class ClientHandler extends Thread {
 
 	private Lobby lobby;
 	private Socket sock;
 	private BufferedWriter out;
 	private BufferedReader in;
-	private Player player;
-	private String name;
+	private /*@ spec_public @*/ Player player;
+	private /*@ spec_public @*/ String name;
 	private boolean isInGame;
 	private boolean isInLobby;
 	private Buffer buffer;
@@ -26,13 +29,18 @@ public class ClientHandler extends Thread {
 	private int amountPlayers;
 	private int dimensionOfBoard;
 	private boolean noRoof;
-	private boolean terminate;
+	private /*@ spec_public @*/ boolean terminate;
 	private GameHandler game;
 	private int winCondition;
 	private boolean loggedIn;
 	private Challenge challengeGame;
 	private boolean hasBeenChallenged;
 
+	/**
+	 * Makes a new client with all values at their default.
+	 * @param lobby - The lobby
+	 * @param sock - The socket (connection between server and client)
+	 */
 	public ClientHandler(Lobby lobby, Socket sock) {
 		this.lobby = lobby;
 		this.sock = sock;
@@ -58,10 +66,17 @@ public class ClientHandler extends Thread {
 		hasBeenChallenged = false;
 	}
 
+	/**
+	 * Will terminate the thread so it doesn't keep listening.
+	 */
+	//@ ensures terminate == true;
 	public void terminate() {
 		terminate = true;
 	}
 
+	/**
+	 * Will keep listening to incoming messages and store them in the buffer.
+	 */
 	public void run() {
 		while (!terminate) {
 			String temp = null;
@@ -77,12 +92,22 @@ public class ClientHandler extends Thread {
 		}
 	}
 
+	/**
+	 * Writes the message given to the client.
+	 * @param string - The message you want to send to the client
+	 * @throws IOException - If the connection is lost
+	 */
 	public void handleOutput(String string) throws IOException {
 		out.write(string);
 		out.newLine();
 		out.flush();
 	}
-
+/**
+ * The below methods are all getters and setter except for the last one.
+ * Some methods do not take an argument but set something to true (or false),
+ * this is because those values once true should always be true.
+ * All getters are //@pure and all setters should have //@ensures variable == true/false/argument.
+ */
 	public void loggedIn() {
 		loggedIn = true;
 	}
@@ -231,6 +256,12 @@ public class ClientHandler extends Thread {
 		this.hasBeenChallenged = hasBeenChallenged;
 	}
 
+	/**
+	 * Makes a player to use in games and sets the username to the name.
+	 * @param name - The name the clients wants
+	 */
+	//@ requires name != null;
+	//@ ensures this.name == name && player != null;
 	public void makePlayer(String name) {
 		if (player == null) {
 			this.player = new HumanPlayer(name, Colour.random());
