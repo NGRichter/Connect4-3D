@@ -214,7 +214,7 @@ public class Server extends Thread {
 									sendError(client, "Please use Challenge <dimension> <amount of players> [NoRoof] <username1> <username2> ...");
 								}
 							}
-
+						//Client wants to accept or deny challenge
 						} else if (command[0].equals("ChallengeAccept") && command.length == 2) {
 							if (command[1].equals("y") || command[1].equals("yes")) {
 								client.getChallengeGame().acceptChallenge(client);
@@ -223,12 +223,27 @@ public class Server extends Thread {
 							} else {
 								sendError(client, "Cannot understand " + command[1]);
 							}
-
+						//Client wants to see which players he can challenge
 						} else if (command[0].equals("GetPlayers")) {
 							String players = "Players";
 							for (ClientHandler player : clients) {
 								if (player.getChallenge() && !player.getInGame() && !player.getHasBeenChallenged()) {
 									players +=  " " + player.getUserName();
+								}
+							}
+							sendMessage(client, players);
+						//Used only by our client, to see everybody that is in the lobby and in game
+						} else if (command[0].equals("GetAllPlayers")) {
+							String players = "Players";
+							for (ClientHandler player : clients) {
+								if (player.getInLobby()) {
+									players +=  " " + player.getUserName();
+								}
+							}
+							players += " Game";
+							for (ClientHandler player : clients) {
+								if (player.getInGame()) {
+									players += " " + player.getUserName();
 								}
 							}
 							sendMessage(client, players);
@@ -304,14 +319,27 @@ public class Server extends Thread {
 		}
 	}
 
+	/**
+	 * Send an error message to the System.err console.
+	 * @param error - String with error message
+	 */
 	public void showError(String error) {
 		System.err.println(error);
 	}
 
+	/**
+	 * Send an message to the normal server console.
+	 * @param message - String with message
+	 */
 	public void showMessage(String message) {
 		System.out.println(message);
 	}
 
+	/**
+	 * Send an error message to the client.
+	 * @param client - The client you want to send an error message to
+	 * @param errorCode - The error message to want to send
+	 */
 	public void sendError(ClientHandler client, String errorCode) {
 		try {
 			client.handleOutput(errorCode);
@@ -320,6 +348,11 @@ public class Server extends Thread {
 		}
 	}
 
+	/**
+	 * Send a message to a client.
+	 * @param client - The client you want to send an error message to
+	 * @param message - The message to want to send
+	 */
 	public void sendMessage(ClientHandler client, String message) {
 		try {
 			client.handleOutput(message);
@@ -328,12 +361,24 @@ public class Server extends Thread {
 		}
 	}
 
+	/**
+	 * Adds a client to the list of clients
+	 * Used by the ServerStarter
+	 * @param client - The client you want to add
+	 */
+	//@requires !clients.contains(client)
 	public void addClient(ClientHandler client) {
 		if (!clients.contains(client)) {
 			clients.add(client);
 		}
 	}
 
+	/**
+	 * If you want a client removed you use this method.
+	 * It will remove the client when the server is not busy
+	 * scrolling through the clients.
+	 * @param client - The client you want removed
+	 */
 	public void removeClient(ClientHandler client) {
 		toBeRemoved.add(client);
 	}
