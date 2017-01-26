@@ -9,47 +9,86 @@ import connect4.network.client.Client;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Observable;
+import java.util.ResourceBundle;
 
-public class Gui extends Application implements EventHandler<ActionEvent>, GameView {
+public class Gui extends Application implements GameView, Initializable {
 
+    private Stage window;
     private Client client;
-    private Game game;
+    private int HEIGHT = 640;
+    private int WIDTH = 480;
 
-    Button button;
+    @FXML private Button connectButton, joinButton;
+    @FXML private TextField ipField, portField, usernameField;
+    @FXML private PasswordField passwordField;
+    @FXML private HBox connectBox, joinBox;
+
+    @Override
+    public void init() {
+        client = new Client(this);
+    }
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        client = new Client(this);
+    }
+
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Connect4-3D Superior client");
+        window = primaryStage;
+        window.setTitle("Connect4-3D GUI client");
 
-        button = new Button("Connect localhost 27015");
-        button.setOnAction(this);
+        Parent main = FXMLLoader.load(getClass().getResource("fxml\\multiplayer.fxml"));
 
-        StackPane layout = new StackPane();
-        layout.getChildren().add(button);
-
-
-        Scene scene = new Scene(layout, 420, 420);
+        Scene scene = new Scene(main, HEIGHT, WIDTH);
         primaryStage.setScene(scene);
         primaryStage.show();
 	}
 
-	@Override
-	public void handle(ActionEvent event) {
-        if(event.getSource() == button){
-            if (client == null){
-                showError("No client.");
-            }
+
+	public void connect() {
+        try {
+            InetAddress address = InetAddress.getByName(ipField.getText());
+            int port = Integer.parseInt(portField.getText());
+            client.connectServer(port, address);
+            writeServer("Join " + usernameField.getText() + " chat security challenge leaderboard");
+        } catch (UnknownHostException e) {
+            showError("ip-address invalid.");
+        } catch (NumberFormatException e) {
+            showError("port-number invalid.");
+        } catch (IOException e) {
+            showError("cannot connect to server");
         }
-	}
+    }
+
+    public void join() {
+
+        window.setScene(null);
+    }
 
 	@Override
+    public void run() {
+    }
+
+    @Override
 	public void drawBoard() {
 
 	}
@@ -78,21 +117,18 @@ public class Gui extends Application implements EventHandler<ActionEvent>, GameV
         }
     }
 
-    @Override
-	public void setClient(Client client) {
-            this.client = client;
-            showError("Client changed!");
-	}
+	public Client getClient(){
+        return client;
+    }
 
-	@Override
+    @Override
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    @Override
 	public void update(Observable o, Object arg) {
 
 	}
-
-
-    @Override
-    public void run() {
-        this.launch();
-    }
 }
 

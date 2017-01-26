@@ -11,5 +11,4 @@ public interface GameView  extends Observer, Runnable {
     void showError(String error);
     void writeServer(String command);
     void setClient(Client client);
-
 }

@@ -16,8 +16,6 @@ import java.util.Scanner;
 public class Tui implements GameView {
 
 	private Client client;
-    private Game game;
-
 
 	@Override
 	public void update(Observable observable, Object object) {
@@ -158,6 +156,7 @@ public class Tui implements GameView {
         }
     }
 
+
     public void writeServer(String string) {
         try {
             client.writeServer(string);
@@ -171,11 +170,13 @@ public class Tui implements GameView {
         }
     }
 
+
     @Override
     public void setClient(Client client) {
         this.client = client;
         showError("Client changed!");
     }
+
 
     @Override
     public void drawBoard() {

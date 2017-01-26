@@ -3,6 +3,7 @@ package connect4.network.client;
 import connect4.game.*;
 import connect4.ui.Gui;
 import connect4.ui.Tui;
+import javafx.application.Application;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -37,12 +38,8 @@ public class Client {
 			tuiThread.start();
 			tui.setClient(client);
 		} else if (args.length == 1 && args[0].equals("gui")) {
-			GameView gui = new Gui();
-			Client client = new Client(gui);
-            Thread guiThread = new Thread(gui);
-            guiThread.start();
-            gui.setClient(client);
-		}
+            Application.launch(Gui.class);
+        }
 	}
 
 	public void startClientGame(List<String> usernames) {
