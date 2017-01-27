@@ -7,6 +7,7 @@ import connect4.game.Player;
 import connect4.network.server.Buffer;
 import connect4.network.client.Client;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -76,7 +77,7 @@ public class Gui extends Application implements GameView, Initializable {
         window.setResizable(RESIZABLE);
 
         root = FXMLLoader.load(getClass().getResource("fxml\\stackedUI.fxml"));
-
+        Platform.setImplicitExit(false);
         scene = new Scene(root);
 
         primaryStage.setScene(scene);
