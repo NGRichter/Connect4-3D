@@ -8,6 +8,7 @@ import connect4.game.Game;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ServerHandler extends Thread {
@@ -81,7 +82,8 @@ public class ServerHandler extends Thread {
 
 				//Notify client of an error that occurred.
 			} else if (command[0].equals("Error")) {
-				client.getGameView().showError(receive);
+				String[] disect = receive.split(" ", 2);
+				client.getGameView().showError(disect[1]);
 
 
 				//If not a command, assume chat message & print.

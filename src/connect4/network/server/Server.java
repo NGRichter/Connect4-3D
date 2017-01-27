@@ -343,7 +343,7 @@ public class Server extends Thread {
 	//@ requires client != null;
 	public void sendError(ClientHandler client, String errorCode) {
 		try {
-			client.handleOutput(errorCode);
+			client.handleOutput("Error " + errorCode);
 		} catch (IOException e) {
 			removeClient(client);
 		}

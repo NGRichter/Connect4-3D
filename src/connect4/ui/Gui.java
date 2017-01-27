@@ -12,14 +12,14 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sun.font.FontManagerNativeLibrary;
 import sun.plugin.javascript.navig.Anchor;
 
 import java.io.IOException;
@@ -39,13 +39,19 @@ public class Gui extends Application implements GameView, Initializable {
     private int WIDTH = 720;
     private boolean RESIZABLE = false;
 
-    @FXML private Button connectButton, joinButton;
-    @FXML private TextField ipField, portField, usernameField;
-    @FXML private PasswordField passwordField;
-    @FXML private HBox connectBox, joinBox;
-    @FXML  private Parent root, game;
     private Scene scene;
-    @FXML private BorderPane rootPane;
+    @FXML private Button connectButton, joinButton, moveButton, readyButton;
+    @FXML private TextField ipField, portField, usernameField, chatField, xField,
+            yField, boardDimField, playerAmountField;
+    @FXML private TextArea messageArea;
+    @FXML private Label errorField, readyInfo;
+    @FXML private RadioButton noRoofButton;
+    @FXML private PasswordField passwordField;
+    @FXML private HBox connectBox, joinBox, lobbyTools, gameTools;
+    @FXML private VBox readyBox;
+    @FXML private Parent root, game;
+    @FXML private BorderPane gamePane;
+    @FXML private Pane connectPane, lobbyPane;
 
     @Override
     public void init() {
@@ -55,6 +61,11 @@ public class Gui extends Application implements GameView, Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         client = new Client(this);
+        //Initialize the stackpane setup.
+        gamePane.setVisible(false);
+        gamePane.toBack();
+        connectPane.setVisible(true);
+        connectPane.toFront();
     }
 
 
@@ -64,19 +75,16 @@ public class Gui extends Application implements GameView, Initializable {
         window.setTitle("Connect4-3D GUI client");
         window.setResizable(RESIZABLE);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml\\connect.fxml"));
-        loader.setController(this);
-        BorderPane mainPane = loader.load();
+        root = FXMLLoader.load(getClass().getResource("fxml\\stackedUI.fxml"));
 
-        scene = new Scene(mainPane);
+        scene = new Scene(root);
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
 }
 
-
-
-	public void connect() {
+    public void connect() {
         if (usernameField.getText().trim().isEmpty()){
             showError("Please specify a username.");
         } else try {
@@ -85,18 +93,10 @@ public class Gui extends Application implements GameView, Initializable {
             client.connectServer(port, address);
             writeServer("Join " + usernameField.getText() + " chat security challenge leaderboard");
 
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml\\game.fxml"));
-            loader.setController(this);
-            try {
-                BorderPane gamePane = loader.load();
-                scene = new Scene(gamePane);
-                window.setScene(scene);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
+            connectPane.toBack();
+            connectPane.setVisible(false);
+            gamePane.toFront();
+            gamePane.setVisible(true);
         } catch (UnknownHostException e) {
             showError("ip-address invalid.");
         } catch (NumberFormatException e) {
@@ -106,9 +106,38 @@ public class Gui extends Application implements GameView, Initializable {
         }
     }
 
-	@Override
-    public void run() {
+    public void setReady(){
+        int playerAmount = 2;
+        int boardDim = 4;
+        String noRoof = "";
+        if (!(playerAmountField.getText().trim().isEmpty())) {
+            playerAmount = Integer.parseInt(playerAmountField.getText());
+        }
+        if (!(boardDimField.getText().trim().isEmpty())){
+            boardDim = Integer.parseInt(boardDimField.getText());
+        }
+        writeServer("Ready " + playerAmount + " " + boardDim + " " + noRoof);
+        readyBox.setDisable(true);
+        readyInfo.setText("Waiting for other players to ready up...");
     }
+
+
+    public void makeMove() {
+        if (!(xField.getText().trim().isEmpty() && yField.getText().trim().isEmpty())){
+            writeServer("Move " + xField.getText() + " " + yField.getText());
+        } else {
+            showError("Invalid move coordinates.");
+        }
+    }
+
+    public void sendChat() {
+        if (!chatField.getText().trim().isEmpty()){
+            writeServer("Chat " + chatField.getText());
+            messageArea.appendText("Me: " + chatField.getText() + "\n");
+            chatField.setText("");
+        }
+    }
+
 
     @Override
 	public void drawBoard() {
@@ -117,13 +146,15 @@ public class Gui extends Application implements GameView, Initializable {
 
 	@Override
 	public void showMessage(String message) {
-        System.out.println(message);
+        messageArea.setEditable(true);
+        messageArea.appendText(message + "\n");
+        messageArea.setEditable(false);
 	}
 
 	@Override
-	public void showError(String message) {
-        System.err.println("ERROR: " + message);
-	}
+	public void showError(String error) {
+        errorField.setText("ERROR: " + error);
+   	}
 
     @Override
     public void writeServer(String command) {
@@ -150,7 +181,10 @@ public class Gui extends Application implements GameView, Initializable {
 
     @Override
 	public void update(Observable o, Object arg) {
-
 	}
+
+    @Override
+    public void run() {
+    }
 }
 

@@ -174,7 +174,6 @@ public class Tui implements GameView {
     @Override
     public void setClient(Client client) {
         this.client = client;
-        showError("Client changed!");
     }
 
 
