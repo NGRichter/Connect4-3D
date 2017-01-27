@@ -31,24 +31,20 @@ public class MinimaxAlphaV2 extends Player {
 				}
 			}
 		}
-		return findBestMove(game, 5);
+		return findBestMove(game, 7);
 	}
 
 	public int evaluate(Game game) {
 		int amount = 0;
 		if (game.checkWinner() == player) {
-			return 500;
+			return 1000;
 		} else if (game.checkWinner() == opponent) {
-			return -500;
+			return -1000;
 		}
 		int amountplayerthree = threeInARow(game.board, player);
 		int amountopponentthree = threeInARow(game.board, opponent);
-		int amountplayertwo = twoInARow(game.board, player);
-		int amountopponenttwo = twoInARow(game.board, opponent);
 		amount += amountplayerthree * 100;
 		amount += amountopponentthree * -100;
-		amount += amountplayertwo * 10;
-		amount += amountopponenttwo * -10;
 		return amount;
 
 	}
@@ -371,16 +367,16 @@ public class MinimaxAlphaV2 extends Player {
 
 	public int minimax(int maxDepth, int depth, boolean isMax, Game game, int alpha, int beta) {
 		int score = evaluate(game);
-		if (score == 500) {
+		if (score == 1000) {
 			//System.out.println("I returned the max score");
 			return score - depth * 30;
-		} else if (score == -500) {
+		} else if (score == -1000) {
 			//System.out.println("I returned the min score");
 			return score + depth * 30;
 		}
 		if (depth == maxDepth) return score;
 		if (isMax) {
-			int best = -500;
+			int best = -1000;
 			maxouterloop:
 			for (int x = 0; x < game.board.getDimX(); x++) {
 				for (int y = 0; y < game.board.getDimY(); y++) {
@@ -401,7 +397,7 @@ public class MinimaxAlphaV2 extends Player {
 			}
 			return best;
 		} else {
-			int best = 500;
+			int best = 1000;
 			minouterloop:
 			for (int x = 0; x < game.board.getDimX(); x++) {
 				for (int y = 0; y < game.board.getDimY(); y++) {
