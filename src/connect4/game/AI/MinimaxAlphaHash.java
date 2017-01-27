@@ -77,7 +77,7 @@ public class MinimaxAlphaHash extends Player {
 				}
 			}
 		}
-		return findBestMove(game, 8);
+		return findBestMove(game, 7);
 	}
 
 	public int evaluate(Game game) {
@@ -375,4 +375,5 @@ public class MinimaxAlphaHash extends Player {
 		}
 		return move;
 	}
+
 }
