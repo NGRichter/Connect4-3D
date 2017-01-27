@@ -7,14 +7,64 @@ import connect4.game.Colour;
 import connect4.game.Game;
 import connect4.game.Player;
 
-public class MinimaxAlpha extends Player {
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+public class MinimaxAlphaHash extends Player {
 
 	public Player player;
 	public Player opponent;
+	private long[][][][] hashTable = new long[4][4][4][3];
+	private Map<Long, Integer> hashMap;
+	private Random random = new Random();
 
-	public MinimaxAlpha(String name, Colour colour) {
+	public MinimaxAlphaHash(String name, Colour colour) {
 		super(name, colour);
 		player = this;
+		initTable();
+		hashMap = new HashMap<>();
+	}
+
+	public long randomNumber() {
+		return random.nextLong();
+	}
+
+	public int indexOfPlayer(Player player) {
+		if (player == this.player) {
+			return 0;
+		} else if (player == this.opponent) {
+			return 1;
+		} else if (player == null) {
+			return 2;
+		}
+		return -1;
+	}
+
+	public void initTable() {
+		for (int z = 0; z < 4; z++) {
+			for (int y = 0; y < 4; y++) {
+				for (int x = 0; x < 4; x++) {
+					for (int p = 0; p < 3; p++) {
+						hashTable[z][y][x][p] = randomNumber();
+					}
+				}
+			}
+		}
+	}
+
+	public long computeHash(Board board) {
+		long h = 0;
+		for (int z = 0; z < 4; z++) {
+			for (int y = 0; y < 4; y++) {
+				for (int x = 0; x < 4; x++) {
+					if (board.getFields()[z][y][x] !=  null) {
+						h ^= hashTable[z][y][x][indexOfPlayer(board.getFields()[z][y][x])];
+					}
+				}
+			}
+		}
+		return h;
 	}
 
 	@Override
@@ -27,20 +77,27 @@ public class MinimaxAlpha extends Player {
 				}
 			}
 		}
-		return findBestMove(game, 7);
+		return findBestMove(game, 8);
 	}
 
 	public int evaluate(Game game) {
+		long h = 0;
+		if (hashMap.containsKey(h = computeHash(game.getBoard()))) {
+			return hashMap.get(h);
+		}
 		int amount = 0;
 		if (game.checkWinner() == player) {
+			hashMap.put(computeHash(game.getBoard()) , 1000);
 			return 1000;
 		} else if (game.checkWinner() == opponent) {
+			hashMap.put(computeHash(game.getBoard()) , -1000);
 			return -1000;
 		}
 		int amountplayer = checkIfThreeInARow(game.board, player);
 		int amountopponent = checkIfThreeInARow(game.board, opponent);
 		amount += amountplayer * 100;
 		amount += amountopponent * -100;
+		hashMap.put(computeHash(game.getBoard()) , amount);
 		return amount;
 
 	}
