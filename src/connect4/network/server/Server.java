@@ -234,7 +234,7 @@ public class Server extends Thread {
 							sendMessage(client, players);
 						//Used only by our client, to see everybody that is in the lobby and in game
 						} else if (command[0].equals("GetAllPlayers")) {
-							String players = "Players";
+							String players = "AllPlayers";
 							for (ClientHandler player : clients) {
 								if (player.getInLobby()) {
 									players +=  " " + player.getUserName();
