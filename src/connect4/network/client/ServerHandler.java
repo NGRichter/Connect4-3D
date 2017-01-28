@@ -85,11 +85,8 @@ public class ServerHandler extends Thread {
 				String[] disect = receive.split(" ", 2);
 				client.getGameView().showError(disect[1]);
 
-			} else if (command[0].equals("Players")) {
+			} else if (command[0].equals("Players") || command[0].equals("AllPlayers")) {
 				client.getGameView().showPlayers(receive);
-
-			} else if (command[0].equals("AllPlayers")) {
-				client.getGameView().showAllPlayers(receive);
 
 			} else if (command[0].equals("ChallengeRequest") || command[0].equals("ChallengeDenied")) {
 				client.getGameView().showChallenge(receive);

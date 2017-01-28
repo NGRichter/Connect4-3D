@@ -181,6 +181,26 @@ public class Gui extends Application implements GameView, Initializable {
     }
 
     @Override
+    public void showPlayers(String players) {
+        //todo
+    }
+
+    @Override
+    public void showChallenge(String challenge) {
+        //todo
+    }
+
+    @Override
+    public void showLeaderboard(String leaderboard) {
+        //todo
+    }
+
+    @Override
+    public void setLogin(boolean success) {
+        //todo
+    }
+
+    @Override
 	public void update(Observable o, Object arg) {
 	}
 

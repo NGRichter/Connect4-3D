@@ -67,7 +67,7 @@ public class Leaderboard {
 		String leaderboard = "";
 		sortScore();
 		for (int i = 0; i < n; i++) {
-			leaderboard += scores.get(i) + "\n";
+			leaderboard += scores.get(i) + " ";
 		}
 		return leaderboard;
 	}

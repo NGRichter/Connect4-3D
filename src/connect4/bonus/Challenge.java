@@ -28,6 +28,7 @@ public class Challenge extends Thread {
 	public Challenge(List<ClientHandler> clients, int dimension, boolean noRoof, ClientHandler challenger) {
 		System.out.println("Challenge created by " + challenger.getUserName());
 		this.clients = new HashMap<>();
+		this.clients.put(challenger, true);
 		for (ClientHandler client : clients) {
 			this.clients.put(client, false);
 			client.setChallengeGame(this);
@@ -40,6 +41,7 @@ public class Challenge extends Thread {
 				}
 			} catch (IOException e) {
 				terminate = true;
+				denyChallenge(client);
 				client.getLobby().server.removeClient(client);
 			}
 		}
@@ -52,7 +54,6 @@ public class Challenge extends Thread {
 				}
 			}
 		}
-		this.clients.put(challenger, true);
 		challenger.setChallengeGame(this);
 		challenger.setHasBeenChallenged(true);
 		this.dimension = dimension;
@@ -116,6 +117,7 @@ public class Challenge extends Thread {
 		System.out.println("Challenge denied by " + denied.getUserName());
 		terminate = true;
 		for (ClientHandler client : clients.keySet()) {
+			System.out.format("Sending %s that the challenge has been denied%n", client.getUserName());
 			client.setHasBeenChallenged(false);
 			client.setChallengeGame(null);
 			try {

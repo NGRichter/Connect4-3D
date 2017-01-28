@@ -7,6 +7,7 @@ import connect4.game.GameView;
 import connect4.game.Player;
 import connect4.network.client.Client;
 
+import java.io.Console;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -42,7 +43,7 @@ public class Tui implements GameView {
                 if (command[0].equals("help")) {
                     showMessage("connect ip-address port-number\njoin username\nlogin username password\nready [amount players] [dimension] [NoRoof (Roof)] ([win condition])\nmove x y\nleave\ndisconnect");
 
-                //Connect to a server. 'connect <ip-adress> <port>'
+                //Connect to a server. 'connect <ip-address> <port>'
                 } else if (command[0].equals("connect")) {
                     if (cmdlength == 3) {
                         try {
@@ -57,27 +58,24 @@ public class Tui implements GameView {
                             showError("cannot connect to server");
                         }
                     } else {
+                        //To be removed.
+                        try {
+                            client.connectServer(2018, InetAddress.getByName("localhost"));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         showError("incorrect syntax. Use: 'connect <ip-address> <port>'.");
                     }
 
-                //Join the game, with a username. 'join <username> (chat) (security) (challenge)'
+                //Join the game, with a username. 'join <username>'
                 } else if (command[0].equals("join")) {
                     if (cmdlength == 1) {
                         showError("incorrect syntax. Use: 'join <username>'.");
                     } else if (cmdlength >= 2) {
                         if (command[1].length() > 26) {
                             showError("username can't exceed 26 characters.");
-                        }
-                        if (cmdlength == 2) {
-                            writeServer("Join " + command[1]);
-                        } else if (cmdlength == 3) {
-                            writeServer("Join " + command[1] + " " + command[2]);
-                        } else if (cmdlength == 4) {
-                            writeServer("Join " + command[1] + " " + command[2] + " " + command[3]);
-                        } else if (cmdlength == 5) {
-                            writeServer("Join " + command[1] + " " + command[2] + " " + command[3] + " " + command[4]);
-                        } else if (cmdlength == 6) {
-                        	writeServer("Join " + command[1] + " " + command[2] + " " + command[3] + " " + command[4] + " " + command[5]);
+                        } else {
+                        	writeServer("Join " + command[1] + " chat leaderboard security challenge");
 						}
                     }
 
@@ -138,15 +136,35 @@ public class Tui implements GameView {
 
                  //Starts a singleplayer game
                 } else if (command[0].equals("singleplayer")) {
-                    //TO-DO
+                    //todo
 
-                //Sends a manual command to the server. Geen idee waarom.
+                //Sends a manual command to the server. If you want to test something.
                 } else if (command[0].equals("manual")) {
                     String manual = "";
                     for (int i = 1; i < cmdlength; i++) {
                         manual += command[i] + " ";
                     }
                     writeServer(manual);
+
+                } else if (command[0].equals("login")) {
+                    System.out.print("Username: ");
+                    String username = scan.nextLine();
+                    Console console = System.console();
+                    String password = "";
+                    if (console != null) {
+                        password = new String(console.readPassword("Password: "));
+                        while (password.contains(" ")) {
+                            showMessage("Password can't contain any spaces");
+                            password = new String(console.readPassword("Password: "));
+                        }
+                    } else {
+                        System.out.print("Password (it is visible): ");
+                        password = scan.nextLine();
+                        for (int i = 0; i < 100; i++) {
+                            System.out.println("\n");
+                        }
+                    }
+                    writeServer("Security " + username + " " + password);
 
                 //If entered command is unknown, offer help.
                 } else {
@@ -174,6 +192,61 @@ public class Tui implements GameView {
     @Override
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    @Override
+    public void showPlayers(String players) {
+        String[] player = players.split(" ");
+        if (player[0].equals("AllPlayers")) {
+            String toScreen = "All players in the lobby:";
+            for (int i = 1; i < player.length; i++) {
+                if (player[i].equals("Game")) {
+                    toScreen += "\nAll players in a game:";
+                } else {
+                    toScreen += "\n" + player[i];
+                }
+            }
+            showMessage(toScreen);
+        } else if (player[0].equals("Players")) {
+            String toScreen = "All players you can challenge:";
+            for (int i = 1; i < player.length; i++) {
+                toScreen += "\n" + player[i];
+            }
+            showMessage(toScreen);
+        }
+    }
+
+    @Override
+    public void showChallenge(String challenge) {
+	    if (challenge.equals("ChallengeDenied")) {
+	        showMessage("The challenge has been denied by someone.");
+        } else {
+            String[] challenges = challenge.split(" ");
+            if (challenges[3].equals("NoRoof")) {
+                System.out.format("Someone wants to challenge you: %s%nDimension: %s%nPlayers: %s%nWith no roof%nSend <Accept> to accept the challenge, <Deny> to deny the challenge.%n", challenges[4], challenges[1], challenges[2]);
+            } else {
+                System.out.format("Someone wants to challenge you: %s%nDimension: %s%nPlayers: %s%nWith roof%nSend <Accept> to accept the challenge, <Deny> to deny the challenge.%n", challenges[3], challenges[1], challenges[2]);
+            }
+        }
+    }
+
+    @Override
+    public void showLeaderboard(String leaderboard) {
+	    String[] leaderboards = leaderboard.split(" ");
+	    String score = "---Leaderboard---";
+	    for (int i = 1; i < leaderboards.length; i += 2) {
+	        score += "\n" + leaderboards[i] + " - " + leaderboards[i + 1];
+        }
+        showMessage(score);
+    }
+
+    @Override
+    public void setLogin(boolean success) {
+        if (success) {
+            showMessage("Login success");
+        } else {
+            showMessage("Login failure");
+        }
     }
 
 

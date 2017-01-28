@@ -57,12 +57,21 @@ public class Server extends Thread {
 				Buffer buffer = client.getBuffer();
 				if (!buffer.isEmpty()) {
 					String temp = buffer.readBuffer();
-					if (client.getUserName() == null) {
-						showMessage(client.getSocket().getInetAddress().getHostAddress() + ": " + temp);
-					} else {
-						showMessage(client.getUserName() + ": " + temp);
-					}
 					String[] command = temp.split(" ");
+					if (client.getUserName() == null) {
+						if (command[0].equals("Security") && command.length == 3) {
+							showMessage(client.getSocket().getInetAddress().getHostAddress() + ": " + command[0] + " " + command[1] + " ******");
+						} else {
+							showMessage(client.getSocket().getInetAddress().getHostAddress() + ": " + temp);
+						}
+					} else {
+						if (command[0].equals("Security") && command.length == 3) {
+							showMessage(client.getUserName() + ": " + command[0] + " " + command[1] + " ******");
+						} else {
+							showMessage(client.getUserName() + ": " + temp);
+						}
+					}
+
 					//No command should be empty
 					if (command.length != 0) {
 
@@ -291,6 +300,7 @@ public class Server extends Thread {
 							//Client requests the leaderboard.
 						} else if (command[0].equals("Leaderboard")) {
 							String leaderboardTemp = "Leaderboard";
+							showMessage(leaderboard.topN(10));
 							String[] leaderboardArrayTemp = leaderboard.topN(10).split(" ");
 							for (int i = 0; i < leaderboardArrayTemp.length; i += 4) {
 								leaderboardTemp += " " + leaderboardArrayTemp[i] + " " + leaderboardArrayTemp[i + 1];
