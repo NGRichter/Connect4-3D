@@ -94,7 +94,13 @@
          <center>
             <StackPane fx:id="centerPane" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Pane fx:id="lobbyPane" prefHeight="200.0" prefWidth="200.0" visible="false" StackPane.alignment="CENTER">
+                  <Pane fx:id="boardPane" prefHeight="612.0" prefWidth="830.0" visible="false">
+                     <children>
+                        <PerspectiveCamera fx:id="camera" />
+                        <Group fx:id="boardGroup" translateX="475.0" translateY="325.0" />
+                     </children>
+                  </Pane>
+                  <Pane fx:id="lobbyPane" prefHeight="200.0" prefWidth="200.0" StackPane.alignment="CENTER">
                      <children>
                         <VBox alignment="CENTER" prefHeight="675.0" prefWidth="960.0" spacing="10.0">
                            <children>
@@ -137,12 +143,6 @@
                               </Label>
                            </children>
                         </VBox>
-                     </children>
-                  </Pane>
-                  <Pane fx:id="boardPane" prefHeight="612.0" prefWidth="830.0">
-                     <children>
-                        <PerspectiveCamera fx:id="camera" />
-                        <Group fx:id="boardGroup" translateX="475.0" translateY="325.0" />
                      </children>
                   </Pane>
                </children>
