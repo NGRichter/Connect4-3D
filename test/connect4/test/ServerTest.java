@@ -207,6 +207,19 @@ public class ServerTest {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		//Another challenge but this time it is denied
+		try {
+			client.writeServer("GetPlayers");
+			Thread.sleep(1000);
+			client.writeServer("Challenge 4 2 Julian");
+			Thread.sleep(2000);
+			client2.writeServer("ChallengeAccept n");
+			Thread.sleep(2000);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 
 

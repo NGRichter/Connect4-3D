@@ -60,25 +60,6 @@ public class Board extends Observable {
 	}
 
 	/**
-	 * TO BE REMOVED
-	 */
-	public void setField(int choice, Player player) throws OutsidePlayingBoardException, NoEmptySpotException {
-		if (choice >= (DIMX * DIMY * DIMZ) || choice < 0) {
-			throw new OutsidePlayingBoardException();
-		}
-		int[] xyz = index(choice);
-		int z = 0;
-		while (z < DIMZ - 1 && fields[xyz[0]][xyz[1]][z] != null) {
-			z += 1;
-		}
-		if (fields[xyz[0]][xyz[1]][z] == null) {
-			fields[xyz[0]][xyz[1]][z] = player;
-		} else {
-			throw new NoEmptySpotException();
-		}
-	}
-
-	/**
 	 * Sets a field to a player at given coordinates, at it's highest empty field.
 	 *
 	 * @param x      - x-coordinate of the field
@@ -181,37 +162,6 @@ public class Board extends Observable {
 		}
 		player = fields[x][y][z];
 		return player;
-	}
-
-	/**
-	 * TO BE REMOVED
-	 */
-	public int[] index(int choice) throws OutsidePlayingBoardException {
-		if ((choice < 0) || (choice >= DIMX * DIMY * DIMZ)) {
-			throw new OutsidePlayingBoardException();
-		}
-		int x = choice % DIMX;
-		int y = (choice / DIMX) % DIMY;
-		int z = choice / (DIMX * DIMY);
-		int[] array = {x, y, z};
-		return array;
-
-	}
-
-	/**
-	 * Converts X,Y,Z coordinates to an index
-	 *
-	 * @param x - x-coordinate of the index
-	 * @param y - y-coordinate of the index
-	 * @param z - z-coordinate of the index
-	 * @return index
-	 * @throws OutsidePlayingBoardException if x, y and/or z is outside the board.
-	 */
-	public int index(int x, int y, int z) throws OutsidePlayingBoardException {
-		if (x < 0 || y < 0 || z < 0 || x >= DIMX || y >= DIMY || z >= DIMZ) {
-			throw new OutsidePlayingBoardException();
-		}
-		return x + y * DIMX + z * DIMX * DIMY;
 	}
 
 	/**

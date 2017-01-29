@@ -66,7 +66,7 @@ public class Challenge extends Thread {
 	 * The thread will sleep for 250 milliseconds between checking to limit cpu usage.
 	 */
 	public void run() {
-		while(!terminate) {
+		while (!terminate) {
 			boolean allReady = true;
 			try {
 				sleep(250);
