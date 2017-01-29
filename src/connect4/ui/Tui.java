@@ -155,7 +155,10 @@ public class Tui implements GameView {
                     System.out.print("Username: ");
                     String username = scan.nextLine();
                     Console console = System.console();
-                    String password = "";
+                    String password;
+                    //If there is a console use that else just the scanner
+                    //Console has readPassword which does not echo what you type
+                    //But this isn't included in Eclipse or Intellij
                     if (console != null) {
                         password = new String(console.readPassword("Password: "));
                         while (password.contains(" ")) {

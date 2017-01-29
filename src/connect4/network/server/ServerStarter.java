@@ -4,12 +4,17 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServerStarter {
+public class ServerStarter extends Thread {
 
 	private static final String USAGE
 			= "Usage: <port>";
 	private static final String NAME = "server";
+	private String port;
 
+	//Constructer to give a port to, used in system testing.
+	public ServerStarter(String port) {
+		this.port = port;
+	}
 
 	public static void main(String[] args) {
 
@@ -57,6 +62,11 @@ public class ServerStarter {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	//Otherwise we could do no system test
+	public void run() {
+		main(new String[] {port});
 	}
 
 }
