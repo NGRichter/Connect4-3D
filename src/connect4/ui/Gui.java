@@ -1,22 +1,17 @@
 package connect4.ui;
 
-import com.sun.org.apache.xpath.internal.functions.FuncFalse;
+import connect4.exceptions.OutsidePlayingBoardException;
 import connect4.game.Board;
-import connect4.game.Game;
 import connect4.game.GameView;
 import connect4.game.Player;
-import connect4.network.server.Buffer;
 import connect4.network.client.Client;
 import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Point3D;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -24,13 +19,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.DrawMode;
-import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import sun.font.FontManagerNativeLibrary;
-import sun.plugin.javascript.navig.Anchor;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -69,6 +60,7 @@ public class Gui extends Application implements GameView, Initializable {
     @FXML private Pane connectPane, lobbyPane, boardPane;
     @FXML private PerspectiveCamera camera;
     @FXML private Group boardGroup;
+    private SubScene scene3d;
 
     @Override
     public void init() {
@@ -84,51 +76,19 @@ public class Gui extends Application implements GameView, Initializable {
         connectPane.setVisible(true);
         connectPane.toFront();
 
-        final PhongMaterial redMaterial = new PhongMaterial();
-        redMaterial.setDiffuseColor(Color.DARKRED);
-        redMaterial.setSpecularColor(Color.RED);
-
-
-        Box shape1 = new Box();
-        shape1.setHeight(20.0);
-        shape1.setWidth(20.0);
-        shape1.setDepth(20.0);
-
-        shape1.setMaterial(redMaterial);
-        shape1.setDrawMode(DrawMode.FILL);
-
-        Box shape2 = new Box();
-        shape2.setHeight(20.0);
-        shape2.setWidth(20.0);
-        shape2.setDepth(20.0);
-
-        shape2.setMaterial(redMaterial);
-        shape2.setDrawMode(DrawMode.FILL);
-        shape2.setTranslateX(50.0);
-
-        boardGroup = new Group(shape1, shape2);
+        boardGroup = new Group();
         boardGroup.setTranslateX(SCENE3DWIDTH/2);
         boardGroup.setTranslateY(SCENE3DHEIGHT/2);
-
-        // Add a Rotation animation to the camera
-        RotateTransition rt = new RotateTransition(Duration.seconds(2), boardGroup);
-        rt.setCycleCount(Animation.INDEFINITE);
-        rt.setFromAngle(0);
-        rt.setToAngle(360);
-        rt.setAutoReverse(false);
-        rt.setAxis(Rotate.Y_AXIS);
-        rt.play();
-
-
-        boardPane.getChildren().add(createScene3D(boardGroup));
+        scene3d = createScene3D(boardGroup);
+        boardPane.getChildren().add(scene3d);
     }
 
     public SubScene createScene3D(Group group){
-        SubScene scene3d = new SubScene(group, SCENE3DWIDTH , SCENE3DHEIGHT);
+        SubScene scene3d = new SubScene(group, SCENE3DWIDTH , SCENE3DHEIGHT, true, SceneAntialiasing.BALANCED);
         scene3d.setFill(Color.rgb(10, 10, 40));
         camera = new PerspectiveCamera();
         camera.setRotationAxis(Rotate.X_AXIS);
-        camera.setRotate(-30.0);
+        camera.setRotate(35.0);
         scene3d.setCamera(camera);
         return scene3d;
     }
@@ -183,6 +143,11 @@ public class Gui extends Application implements GameView, Initializable {
         writeServer("Ready " + playerAmount + " " + boardDim + " " + noRoof);
         readyBox.setDisable(true);
         readyInfo.setText("Waiting for other players to ready up...");
+
+        lobbyPane.setVisible(false);
+        lobbyPane.toBack();
+        boardPane.toFront();
+        boardPane.setVisible(true);
     }
 
 
@@ -202,10 +167,64 @@ public class Gui extends Application implements GameView, Initializable {
         }
     }
 
-
     @Override
 	public void drawBoard() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
 
+
+        Board board = client.getGame().getBoard();
+        int POSX = 0;
+        int POSY = 0;
+        int POSZ = 0;
+        int OFFSETX = 50;
+        int OFFSETY = 50;
+        int OFFSETZ = 50;
+
+        for (int z = (board.getDimZ()-1); z < board.getDimZ() && z >= 0; z--){
+            for (int x = 0; x < board.getDimX(); x++) {
+                for (int y = 0; y < board.getDimY(); y++){
+                    Player player = null;
+                    try {
+                        player = board.getField(x, y ,z);
+                    } catch (OutsidePlayingBoardException e) {
+                        e.printStackTrace();
+                    }
+                    if (player != null) {
+                        Color color = Color.RED;
+                        if (player.getName().equals("Nick")){
+                            color = Color.GREEN;
+                        }
+                        Box box = new Box();
+                        box.setHeight(25.0);
+                        box.setWidth(25.0);
+                        box.setDepth(25.0);
+                        PhongMaterial boxMaterial = new PhongMaterial();
+                        boxMaterial.setDiffuseColor(color);
+                        boxMaterial.setSpecularColor(color);
+                        box.setMaterial(boxMaterial);
+                        box.setTranslateX(POSX);
+                        box.setTranslateY(POSY);
+                        box.setTranslateZ(POSZ);
+                        box.setDrawMode(DrawMode.FILL);
+                        boardGroup.getChildren().add(box);
+                    }
+                    POSY = POSY + OFFSETY;
+                }
+                POSY = 0;
+                POSX = POSX + OFFSETX;
+            }
+            POSX = 0;
+            POSZ = POSZ + OFFSETZ;
+        }
+        POSZ = 0;
+
+                scene3d.setRoot(boardGroup);
+                System.out.println("BOARD DRAWN!");
+                System.out.println(boardGroup.getChildren().size());
+            }
+        });
 	}
 
 	@Override
@@ -217,7 +236,12 @@ public class Gui extends Application implements GameView, Initializable {
 
 	@Override
 	public void showError(String error) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
         errorField.setText("ERROR: " + error);
+            }
+        });
    	}
 
     @Override

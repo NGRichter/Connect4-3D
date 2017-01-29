@@ -63,6 +63,7 @@ public class ServerHandler extends Thread {
 					} catch (NoEmptySpotException | OutsidePlayingBoardException e) {
 						e.printStackTrace();
 					}
+					client.getGameView().drawBoard();
 				}
 
 				//Notify client that game has ended.
