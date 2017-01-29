@@ -178,7 +178,7 @@ public class Server extends Thread {
 										if (command.length == 4 + players - 1) {
 											List<ClientHandler> challenge = new ArrayList<>();
 											for (ClientHandler player : clients) {
-												if (player.getInLobby() && !player.getHasBeenChallenged()) {
+												if (player.getInLobby() && !player.getHasBeenChallenged() && player.getChallenge()) {
 													for (int i = 4; i < command.length; i++) {
 														if (player.getUserName().equalsIgnoreCase(command[i])) {
 															challenge.add(player);
@@ -200,7 +200,7 @@ public class Server extends Thread {
 										if (command.length == 3 + players - 1) {
 											List<ClientHandler> challenge = new ArrayList<>();
 											for (ClientHandler player : clients) {
-												if (player.getInLobby() && !player.getHasBeenChallenged()) {
+												if (player.getInLobby() && !player.getHasBeenChallenged() && player.getChallenge()) {
 													for (int i = 3; i < command.length; i++) {
 														if (player.getUserName().equalsIgnoreCase(command[i])) {
 															challenge.add(player);

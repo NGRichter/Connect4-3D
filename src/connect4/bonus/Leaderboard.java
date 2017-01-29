@@ -19,6 +19,7 @@ public class Leaderboard {
 		scores = new ArrayList<>();
 		try {
 			File file = new File(path);
+			file.mkdir();
 			writer = new FileWriter(file, true);
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String temp;

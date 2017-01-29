@@ -138,4 +138,8 @@ public class Client {
 	public String getName() {
 		return name;
 	}
+
+	public ServerHandler getServer() {
+		return server;
+	}
 }

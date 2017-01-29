@@ -21,6 +21,7 @@ public class Security {
 	public Security(String path) {
 		try {
 			File file = new File(path);
+			file.mkdir();
 			writer = new FileWriter(file, true);
 			reader = new BufferedReader(new FileReader(file));
 			String temp;
