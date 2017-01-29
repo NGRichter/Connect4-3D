@@ -82,6 +82,7 @@ public class ClientHandler extends Thread {
 			String temp = null;
 			try {
 				temp = in.readLine();
+				System.out.println(name + " said: " + temp);
 			} catch (IOException e) {
 				terminate = true;
 				break;

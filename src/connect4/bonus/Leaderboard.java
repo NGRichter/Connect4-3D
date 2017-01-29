@@ -49,7 +49,7 @@ public class Leaderboard {
 				writer.write(score.toString());
 				writer.flush();
 			} else {
-				writer.write("\n" + score.toString());
+				writer.write("\r\n" + score.toString());
 				writer.flush();
 			}
 		} catch (IOException e) {
@@ -60,7 +60,7 @@ public class Leaderboard {
 	/**
 	 * Makes a string consisting of the top N places.
 	 * @param n - how many places you want
-	 * @return string with \n after every place
+	 * @return string with \r\n after every place
 	 */
 	//@ requires n >= 0;
 	public String topN(int n) {
@@ -75,7 +75,7 @@ public class Leaderboard {
 	/**
 	 * Makes a string consisting of the scores above a certain value N.
 	 * @param n - the value which the scores should be above
-	 * @return string with \n after every place
+	 * @return string with \r\n after every place
 	 */
 	//@ requires n >= 0;
 	public String aboveN(int n) {
@@ -83,7 +83,7 @@ public class Leaderboard {
 		sortScore();
 		for (Score score : scores) {
 			if (score.score > n) {
-				leaderboard += score.toString() + "\n";
+				leaderboard += score.toString() + "\r\n";
 			}
 		}
 		return leaderboard;
@@ -92,7 +92,7 @@ public class Leaderboard {
 	/**
 	 * Makes a string consisting of the scores below a certain value N.
 	 * @param n - the value which the scores should be below
-	 * @return string with \n after every place
+	 * @return string with \r\n after every place
 	 */
 	//@ requires n >= 0;
 	public String belowN(int n) {
@@ -100,7 +100,7 @@ public class Leaderboard {
 		sortScore();
 		for (Score score : scores) {
 			if (score.score < n) {
-				leaderboard += score.toString() + "\n";
+				leaderboard += score.toString() + "\r\n";
 			}
 		}
 		return leaderboard;
@@ -138,14 +138,14 @@ public class Leaderboard {
 
 	/**
 	 * Makes a string consisting of all the scores of today
-	 * @return string with \n after every place
+	 * @return string with \r\n after every place
 	 */
 	public String scoresToday() {
 		String leaderboard = "";
 		sortScore();
 		for (Score score : scores) {
 			if (isToday(score.date)) {
-				leaderboard += score.toString() + "\n";
+				leaderboard += score.toString() + "\r\n";
 			}
 		}
 		return leaderboard;
@@ -159,7 +159,7 @@ public class Leaderboard {
 		sortScore();
 		for (Score score : scores) {
 			if (isToday(score.date)) {
-				return score.toString() + "\n";
+				return score.toString() + "\r\n";
 			}
 		}
 		return "No score today";
@@ -214,12 +214,12 @@ public class Leaderboard {
 
 	/**
 	 * Makes a string of all the scores ever made.
-	 * @return string with \n after every place
+	 * @return string with \r\n after every place
 	 */
 	public String toString() {
 		String leaderboard = "";
 		for (Score score : scores) {
-			leaderboard += score + "\n";
+			leaderboard += score + "\r\n";
 		}
 		return leaderboard;
 	}

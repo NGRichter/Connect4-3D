@@ -24,11 +24,15 @@ public class Tui implements GameView {
             drawBoard();
 			showMessage(object + " has made a move.");
 			showMessage("It is the turn of " + ((Game) observable).getCurrentPlayer().getName());
+            if (client.getGame().getCurrentPlayer() == client.getAI()) {
+                int[] xy = client.getAI().determineMove(client.getGame());
+                writeServer("Move " + xy[0] + " " + xy[1]);
+            }
 		}
 	}
 
     public void run() {
-        showMessage("Welcome to the Connect4-3D TUI client by Nick & Julian.\nType 'help' for a list of commands.");
+        showMessage("Welcome to the Connect4-3D TUI client by Nick & Julian.\r\nType 'help' for a list of commands.");
 
         Scanner scan = new Scanner(System.in);
         while (true) {
@@ -41,7 +45,7 @@ public class Tui implements GameView {
 
                 //Requests a list of possible commands. 'help'
                 if (command[0].equals("help")) {
-                    showMessage("connect ip-address port-number\njoin username\nlogin username password\nready [amount players] [dimension] [NoRoof (Roof)] ([win condition])\nmove x y\nleave\ndisconnect");
+                    showMessage("connect ip-address port-number\r\njoin username\r\nlogin username password\r\nready [amount players] [dimension] [NoRoof (Roof)] ([win condition])\r\nmove x y\r\nleave\r\ndisconnect");
 
                 //Connect to a server. 'connect <ip-address> <port>'
                 } else if (command[0].equals("connect")) {
@@ -76,6 +80,7 @@ public class Tui implements GameView {
                             showError("username can't exceed 26 characters.");
                         } else {
                         	writeServer("Join " + command[1] + " chat leaderboard security challenge");
+                        	client.setName(command[1]);
 						}
                     }
 
@@ -161,10 +166,13 @@ public class Tui implements GameView {
                         System.out.print("Password (it is visible): ");
                         password = scan.nextLine();
                         for (int i = 0; i < 100; i++) {
-                            System.out.println("\n");
+                            System.out.println("\r\n");
                         }
                     }
                     writeServer("Security " + username + " " + password);
+
+                } else if (command[0].equals("ai")) {
+                    client.letAIDoGame(true);
 
                 //If entered command is unknown, offer help.
                 } else {
@@ -201,16 +209,16 @@ public class Tui implements GameView {
             String toScreen = "All players in the lobby:";
             for (int i = 1; i < player.length; i++) {
                 if (player[i].equals("Game")) {
-                    toScreen += "\nAll players in a game:";
+                    toScreen += "\r\nAll players in a game:";
                 } else {
-                    toScreen += "\n" + player[i];
+                    toScreen += "\r\n" + player[i];
                 }
             }
             showMessage(toScreen);
         } else if (player[0].equals("Players")) {
             String toScreen = "All players you can challenge:";
             for (int i = 1; i < player.length; i++) {
-                toScreen += "\n" + player[i];
+                toScreen += "\r\n" + player[i];
             }
             showMessage(toScreen);
         }
@@ -235,7 +243,7 @@ public class Tui implements GameView {
 	    String[] leaderboards = leaderboard.split(" ");
 	    String score = "---Leaderboard---";
 	    for (int i = 1; i < leaderboards.length; i += 2) {
-	        score += "\n" + leaderboards[i] + " - " + leaderboards[i + 1];
+	        score += "\r\n" + leaderboards[i] + " - " + leaderboards[i + 1];
         }
         showMessage(score);
     }
@@ -258,7 +266,7 @@ public class Tui implements GameView {
         }
         for (int z = (board.getDimZ()-1); z < board.getDimZ() && z >= 0; z--){
             System.out.println("Layer: " + z + " out of " + (board.getDimZ() - 1));
-            String vertFrame = "\n+---+";
+            String vertFrame = "\r\n+---+";
             System.out.print("+---+");
             for (int x = 0; x < board.getDimX(); x++) {
                 vertFrame += "----------+";

@@ -1,5 +1,7 @@
 package connect4.network.client;
 
+import connect4.game.AI.MinimaxAlpha;
+import connect4.game.AI.MinimaxHash;
 import connect4.game.*;
 import connect4.ui.Gui;
 import connect4.ui.Tui;
@@ -16,14 +18,17 @@ public class Client {
 	private Socket sock;
 	private ServerHandler server;
 	private GameView ui;
+	private Player AI = new MinimaxHash("Me", Colour.TUMBLEWEED);
 
+	private String name;
 	private int boardDim = 4;
-	private int winCondition;
+	private int winCondition = 4;
 	private boolean noRoof;
 	private boolean isConnected;
 	private boolean inLobby;
 	private boolean isReady;
 	private boolean inGame;
+	private boolean aiDoGame;
 
 
 	public Client(GameView ui) {
@@ -46,7 +51,12 @@ public class Client {
 		Player[] players = new Player[usernames.size()];
 		int i = 0;
 		for (String username : usernames) {
-			players[i] = new HumanPlayer(username, Colour.random());
+			if (username.equals(name) && aiDoGame) {
+				players[i] = AI;
+			} else {
+				Player newhuman = new HumanPlayer(username, Colour.random());
+				players[i] = newhuman;
+			}
 			i++;
 		}
 		int boardHeight = boardDim;
@@ -75,6 +85,10 @@ public class Client {
 			throw new IOException();
 		}
 
+	}
+
+	public void letAIDoGame(boolean ai) {
+		aiDoGame = ai;
 	}
 
 	public void serverDisconnected() {
@@ -107,5 +121,21 @@ public class Client {
 
 	public Game getGame() {
 		return game;
+	}
+
+	public boolean getAiDoGame() {
+		return aiDoGame;
+	}
+
+	public Player getAI() {
+		return AI;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
 	}
 }

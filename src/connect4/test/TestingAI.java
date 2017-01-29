@@ -76,7 +76,7 @@ public class TestingAI {
 				}
 				try {
 					game.makeNextMove(xy[0], xy[1]);
-					//drawBoard(game.getBoard());
+					drawBoard(game.getBoard());
 				} catch (NoEmptySpotException e) {
 					System.out.println("No empty spot");
 				} catch (OutsidePlayingBoardException e) {
@@ -96,7 +96,7 @@ public class TestingAI {
 			}
 			System.out.println("A game has been played");
 		}
-		System.out.println("V1: " + minimaxv1 + "\nV2: " + minimaxv2 + "\nHash: " + hashminimax + "\nDraw: " + draw + "\nHard: " + hards);
+		System.out.println("V1: " + minimaxv1 + "\r\nV2: " + minimaxv2 + "\r\nHash: " + hashminimax + "\r\nDraw: " + draw + "\r\nHard: " + hards);
 		int max;
 		int average;
 		if (!miniv1.isEmpty()) {
@@ -109,7 +109,7 @@ public class TestingAI {
 				}
 			}
 			average = average / miniv1.size();
-			System.out.println("MinimaxV1 Max: " + max + "\nMinimaxV1 Average: " + average);
+			System.out.println("MinimaxV1 Max: " + max + "\r\nMinimaxV1 Average: " + average);
 		}
 		if (!miniv2.isEmpty()) {
 			average = 0;
@@ -121,7 +121,7 @@ public class TestingAI {
 				}
 			}
 			average = average / miniv2.size();
-			System.out.println("MinimaxV2 Max: " + max + "\nMinimaxV2 Average: " + average);
+			System.out.println("MinimaxV2 Max: " + max + "\r\nMinimaxV2 Average: " + average);
 		}
 		if (!hashtime.isEmpty()) {
 			average = 0;
@@ -133,7 +133,7 @@ public class TestingAI {
 				}
 			}
 			average = average / hashtime.size();
-			System.out.println("Hash Max: " + max + "\nHash Average: " + average);
+			System.out.println("Hash Max: " + max + "\r\nHash Average: " + average);
 		}
 
 		int scorevalue = board.getDimX() * board.getDimX() * board.getDimX() * 4 - turns * board.getDimX();
@@ -183,7 +183,7 @@ public class TestingAI {
 		}
 		for (int z = (board.getDimZ()-1); z < board.getDimZ() && z >= 0; z--){
 			System.out.println("Layer: " + z + " out of " + (board.getDimZ() - 1));
-			String vertFrame = "\n+---+";
+			String vertFrame = "\r\n+---+";
 			System.out.print("+---+");
 			for (int x = 0; x < board.getDimX(); x++) {
 				vertFrame += "----------+";

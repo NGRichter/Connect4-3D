@@ -68,10 +68,11 @@ public class ServerHandler extends Thread {
 				//Notify client that game has ended.
 			} else if (command[0].equals("GameOver")) {
 				if (command[1].equals("Winner") && command.length == 3) {
-					client.getGameView().showMessage("The game is over.\n" + command[2] + " has won the match!");
+					client.getGameView().showMessage("The game is over.\r\n" + command[2] + " has won the match!");
 				} else {
-					client.getGameView().showMessage("The game is over.\nIt's a draw!");
+					client.getGameView().showMessage("The game is over.\r\nIt's a draw!");
 				}
+				client.letAIDoGame(false);
 
 				//Notify client of connection lost.
 			} else if (command[0].equals("ConnectionLost")) {
@@ -79,6 +80,7 @@ public class ServerHandler extends Thread {
 					client.getGameView().showError(receive);
 					client.stopClientGame();
 				}
+				client.letAIDoGame(false);
 
 				//Notify client of an error that occurred.
 			} else if (command[0].equals("Error")) {

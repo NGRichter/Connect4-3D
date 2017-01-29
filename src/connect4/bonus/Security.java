@@ -50,7 +50,7 @@ public class Security {
 				writer.write(username + " " + Hex.encodeHexString(bytearray));
 				writer.flush();
 			} else {
-				writer.write("\n" + username + " " + Hex.encodeHexString(bytearray));
+				writer.write("\r\n" + username + " " + Hex.encodeHexString(bytearray));
 				writer.flush();
 			}
 

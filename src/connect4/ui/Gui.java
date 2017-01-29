@@ -134,7 +134,7 @@ public class Gui extends Application implements GameView, Initializable {
     public void sendChat() {
         if (!chatField.getText().trim().isEmpty()){
             writeServer("Chat " + chatField.getText());
-            messageArea.appendText("Me: " + chatField.getText() + "\n");
+            messageArea.appendText("Me: " + chatField.getText() + "\r\n");
             chatField.setText("");
         }
     }
@@ -148,7 +148,7 @@ public class Gui extends Application implements GameView, Initializable {
 	@Override
 	public void showMessage(String message) {
         messageArea.setEditable(true);
-        messageArea.appendText(message + "\n");
+        messageArea.appendText(message + "\r\n");
         messageArea.setEditable(false);
 	}
 

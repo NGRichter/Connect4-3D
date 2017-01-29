@@ -12,7 +12,7 @@ public class Format {
 			for (int col = 0; col < arr[0].length; col++) {
 				System.out.printf("| %-8s |", arr[row][col]);
 			}
-			System.out.printf("\n");
+			System.out.printf("\r\n");
 		}
 
 

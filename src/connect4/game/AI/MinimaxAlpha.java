@@ -22,7 +22,9 @@ public class MinimaxAlpha extends Player {
 		if (game.getPlayers().size() == 2) {
 			for (Player players : game.getPlayers()) {
 				if (players == this) {
+					System.out.println(players.getName() + " is me.");
 				} else {
+					System.out.println(players.getName() + " is the opponent.");
 					opponent = players;
 				}
 			}
