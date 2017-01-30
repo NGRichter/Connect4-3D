@@ -38,6 +38,7 @@ public class ServerHandler extends Thread {
 				receive = in.readLine();
 			} catch (IOException e) {
 				terminate = true;
+				client.getGameView().showError("Server disconnected");
 				break;
 			}
 

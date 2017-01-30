@@ -84,6 +84,13 @@ public class ClientHandler extends Thread {
 				temp = in.readLine();
 			} catch (IOException e) {
 				terminate = true;
+				lobby.server.removeClient(this);
+				if (name != null) {
+					lobby.server.showMessage(name + " has disconnected.");
+				} else {
+					lobby.server.showMessage(sock.getInetAddress() + " has disconnected.");
+				}
+
 				break;
 			}
 			buffer.writeBuffer(temp);

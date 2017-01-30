@@ -394,6 +394,7 @@ public class Server extends Thread {
 	//@ ensures toBeRemoved.contains(client);
 	public void removeClient(ClientHandler client) {
 		toBeRemoved.add(client);
+		client.getLobby().disconnect(client);
 	}
 
 }
