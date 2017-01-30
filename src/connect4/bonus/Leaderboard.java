@@ -67,9 +67,16 @@ public class Leaderboard {
 	public String topN(int n) {
 		String leaderboard = "";
 		sortScore();
-		for (int i = 0; i < n; i++) {
-			leaderboard += scores.get(i) + " ";
+		if (n <= scores.size()) {
+			for (int i = 0; i < n; i++) {
+				leaderboard += scores.get(i) + " ";
+			}
+		} else {
+			for (int i = 0; i < scores.size(); i++) {
+				leaderboard += scores.get(i) + " ";
+			}
 		}
+
 		return leaderboard;
 	}
 
