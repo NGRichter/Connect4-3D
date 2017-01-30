@@ -25,7 +25,7 @@ public class Tui implements GameView {
 			showMessage(object + " has made a move.");
 			showMessage("It is the turn of " + ((Game) observable).getCurrentPlayer().getName());
             if (client.getGame().getCurrentPlayer() == client.getAI()) {
-                int[] xy = client.getAI().determineMove(client.getGame());
+                int[] xy = client.getAI().determineMove(client.getGame(), client.getThinkingtime());
                 writeServer("Move " + xy[0] + " " + xy[1]);
             }
 		}
@@ -45,7 +45,7 @@ public class Tui implements GameView {
 
                 //Requests a list of possible commands. 'help'
                 if (command[0].equals("help")) {
-                    showMessage("connect ip-address port-number\r\njoin username\r\nlogin username password\r\nready [amount players] [dimension] [NoRoof (Roof)] ([win condition])\r\nmove x y\r\nleave\r\ndisconnect");
+                    showMessage("connect ip-address port-number\r\njoin username\r\nlogin username password\r\nai difficulty-level\r\nready [amount players] [dimension] [noroof (roof)]\r\nmove x y\r\nhint\r\nleave\r\ndisconnect");
 
                 //Connect to a server. 'connect <ip-address> <port>'
                 } else if (command[0].equals("connect")) {
@@ -62,12 +62,6 @@ public class Tui implements GameView {
                             showError("cannot connect to server");
                         }
                     } else {
-                        //To be removed.
-                        try {
-                            client.connectServer(2018, InetAddress.getByName("localhost"));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
                         showError("incorrect syntax. Use: 'connect <ip-address> <port>'.");
                     }
 
@@ -90,12 +84,30 @@ public class Tui implements GameView {
                         writeServer("Ready");
                     } else if (cmdlength == 2) {
                        writeServer("Ready " + command[1]);
+                       client.setBoardDim(4);
+                       client.setNoRoof(false);
                     } else if (cmdlength == 3) {
                         writeServer("Ready " + command[1] + " " + command[2]);
+                        try {
+                            client.setBoardDim(Integer.parseInt(command[2]));
+                            client.setNoRoof(false);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid number");
+                        }
                     } else if (cmdlength == 4) {
                         writeServer("Ready " + command[1] + " " + command[2] + " " + command[3]);
+                        try {
+                            client.setBoardDim(Integer.parseInt(command[2]));
+                            if (command[3].equals("noroof")) {
+                                client.setNoRoof(true);
+                            } else {
+                                client.setNoRoof(false);
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid number");
+                        }
                     } else {
-                        showError("incorrect syntax. Use: 'ready' for default match or 'ready <player amount> <board dimension> <noRoof>' for custom ruleset.");
+                        showError("incorrect syntax. Use: 'ready' for default match or 'ready <player amount> <board dimension> <noroof>' for custom ruleset.");
                     }
 
                 //Make a move, on coordinates x and y. 'move <x> <y>'
@@ -139,10 +151,6 @@ public class Tui implements GameView {
                         writeServer("Challenge " + command[1]);
                     }
 
-                 //Starts a singleplayer game
-                } else if (command[0].equals("singleplayer")) {
-                    //todo
-
                 //Sends a manual command to the server. If you want to test something.
                 } else if (command[0].equals("manual")) {
                     String manual = "";
@@ -174,9 +182,19 @@ public class Tui implements GameView {
                     }
                     writeServer("Security " + username + " " + password);
 
-                } else if (command[0].equals("ai")) {
-                    client.letAIDoGame(true);
+                } else if (command[0].equals("ai") && command.length == 2) {
+                    try {
+                        client.letAIDoGame(true, Integer.parseInt(command[1]));
+                        if (Integer.parseInt(command[1]) >= 7) {
+                            System.out.println("AI level of 7 or higher can take a long time, please reconsider.");
+                        }
 
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid number.");
+                    }
+
+                } else if (command[0].equals("hint")) {
+                    writeServer("Hint");
                 //If entered command is unknown, offer help.
                 } else {
                     showError("Unknown command. Type 'help' for a list of commands.");

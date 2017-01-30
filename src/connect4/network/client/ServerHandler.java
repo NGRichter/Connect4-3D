@@ -73,7 +73,7 @@ public class ServerHandler extends Thread {
 				} else {
 					client.getGameView().showMessage("The game is over.\r\nIt's a draw!");
 				}
-				client.letAIDoGame(false);
+				client.letAIDoGame(false, 6);
 
 				//Notify client of connection lost.
 			} else if (command[0].equals("ConnectionLost")) {
@@ -81,7 +81,7 @@ public class ServerHandler extends Thread {
 					client.getGameView().showError(receive);
 					client.stopClientGame();
 				}
-				client.letAIDoGame(false);
+				client.letAIDoGame(false, 6);
 
 				//Notify client of an error that occurred.
 			} else if (command[0].equals("Error")) {

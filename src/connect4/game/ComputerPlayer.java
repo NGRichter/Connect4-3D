@@ -28,7 +28,7 @@ public class ComputerPlayer extends Player {
 	 * @return index at which the computerplayer wants to play
 	 */
 	@Override
-	public int[] determineMove(Game game) {
+	public int[] determineMove(Game game, int thinkingtime) {
 		Random random = new Random();
 		int randomchance = random.nextInt(100);
 		int[] winner;

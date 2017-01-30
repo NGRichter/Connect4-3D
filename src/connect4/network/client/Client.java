@@ -23,6 +23,7 @@ public class Client {
 	private String name;
 	private int boardDim = 4;
 	private int winCondition = 4;
+	private int thinkingtime;
 	private boolean noRoof;
 	private boolean isConnected;
 	private boolean inLobby;
@@ -87,8 +88,17 @@ public class Client {
 
 	}
 
-	public void letAIDoGame(boolean ai) {
+	public void letAIDoGame(boolean ai, int time) {
 		aiDoGame = ai;
+		thinkingtime = time;
+	}
+
+	public int getThinkingtime() {
+		return thinkingtime;
+	}
+
+	public void setNoRoof(boolean noroof) {
+		this.noRoof = noroof;
 	}
 
 	public void serverDisconnected() {

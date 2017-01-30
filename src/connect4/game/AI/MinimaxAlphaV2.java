@@ -22,7 +22,7 @@ public class MinimaxAlphaV2 extends Player {
 	}
 
 	@Override
-	public int[] determineMove(Game game) {
+	public int[] determineMove(Game game, int thinkingtime) {
 		if (game.getPlayers().size() == 2) {
 			for (Player players : game.getPlayers()) {
 				if (players == this) {
@@ -31,7 +31,7 @@ public class MinimaxAlphaV2 extends Player {
 				}
 			}
 		}
-		return findBestMove(game, 7);
+		return findBestMove(game, thinkingtime);
 	}
 
 	public int evaluate(Game game) {

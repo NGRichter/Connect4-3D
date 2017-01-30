@@ -46,21 +46,21 @@ public class TestingAI {
 			while (!game.gameOver()) {
 				if (game.getCurrentPlayer() == minimaxV1) {
 					begin = System.currentTimeMillis();
-					xy = minimaxV1.determineMove(game);
+					xy = minimaxV1.determineMove(game, 6);
 					end = System.currentTimeMillis();
 					miniv1.add((int) (end - begin));
 					//System.out.println("V1 took: " + (end - begin));
 					turns++;
 				} else if (game.getCurrentPlayer() == minimaxV2){
 					begin = System.currentTimeMillis();
-					xy = minimaxV2.determineMove(game);
+					xy = minimaxV2.determineMove(game, 6);
 					end = System.currentTimeMillis();
 					miniv2.add((int) (end - begin));
 					//System.out.println("V2 took: " + (end - begin));
 					turns++;
 				} else if (game.getCurrentPlayer() == hash){
 					begin = System.currentTimeMillis();
-					xy = hash.determineMove(game);
+					xy = hash.determineMove(game, 6);
 					end = System.currentTimeMillis();
 					hashtime.add((int) (end - begin));
 					System.out.println("Hash took: " + (end - begin));
@@ -68,7 +68,7 @@ public class TestingAI {
 
 				} else if (game.getCurrentPlayer() == hard) {
 					begin = System.currentTimeMillis();
-					xy = hard.determineMove(game);
+					xy = hard.determineMove(game, 6);
 					end = System.currentTimeMillis();
 					hardstime.add((int) (end - begin));
 					//System.out.println("Hard took: " + (end - begin));

@@ -25,6 +25,6 @@ public abstract class Player {
 		return name + " (" + colour.name() + ")";
 	}
 
-	public abstract int[] determineMove(Game game);
-	
+	public abstract int[] determineMove(Game game, int thinkingtime);
+
 }
