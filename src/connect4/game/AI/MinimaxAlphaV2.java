@@ -3,9 +3,9 @@ package connect4.game.AI;
 import connect4.exceptions.NoEmptySpotException;
 import connect4.exceptions.OutsidePlayingBoardException;
 import connect4.game.Board;
-import connect4.game.Colour;
 import connect4.game.Game;
 import connect4.game.Player;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class MinimaxAlphaV2 extends Player {
 	public Player player;
 	public Player opponent;
 
-	public MinimaxAlphaV2(String name, Colour colour) {
+	public MinimaxAlphaV2(String name, Color colour) {
 		super(name, colour);
 		player = this;
 	}

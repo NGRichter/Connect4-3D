@@ -2,13 +2,14 @@ package connect4.game;
 
 import connect4.exceptions.NoEmptySpotException;
 import connect4.exceptions.OutsidePlayingBoardException;
+import javafx.scene.paint.Color;
 
 public abstract class Player {
 
 	private String name;
-	private Colour colour;
+	private Color colour;
 
-	public Player(String name, Colour colour) {
+	public Player(String name, Color colour) {
 		this.name = name;
 		this.colour = colour;
 	}
@@ -17,12 +18,12 @@ public abstract class Player {
 		return name;
 	}
 
-	public Colour getColour() {
+	public Color getColour() {
 		return colour;
 	}
 
 	public String toString() {
-		return name + " (" + colour.name() + ")";
+		return name;
 	}
 
 	public abstract int[] determineMove(Game game, int thinkingtime);

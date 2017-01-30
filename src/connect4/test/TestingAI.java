@@ -6,6 +6,7 @@ import connect4.exceptions.NoEmptySpotException;
 import connect4.exceptions.OutsidePlayingBoardException;
 import connect4.game.*;
 import connect4.game.AI.*;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,11 +21,11 @@ public class TestingAI {
 
 		Leaderboard leaderboard = new Leaderboard("Serverdata\\Leaderboard.txt");
 		Board board = new Board(4,4,4);
-		Player minimaxV2 = new MinimaxAlphaV2("v2", Colour.random());
-		Player minimaxV1 = new MinimaxAlpha("v1", Colour.random());
+		Player minimaxV2 = new MinimaxAlphaV2("v2", Color.YELLOW);
+		Player minimaxV1 = new MinimaxAlpha("v1", Color.GREEN);
 		Strategy hardstrat = new Hard();
-		Player hard = new ComputerPlayer("Hard", Colour.random(), hardstrat);
-		Player hash = new MinimaxHash("Hash", Colour.random());
+		Player hard = new ComputerPlayer("Hard", Color.BLUE, hardstrat);
+		Player hash = new MinimaxHash("Hash", Color.RED);
 		Player[] players = {hard, hash};
 
 		int minimaxv1 = 0;

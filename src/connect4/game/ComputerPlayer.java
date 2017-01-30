@@ -2,6 +2,7 @@ package connect4.game;
 
 import connect4.exceptions.OutsidePlayingBoardException;
 import connect4.game.AI.Strategy;
+import javafx.scene.paint.Color;
 
 import java.util.Random;
 
@@ -16,7 +17,7 @@ public class ComputerPlayer extends Player {
 	 * @param strategy - The strategy of the computerplayer
 	 */
 
-	public ComputerPlayer(String name, Colour colour, Strategy strategy) {
+	public ComputerPlayer(String name, Color colour, Strategy strategy) {
 		super(name, colour);
 		this.strategy = strategy;
 

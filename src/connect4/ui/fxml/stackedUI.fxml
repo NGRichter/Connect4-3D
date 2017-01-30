@@ -41,7 +41,7 @@
                            <TextField fx:id="usernameField" prefHeight="25.0" prefWidth="195.0" promptText="username" />
                         </children>
                      </HBox>
-                     <HBox fx:id="joinBox1" alignment="CENTER" disable="true" layoutX="10.0" layoutY="263.0" prefHeight="28.0" prefWidth="600.0" spacing="10.0">
+                     <HBox fx:id="joinBox1" alignment="CENTER" layoutX="10.0" layoutY="263.0" prefHeight="28.0" prefWidth="600.0" spacing="10.0">
                         <children>
                            <Label prefHeight="17.0" prefWidth="55.0" text="Password:" />
                            <PasswordField fx:id="passwordField" prefHeight="25.0" prefWidth="195.0" promptText="password" />
@@ -67,24 +67,21 @@
          <bottom>
             <HBox spacing="5.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="CENTER_RIGHT">
+                  <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="705.0" spacing="10.0">
                      <children>
-                        <Label fx:id="errorField" prefHeight="17.0" prefWidth="299.0" textFill="RED" />
+                        <Label fx:id="errorField" prefHeight="17.0" prefWidth="468.0" textFill="RED" />
+                        <Button mnemonicParsing="false" onAction="#leaderboard" text="Leaderboard" />
                      </children>
                   </HBox>
-                  <StackPane>
+                  <HBox fx:id="gameTools" alignment="CENTER" prefHeight="25.0" prefWidth="208.0" spacing="5.0">
                      <children>
-                        <HBox fx:id="gameTools" alignment="CENTER" prefHeight="25.0" prefWidth="792.0" spacing="5.0">
-                           <children>
-                              <Separator orientation="VERTICAL" prefHeight="20.0" />
-                              <Button fx:id="moveButton" mnemonicParsing="false" onAction="#makeMove" text="Make move" />
-                              <TextField prefHeight="25.0" prefWidth="49.0" promptText="X" fx:id="xField" />
-                              <TextField fx:id="yField" prefHeight="25.0" prefWidth="49.0" promptText="Y" />
-                              <Separator orientation="VERTICAL" prefHeight="20.0" />
-                           </children>
-                        </HBox>
+                        <Separator orientation="VERTICAL" prefHeight="20.0" />
+                        <Button fx:id="moveButton" mnemonicParsing="false" onAction="#makeMove" text="Make move" />
+                        <TextField prefHeight="25.0" prefWidth="49.0" promptText="X" fx:id="xField" />
+                        <TextField fx:id="yField" prefHeight="25.0" prefWidth="49.0" promptText="Y" />
+                        <Separator orientation="VERTICAL" prefHeight="20.0" />
                      </children>
-                  </StackPane>
+                  </HBox>
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -126,12 +123,22 @@
                                        </children>
                                     </HBox>
                                     <RadioButton fx:id="noRoofButton" disable="true" mnemonicParsing="false" text="No roof" />
-                                    <Button fx:id="readyButton" mnemonicParsing="false" onAction="#setReady" prefHeight="25.0" prefWidth="79.0" text="Ready">
+                                    <Button fx:id="readyButton" mnemonicParsing="false" onAction="#setReady" prefHeight="25.0" prefWidth="79.0" text="Ready!">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
                                     </Button>
                                  </children>
+                              </VBox>
+                              <VBox fx:id="challengeBox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                                 <children>
+                                    <Label text="Enter a name to challenge someone using the rules defined above." />
+                                    <TextField fx:id="challengeNameField" alignment="CENTER" prefHeight="25.0" prefWidth="860.0" promptText="name or list of names, space seperated" />
+                                    <Button fx:id="challengeButton" mnemonicParsing="false" text="Challenge!" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="200.0" right="200.0" />
+                                 </padding>
                               </VBox>
                               <Label fx:id="readyInfo" alignment="CENTER" contentDisplay="CENTER" prefHeight="33.0" prefWidth="604.0">
                                  <VBox.margin>

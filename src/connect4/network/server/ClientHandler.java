@@ -1,9 +1,9 @@
 package connect4.network.server;
 
 import connect4.bonus.Challenge;
-import connect4.game.Colour;
 import connect4.game.HumanPlayer;
 import connect4.game.Player;
+import javafx.scene.paint.Color;
 
 import java.io.*;
 import java.net.Socket;
@@ -264,7 +264,7 @@ public class ClientHandler extends Thread {
 	//@ ensures this.name == name && player != null;
 	public void makePlayer(String name) {
 		if (player == null) {
-			this.player = new HumanPlayer(name, Colour.random());
+			this.player = new HumanPlayer(name, Color.RED);
 			this.name = name;
 		}
 

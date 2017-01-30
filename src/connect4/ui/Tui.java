@@ -231,6 +231,16 @@ public class Tui implements GameView {
     }
 
     @Override
+    public void gameStarted() {
+        //Only for GUI
+    }
+
+    @Override
+    public void gameOver() {
+        //Only for GUI
+    }
+
+    @Override
     public void showPlayers(String players) {
         String[] player = players.split(" ");
         if (player[0].equals("AllPlayers")) {

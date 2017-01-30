@@ -1,9 +1,9 @@
 package connect4.test;
 
 import connect4.game.Board;
-import connect4.game.Colour;
 import connect4.game.HumanPlayer;
 import connect4.game.Player;
+import javafx.scene.paint.Color;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +16,7 @@ public class BoardTest {
 	@Before
 	public void setUp() throws Exception {
 		board = new Board(4, 4, 4);
-		player = new HumanPlayer("Test", Colour.random());
+		player = new HumanPlayer("Test", Color.RED);
 	}
 
 	//Tests whether the empty method empties the board

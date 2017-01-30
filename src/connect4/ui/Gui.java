@@ -2,6 +2,7 @@ package connect4.ui;
 
 import connect4.exceptions.OutsidePlayingBoardException;
 import connect4.game.Board;
+import connect4.game.Game;
 import connect4.game.GameView;
 import connect4.game.Player;
 import connect4.network.client.Client;
@@ -22,13 +23,14 @@ import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.ResourceBundle;
+
+import static javafx.scene.transform.Rotate.Z_AXIS;
 
 public class Gui extends Application implements GameView, Initializable {
 
@@ -45,15 +47,15 @@ public class Gui extends Application implements GameView, Initializable {
     private int SCENE3DWIDTH = 970;
 
     private Scene scene;
-    @FXML private Button connectButton, joinButton, moveButton, readyButton;
+    @FXML private Button connectButton, joinButton, moveButton, readyButto, challengeButton;
     @FXML private TextField ipField, portField, usernameField, chatField, xField,
-            yField, boardDimField, playerAmountField;
+            yField, boardDimField, playerAmountField, challengeNameField;
     @FXML private TextArea messageArea;
     @FXML private Label errorField, readyInfo;
     @FXML private RadioButton noRoofButton;
     @FXML private PasswordField passwordField;
     @FXML private HBox connectBox, joinBox, lobbyTools, gameTools;
-    @FXML private VBox readyBox;
+    @FXML private VBox readyBox, challengeBox;
     @FXML private Parent root, game;
     @FXML private BorderPane gamePane;
     @FXML private StackPane centerPane;
@@ -61,6 +63,9 @@ public class Gui extends Application implements GameView, Initializable {
     @FXML private PerspectiveCamera camera;
     @FXML private Group boardGroup;
     private SubScene scene3d;
+    private PhongMaterial gridMaterial;
+
+
 
     @Override
     public void init() {
@@ -71,14 +76,28 @@ public class Gui extends Application implements GameView, Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         client = new Client(this);
         //Initialize the stackpane setup.
+        //Within the gamepane
+        boardPane.toBack();
+        boardPane.setVisible(false);
+        lobbyPane.toFront();
+        lobbyPane.setVisible(true);
+        gameTools.setVisible(false);
+
+        //Between gamepane and connectpane
         gamePane.setVisible(false);
         gamePane.toBack();
         connectPane.setVisible(true);
         connectPane.toFront();
 
+
         boardGroup = new Group();
         boardGroup.setTranslateX(SCENE3DWIDTH/2);
         boardGroup.setTranslateY(SCENE3DHEIGHT/2);
+
+        gridMaterial = new PhongMaterial();
+        gridMaterial.setSpecularColor(Color.WHITE);
+        gridMaterial.setDiffuseColor(Color.WHITE);
+
         scene3d = createScene3D(boardGroup);
         boardPane.getChildren().add(scene3d);
     }
@@ -88,7 +107,7 @@ public class Gui extends Application implements GameView, Initializable {
         scene3d.setFill(Color.rgb(10, 10, 40));
         camera = new PerspectiveCamera();
         camera.setRotationAxis(Rotate.X_AXIS);
-        camera.setRotate(35.0);
+        camera.setRotate(27.5);
         scene3d.setCamera(camera);
         return scene3d;
     }
@@ -100,7 +119,7 @@ public class Gui extends Application implements GameView, Initializable {
         window.setTitle("Connect4-3D GUI client");
         window.setResizable(RESIZABLE);
 
-        root = FXMLLoader.load(getClass().getResource("fxml\\stackedUI.fxml"));
+        root = FXMLLoader.load(getClass().getResource("fxml/stackedUI.fxml"));
         Platform.setImplicitExit(false);
         scene = new Scene(root);
 
@@ -116,7 +135,9 @@ public class Gui extends Application implements GameView, Initializable {
             int port = Integer.parseInt(portField.getText());
             client.connectServer(port, address);
             writeServer("Join " + usernameField.getText() + " chat security challenge leaderboard");
-
+            if (!(passwordField.getText().trim().isEmpty())){
+                writeServer("Security " + usernameField.getText() + " " + passwordField.getText());
+            }
             connectPane.toBack();
             connectPane.setVisible(false);
             gamePane.toFront();
@@ -128,6 +149,10 @@ public class Gui extends Application implements GameView, Initializable {
         } catch (IOException e) {
             showError("cannot connect to server");
         }
+    }
+
+    public void leaderboard(){
+        writeServer("Leaderboard");
     }
 
     public void setReady(){
@@ -143,11 +168,6 @@ public class Gui extends Application implements GameView, Initializable {
         writeServer("Ready " + playerAmount + " " + boardDim + " " + noRoof);
         readyBox.setDisable(true);
         readyInfo.setText("Waiting for other players to ready up...");
-
-        lobbyPane.setVisible(false);
-        lobbyPane.toBack();
-        boardPane.toFront();
-        boardPane.setVisible(true);
     }
 
 
@@ -161,9 +181,14 @@ public class Gui extends Application implements GameView, Initializable {
 
     public void sendChat() {
         if (!chatField.getText().trim().isEmpty()){
-            writeServer("Chat " + chatField.getText());
-            messageArea.appendText("Me: " + chatField.getText() + "\r\n");
-            chatField.setText("");
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    writeServer("Chat " + chatField.getText());
+                    messageArea.appendText("Me: " + chatField.getText() + "\r\n");
+                    chatField.setText("");
+                }
+            });
         }
     }
 
@@ -172,66 +197,113 @@ public class Gui extends Application implements GameView, Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                Board board = client.getGame().getBoard();
+                int POSX = 0;
+                int POSY = 0;
+                int POSZ = 0;
+                int OFFSETX = 50;
+                int OFFSETY = 50;
+                int OFFSETZ = 50;
 
+                Group boardGroup = new Group();
+                boardGroup.setTranslateX(SCENE3DWIDTH/2 - ((board.getDimX()) * 25));
+                boardGroup.setTranslateY(SCENE3DHEIGHT/2);
 
-        Board board = client.getGame().getBoard();
+                drawGrid(board, boardGroup);
+
+                for (int z = 0; z < board.getDimZ() && z >= 0; z++){
+                    for (int x = 0; x < board.getDimX(); x++) {
+                        for (int y = 0; y < board.getDimY(); y++){
+                            Player player = null;
+                            try {
+                                player = board.getField(x, y ,z);
+                            } catch (OutsidePlayingBoardException e) {
+                                e.printStackTrace();
+                            }
+                            if (player != null) {
+                                Color color = player.getColour();
+                                Box box = new Box();
+                                box.setHeight(25.0);
+                                box.setWidth(25.0);
+                                box.setDepth(25.0);
+                                PhongMaterial boxMaterial = new PhongMaterial();
+                                boxMaterial.setDiffuseColor(color);
+                                boxMaterial.setSpecularColor(color);
+                                box.setMaterial(boxMaterial);
+                                box.setTranslateX(POSX);
+                                box.setTranslateY(POSY);
+                                box.setTranslateZ(POSZ);
+                                box.setDrawMode(DrawMode.FILL);
+                                boardGroup.getChildren().add(box);
+                            }
+                            POSY = POSY + OFFSETY;
+                        }
+                        POSY = 0;
+                        POSX = POSX + OFFSETX;
+                    }
+                    POSX = 0;
+                    POSZ = POSZ - OFFSETZ;
+                }
+
+                boardGroup.setRotationAxis(Z_AXIS);
+                boardGroup.setRotate(45);
+
+                RotateTransition rt = new RotateTransition(Duration.seconds(45), boardGroup);
+                rt.setCycleCount(Animation.INDEFINITE);
+                rt.setFromAngle(0);
+                rt.setToAngle(360);
+                rt.setAutoReverse(false);
+                rt.setAxis(Z_AXIS);
+                rt.play();
+
+                scene3d.setRoot(boardGroup);
+            }
+        });
+    }
+
+    public void drawGrid(Board board, Group boardGroup) {
         int POSX = 0;
         int POSY = 0;
         int POSZ = 0;
         int OFFSETX = 50;
         int OFFSETY = 50;
-        int OFFSETZ = 50;
 
-        for (int z = (board.getDimZ()-1); z < board.getDimZ() && z >= 0; z--){
-            for (int x = 0; x < board.getDimX(); x++) {
-                for (int y = 0; y < board.getDimY(); y++){
-                    Player player = null;
-                    try {
-                        player = board.getField(x, y ,z);
-                    } catch (OutsidePlayingBoardException e) {
-                        e.printStackTrace();
-                    }
-                    if (player != null) {
-                        Color color = Color.RED;
-                        if (player.getName().equals("Nick")){
-                            color = Color.GREEN;
-                        }
-                        Box box = new Box();
-                        box.setHeight(25.0);
-                        box.setWidth(25.0);
-                        box.setDepth(25.0);
-                        PhongMaterial boxMaterial = new PhongMaterial();
-                        boxMaterial.setDiffuseColor(color);
-                        boxMaterial.setSpecularColor(color);
-                        box.setMaterial(boxMaterial);
-                        box.setTranslateX(POSX);
-                        box.setTranslateY(POSY);
-                        box.setTranslateZ(POSZ);
-                        box.setDrawMode(DrawMode.FILL);
-                        boardGroup.getChildren().add(box);
-                    }
-                    POSY = POSY + OFFSETY;
-                }
-                POSY = 0;
-                POSX = POSX + OFFSETX;
+        for (int x = 0; x < board.getDimX(); x++) {
+            for (int y = 0; y < board.getDimY(); y++){
+
+                Color color = Color.WHITE;
+
+                Box grid = new Box();
+                grid.setHeight(15.0);
+                grid.setWidth(15.0);
+                grid.setDepth(2.0);
+                PhongMaterial boxMaterial = new PhongMaterial();
+                boxMaterial.setDiffuseColor(color);
+                boxMaterial.setSpecularColor(color);
+                grid.setMaterial(boxMaterial);
+                grid.setTranslateX(POSX);
+                grid.setTranslateY(POSY);
+                grid.setTranslateZ(POSZ);
+                grid.setDrawMode(DrawMode.FILL);
+                boardGroup.getChildren().add(grid);
+
+                POSY = POSY + OFFSETY;
             }
-            POSX = 0;
-            POSZ = POSZ + OFFSETZ;
+            POSY = 5;
+            POSX = POSX + OFFSETX;
         }
-        POSZ = 0;
-
-                scene3d.setRoot(boardGroup);
-                System.out.println("BOARD DRAWN!");
-                System.out.println(boardGroup.getChildren().size());
-            }
-        });
-	}
+    }
 
 	@Override
 	public void showMessage(String message) {
-        messageArea.setEditable(true);
-        messageArea.appendText(message + "\r\n");
-        messageArea.setEditable(false);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                messageArea.setEditable(true);
+                messageArea.appendText(message + "\r\n");
+                messageArea.setEditable(false);
+            }
+        });
 	}
 
 	@Override
@@ -239,7 +311,7 @@ public class Gui extends Application implements GameView, Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-        errorField.setText("ERROR: " + error);
+                errorField.setText("ERROR: " + error);
             }
         });
    	}
@@ -268,27 +340,105 @@ public class Gui extends Application implements GameView, Initializable {
     }
 
     @Override
+    public void gameStarted() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                lobbyPane.setVisible(false);
+                lobbyPane.toBack();
+                boardPane.toFront();
+                boardPane.setVisible(true);
+                gameTools.setVisible(true);
+                drawBoard();
+                showMessage("It is the turn of " + client.getGame().getCurrentPlayer().getName());
+            }
+        });
+    }
+
+    @Override
+    public void gameOver() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                lobbyPane.setVisible(true);
+                lobbyPane.toFront();
+                boardPane.toBack();
+                boardPane.setVisible(false);
+                gameTools.setVisible(false);
+                readyBox.setDisable(false);
+                readyInfo.setVisible(false);
+            }
+        });
+    }
+
+    @Override
     public void showPlayers(String players) {
-        //todo
+        String[] player = players.split(" ");
+        if (player[0].equals("AllPlayers")) {
+            String toScreen = "All players in the lobby:";
+            for (int i = 1; i < player.length; i++) {
+                if (player[i].equals("Game")) {
+                    toScreen += "\r\nAll players in a game:";
+                } else {
+                    toScreen += "\r\n" + player[i];
+                }
+            }
+            showMessage(toScreen);
+        } else if (player[0].equals("Players")) {
+            String toScreen = "All players you can challenge:";
+            for (int i = 1; i < player.length; i++) {
+                toScreen += "\r\n" + player[i];
+            }
+            showMessage(toScreen);
+        }
     }
 
     @Override
     public void showChallenge(String challenge) {
-        //todo
+        if (challenge.equals("ChallengeDenied")) {
+            showMessage("The challenge has been denied by someone.");
+        } else {
+            String[] challenges = challenge.split(" ");
+            String challengeMsgNoRoof= String.format("Someone wants to challenge you: %s%nDimension: %s%nPlayers: %s%nWith no roof%nSend <Accept> to accept the challenge, <Deny> to deny the challenge.%n", challenges[4], challenges[1], challenges[2]);
+            String challengeMsg = String.format("Someone wants to challenge you: %s%nDimension: %s%nPlayers: %s%nWith roof%nSend <Accept> to accept the challenge, <Deny> to deny the challenge.%n", challenges[3], challenges[1], challenges[2]);
+            if (challenges[3].equals("NoRoof")) {
+                showMessage(challengeMsgNoRoof);
+            } else {
+                showMessage(challengeMsg);
+            }
+        }
     }
 
     @Override
     public void showLeaderboard(String leaderboard) {
-        //todo
+        String[] leaderboards = leaderboard.split(" ");
+        String score = "---Leaderboard---";
+        for (int i = 1; i < leaderboards.length; i += 2) {
+            score += "\r\n" + leaderboards[i] + " - " + leaderboards[i + 1];
+        }
+        showMessage(score);
     }
 
     @Override
     public void setLogin(boolean success) {
-        //todo
+        if (success) {
+            showMessage("Login successful.");
+        } else {
+            showMessage("Login failed.");
+        }
     }
 
     @Override
 	public void update(Observable o, Object arg) {
+        if (o instanceof Game){
+            drawBoard();
+            showMessage(arg + " has made a move.");
+            showMessage("It is the turn of " + client.getGame().getCurrentPlayer().getName());
+            if (client.getGame().getCurrentPlayer() == client.getAI()) {
+                int[] xy = client.getAI().determineMove(client.getGame(), client.getThinkingtime());
+                writeServer("Move " + xy[0] + " " + xy[1]);
+            }
+        }
 	}
 
     @Override
