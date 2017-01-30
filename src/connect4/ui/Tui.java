@@ -342,6 +342,11 @@ public class Tui implements GameView {
     }
 
     @Override
+    public void showChat(String chatmessage) {
+        System.out.println(chatmessage);
+    }
+
+    @Override
     public void showError(String message) {
         System.err.println("ERROR: " + message);
     }

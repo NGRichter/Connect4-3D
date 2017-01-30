@@ -107,7 +107,7 @@ public class ServerHandler extends Thread {
 
 				//If not a command, assume chat message & print.
 			} else {
-				client.getGameView().showMessage(receive);
+				client.getGameView().showChat(receive);
 			}
 		}
 	}

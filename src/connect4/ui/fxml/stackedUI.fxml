@@ -56,7 +56,8 @@
          <left>
             <VBox prefHeight="720.0" prefWidth="320.0" spacing="5.0" BorderPane.alignment="CENTER">
                <children>
-                  <TextArea fx:id="messageArea" editable="false" focusTraversable="false" prefHeight="694.0" prefWidth="337.0" wrapText="true" VBox.vgrow="SOMETIMES" />
+                  <TextArea fx:id="messageArea" editable="false" prefHeight="336.0" prefWidth="300.0" wrapText="true" />
+                  <TextArea fx:id="chatArea" editable="false" prefHeight="269.0" prefWidth="300.0" wrapText="true" VBox.vgrow="SOMETIMES" />
                   <TextField fx:id="chatField" onAction="#sendChat" prefHeight="25.0" prefWidth="132.0" promptText="send chat message" VBox.vgrow="NEVER" />
                </children>
                <padding>

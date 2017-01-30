@@ -50,7 +50,7 @@ public class Gui extends Application implements GameView, Initializable {
     @FXML private Button connectButton, joinButton, moveButton, readyButto, challengeButton;
     @FXML private TextField ipField, portField, usernameField, chatField, xField,
             yField, boardDimField, playerAmountField, challengeNameField;
-    @FXML private TextArea messageArea;
+    @FXML private TextArea messageArea, chatArea;
     @FXML private Label errorField, readyInfo;
     @FXML private RadioButton noRoofButton;
     @FXML private PasswordField passwordField;
@@ -167,6 +167,7 @@ public class Gui extends Application implements GameView, Initializable {
         }
         writeServer("Ready " + playerAmount + " " + boardDim + " " + noRoof);
         readyBox.setDisable(true);
+        challengeBox.setDisable(true);
         readyInfo.setText("Waiting for other players to ready up...");
     }
 
@@ -306,7 +307,19 @@ public class Gui extends Application implements GameView, Initializable {
         });
 	}
 
-	@Override
+    @Override
+    public void showChat(String chatmessage) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                chatArea.setEditable(true);
+                chatArea.appendText(chatmessage + "\r\n");
+                chatArea.setEditable(false);
+            }
+        });
+    }
+
+    @Override
 	public void showError(String error) {
         Platform.runLater(new Runnable() {
             @Override
