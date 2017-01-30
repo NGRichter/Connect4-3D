@@ -195,6 +195,13 @@ public class Tui implements GameView {
 
                 } else if (command[0].equals("hint")) {
                     writeServer("Hint");
+
+                } else if (command[0].equals("accept")) {
+                    writeServer("ChallengeAccept y");
+
+                } else if (command[0].equals("deny")) {
+                    writeServer("ChallengeAccept n");
+
                 //If entered command is unknown, offer help.
                 } else {
                     showError("Unknown command. Type 'help' for a list of commands.");
