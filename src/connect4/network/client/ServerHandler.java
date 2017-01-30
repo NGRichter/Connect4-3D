@@ -52,7 +52,9 @@ public class ServerHandler extends Thread {
 						usernames.add(username);
 					}
 				}
+				client.getGameView().showMessage("Game started with " + usernames);
 				client.startClientGame(usernames);
+				client.getGameView().showGameStarted();
 				game = client.getGame();
 
 				//Notifies the client of a move.
@@ -63,7 +65,6 @@ public class ServerHandler extends Thread {
 					} catch (NoEmptySpotException | OutsidePlayingBoardException e) {
 						e.printStackTrace();
 					}
-					client.getGameView().drawBoard();
 				}
 
 				//Notify client that game has ended.

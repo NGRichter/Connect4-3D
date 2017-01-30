@@ -66,7 +66,6 @@ public class Client {
 		}
 		game = new Game(new Board(boardDim, boardDim, boardHeight), players, winCondition);
 		game.addObserver(ui);
-		ui.drawBoard();
 	}
 
 	public GameView getGameView() {
