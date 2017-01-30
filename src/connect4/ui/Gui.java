@@ -151,6 +151,7 @@ public class Gui extends Application implements GameView, Initializable {
         }
     }
 
+
     public void leaderboard(){
         writeServer("Leaderboard");
     }
@@ -186,7 +187,7 @@ public class Gui extends Application implements GameView, Initializable {
                 @Override
                 public void run() {
                     writeServer("Chat " + chatField.getText());
-                    messageArea.appendText("Me: " + chatField.getText() + "\r\n");
+                    chatArea.appendText("Me: " + chatField.getText() + "\r\n");
                     chatField.setText("");
                 }
             });
