@@ -36,10 +36,10 @@ public class ServerTest {
 
 	@Test
 	public void connectionTest() {
-		starter.start();
+		starter2.start();
 
 		try {
-			client.connectServer(2018, InetAddress.getLocalHost());
+			client.connectServer(2019, InetAddress.getLocalHost());
 			Thread.sleep(1000);
 		} catch (IOException e) {
 			fail();
@@ -52,7 +52,7 @@ public class ServerTest {
 
 	@Test
 	public void commandTest() {
-		starter2.start();
+		starter.start();
 		try {
 			Thread.sleep(1000);
 			client.connectServer(2019, InetAddress.getLocalHost());
@@ -60,6 +60,7 @@ public class ServerTest {
 			client.writeServer("Join Nick chat leaderboard challenge security");
 			client.writeServer("NotAValidCommand");
 		} catch (IOException e) {
+			e.printStackTrace();
 			fail();
 		} catch (InterruptedException e) {
 			fail();
@@ -75,7 +76,7 @@ public class ServerTest {
 		Client client2 = new Client(tui2);
 		tui2.setClient(client2);
 		try {
-			client2.connectServer(2019, InetAddress.getLocalHost());
+			client2.connectServer(2018, InetAddress.getLocalHost());
 		} catch (IOException e) {
 			fail();
 		}

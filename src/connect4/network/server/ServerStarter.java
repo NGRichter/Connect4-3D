@@ -3,6 +3,7 @@ package connect4.network.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class ServerStarter extends Thread {
 
@@ -37,12 +38,24 @@ public class ServerStarter extends Thread {
 		}
 
 		//Attempt opening server socket
-		try {
-			serversock = new ServerSocket(port);
-		} catch (IOException e) {
-			System.err.println("ERROR: Could not create server socket on port "
-					+ port);
+		while (serversock == null) {
+			try {
+				serversock = new ServerSocket(port);
+			} catch (IOException e) {
+				System.err.println("ERROR: Could not create server socket on port "
+						+ port);
+				Scanner in = new Scanner(System.in);
+				System.out.println("Please specify a new port number: ");
+				String portnumber = in.nextLine();
+				try {
+					port = Integer.parseInt(portnumber);
+				} catch (NumberFormatException i) {
+					System.err.println("ERROR: port " + args[0]
+							+ " is not an integer.");
+				}
+			}
 		}
+
 		Server server = new Server();
 		Lobby lobby = new Lobby(server);
 		server.start();
@@ -64,7 +77,7 @@ public class ServerStarter extends Thread {
 		}
 	}
 
-	//Otherwise we could do no system test
+	//We could do no system test without it being a thread
 	public void run() {
 		main(new String[] {port});
 	}
