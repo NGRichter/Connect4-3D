@@ -224,8 +224,13 @@ public class Tui implements GameView {
     }
 
     @Override
-    public void showGameStarted() {
-        //TODO
+    public void gameStarted() {
+        //Only for GUI
+    }
+
+    @Override
+    public void gameOver() {
+        //Only for GUI
     }
 
     @Override

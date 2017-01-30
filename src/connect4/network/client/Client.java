@@ -6,10 +6,12 @@ import connect4.game.*;
 import connect4.ui.Gui;
 import connect4.ui.Tui;
 import javafx.application.Application;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Client {
@@ -18,7 +20,7 @@ public class Client {
 	private Socket sock;
 	private ServerHandler server;
 	private GameView ui;
-	private Player AI = new MinimaxHash("Me", Colour.TUMBLEWEED);
+	private Player AI = new MinimaxHash("Me", Color.YELLOW);
 
 	private String name;
 	private int boardDim = 4;
@@ -30,7 +32,9 @@ public class Client {
 	private boolean isReady;
 	private boolean inGame;
 	private boolean aiDoGame;
-
+	private Color[] colors = {Color.DARKBLUE, Color.CYAN, Color.PINK, Color.PURPLE, Color.RED,
+				Color.ORANGE, Color.YELLOW, Color.DARKGREEN, Color.LIGHTGREEN, Color.BROWN};
+	private List<Color> usedColors = new ArrayList<>();
 
 	public Client(GameView ui) {
 		this.ui = ui;
@@ -55,7 +59,7 @@ public class Client {
 			if (username.equals(name) && aiDoGame) {
 				players[i] = AI;
 			} else {
-				Player newhuman = new HumanPlayer(username, Colour.random());
+				Player newhuman = new HumanPlayer(username, getRandomColor());
 				players[i] = newhuman;
 			}
 			i++;
@@ -86,6 +90,18 @@ public class Client {
 		}
 
 	}
+
+	public Color getRandomColor(){
+		int i = (int)(Math.random() * colors.length);
+		Color color = colors[i];
+		if (!(usedColors.contains(color))){
+			usedColors.add(color);
+			return color;
+		} else {
+			return getRandomColor();
+		}
+	}
+
 
 	public void letAIDoGame(boolean ai, int time) {
 		aiDoGame = ai;

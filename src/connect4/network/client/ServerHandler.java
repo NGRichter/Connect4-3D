@@ -2,13 +2,12 @@ package connect4.network.client;
 
 import connect4.exceptions.NoEmptySpotException;
 import connect4.exceptions.OutsidePlayingBoardException;
-import connect4.game.Colour;
 import connect4.game.Game;
+import javafx.scene.paint.Color;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ServerHandler extends Thread {
@@ -19,7 +18,7 @@ public class ServerHandler extends Thread {
 	private BufferedWriter out;
 	private Game game;
 	private boolean terminate = false;
-	private Colour colour;
+	private Color colour;
 
 	public ServerHandler(Socket sock, Client client) throws IOException {
 		this.sock = sock;
@@ -54,7 +53,7 @@ public class ServerHandler extends Thread {
 				}
 				client.getGameView().showMessage("Game started with " + usernames);
 				client.startClientGame(usernames);
-				client.getGameView().showGameStarted();
+				client.getGameView().gameStarted();
 				game = client.getGame();
 
 				//Notifies the client of a move.
@@ -74,6 +73,7 @@ public class ServerHandler extends Thread {
 				} else {
 					client.getGameView().showMessage("The game is over.\r\nIt's a draw!");
 				}
+				client.getGameView().gameOver();
 				client.letAIDoGame(false, 6);
 
 				//Notify client of connection lost.

@@ -11,7 +11,6 @@ public class Game extends Observable {
 
 	public Board board;
 	private List<Player> players = new ArrayList<Player>();
-	private List<Colour> colours = Colour.allColours();
 	private int playerIndex = 0;
 	private int winCondition;
 

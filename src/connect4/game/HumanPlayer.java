@@ -1,12 +1,13 @@
 package connect4.game;
 
 import connect4.exceptions.OutsidePlayingBoardException;
+import javafx.scene.paint.Color;
 
 import java.util.Scanner;
 
 public class HumanPlayer extends Player {
 
-	public HumanPlayer(String name, Colour colour) {
+	public HumanPlayer(String name, Color colour) {
 		super(name, colour);
 	}
 

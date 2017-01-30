@@ -2,6 +2,7 @@ package connect4.test;
 
 import connect4.exceptions.NoEmptySpotException;
 import connect4.game.*;
+import javafx.scene.paint.Color;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,8 +27,8 @@ public class GameTest {
 	@Before
 	public void setUp() throws Exception {
 		board = new Board(4, 4, 4);
-		player1 = new HumanPlayer("player1", Colour.random());
-		player2 = new HumanPlayer("player2", Colour.random());
+		player1 = new HumanPlayer("player1", Color.GREEN);
+		player2 = new HumanPlayer("player2", Color.RED);
 		playerarray[0] = player1;
 		playerarray[1] = player2;
 		playerList.add(player1);

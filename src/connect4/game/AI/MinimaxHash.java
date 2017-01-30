@@ -3,9 +3,9 @@ package connect4.game.AI;
 import connect4.exceptions.NoEmptySpotException;
 import connect4.exceptions.OutsidePlayingBoardException;
 import connect4.game.Board;
-import connect4.game.Colour;
 import connect4.game.Game;
 import connect4.game.Player;
+import javafx.scene.paint.Color;
 
 import java.util.*;
 
@@ -17,7 +17,7 @@ public class MinimaxHash extends Player {
 	private Map<Long, Integer> hashMap;
 	private Random random = new Random();
 
-	public MinimaxHash(String name, Colour colour) {
+	public MinimaxHash(String name, Color colour) {
 		super(name, colour);
 		player = this;
 		initTable();
