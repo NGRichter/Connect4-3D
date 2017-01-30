@@ -10,7 +10,6 @@ public class Board extends Observable {
 	private final int DIMX;
 	private final int DIMY;
 	private final int DIMZ;
-	private int layer;
 	private Player[][][] fields;
 
 
@@ -26,7 +25,6 @@ public class Board extends Observable {
 		DIMX = x;
 		DIMY = y;
 		DIMZ = z;
-		layer = 0;
 	}
 
 	/**
@@ -131,10 +129,6 @@ public class Board extends Observable {
 	//@ pure
 	public int getDimZ() {
 		return DIMZ;
-	}
-
-	public int getLayer() {
-		return layer;
 	}
 
 	/**

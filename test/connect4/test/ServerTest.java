@@ -18,15 +18,16 @@ import static org.junit.Assert.*;
 public class ServerTest {
 
 	Client client;
+	ServerStarter starter;
+	ServerStarter starter2;
 
 	//ServerStarter is modified to work with this test (It has been extended by Thread)
 	//Otherwise the main thread will be stuck accepting connections from clients and
 	//the program will not advance further.
 	@Before
 	public void setUp() throws Exception {
-		String[] serverargs = {"2018"};
-		ServerStarter starter = new ServerStarter("2018");
-		starter.start();
+		starter = new ServerStarter("2018");
+		starter2 = new ServerStarter("2019");
 		GameView tui = new Tui();
 		client = new Client(tui);
 		tui.setClient(client);
@@ -35,10 +36,15 @@ public class ServerTest {
 
 	@Test
 	public void connectionTest() {
+		starter.start();
+
 		try {
 			client.connectServer(2018, InetAddress.getLocalHost());
+			Thread.sleep(1000);
 		} catch (IOException e) {
-			System.out.println("Could not connect");
+			fail();
+		} catch (InterruptedException e) {
+			fail();
 		}
 		//Has a connection
 		assertTrue(client.getServer() != null);
@@ -46,27 +52,32 @@ public class ServerTest {
 
 	@Test
 	public void commandTest() {
-		connectionTest();
+		starter2.start();
 		try {
+			Thread.sleep(1000);
+			client.connectServer(2019, InetAddress.getLocalHost());
+			Thread.sleep(1000);
 			client.writeServer("Join Nick chat leaderboard challenge security");
 			client.writeServer("NotAValidCommand");
 		} catch (IOException e) {
-			System.out.println("Could not write to server");
+			fail();
+		} catch (InterruptedException e) {
+			fail();
 		}
 		//Sleep so the server has time to process it and not let the test shutdown.
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			System.out.println("Main thread interrupted");
+			fail();
 		}
 		//Connect a second client to start a game.
 		GameView tui2 = new Tui();
 		Client client2 = new Client(tui2);
 		tui2.setClient(client2);
 		try {
-			client2.connectServer(2018, InetAddress.getLocalHost());
+			client2.connectServer(2019, InetAddress.getLocalHost());
 		} catch (IOException e) {
-			System.out.println("Could not connect");
+			fail();
 		}
 		//Both clients say they are ready.
 		//In the console the board should now be visible (because a game has started)
@@ -75,13 +86,13 @@ public class ServerTest {
 			client2.writeServer("Ready");
 			client.writeServer("Ready");
 		} catch (IOException e) {
-			e.printStackTrace();
+			fail();
 		}
 		//Sleep to make time for the server to process it. And for the person running this test to see if everything is alright.
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
-			System.out.println("Main thread interrupted");
+			fail();
 		}
 		//Make 1 client win the game. Console should read Nick or Julian has won.
 		//Also 1 client tries to make a move again before it is his turn again (happens 4 or 5 times).
@@ -101,26 +112,26 @@ public class ServerTest {
 			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			fail();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			fail();
 		}
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
-			System.out.println("Main thread interrupted");
+			fail();
 		}
 		//To show the clients are back in the lobby we start a new game.
 		try {
 			client2.writeServer("Ready");
 			client.writeServer("Ready");
 		} catch (IOException e) {
-			e.printStackTrace();
+			fail();
 		}
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
-			System.out.println("Main thread interrupted");
+			fail();
 		}
 		try {
 			for(int i = 0; i < 4; i++) {
@@ -133,14 +144,14 @@ public class ServerTest {
 			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			fail();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			fail();
 		}
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
-			System.out.println("Main thread interrupted");
+			fail();
 		}
 		//Back in the lobby the client wants to know the leaderboard
 		//A client asks the leaderboard
@@ -149,76 +160,76 @@ public class ServerTest {
 			client.writeServer("Leaderboard");
 			Thread.sleep(5000);
 		} catch (IOException e) {
-			e.printStackTrace();
+			fail();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			fail();
 		}
 		//The client wants to login/register
 		//It should print Login Success or Login Denied if the account already exist
 		//Client2 also tries to login into the same account with another password
 		try {
 			client.writeServer("Security Nick Thisismypassword");
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 			client2.writeServer("Security Nick Nottherightpassword");
 			Thread.sleep(5000);
 		} catch (IOException e) {
-			e.printStackTrace();
+			fail();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			fail();
 		}
 		//Client wants to challenge client2
 		//First he asks who he can challenge by the command GetPlayers
 		try {
 			client.writeServer("GetPlayers");
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 			client.writeServer("Challenge 4 2 Julian");
 			Thread.sleep(2000);
 			client2.writeServer("ChallengeAccept y");
 			Thread.sleep(2000);
 		} catch (IOException e) {
-			e.printStackTrace();
+			fail();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			fail();
 		}
 		//And now a normal game between them is started
 		//But client2 wants to leave
 		//They both go to the lobby again
 		try {
 			client2.writeServer("Leave");
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		} catch (IOException e) {
-			e.printStackTrace();
+			fail();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			fail();
 		}
 		//And now they want to chat a bit
 		try {
 			client2.writeServer("Chat Hey how are you doing?");
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 			client.writeServer("Chat Hey, I am doing fine, and you?");
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 			client2.writeServer("Chat Same, playing some board game called Connect4-3D or Score Four");
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 			client.writeServer("Chat What a coincidence, me too");
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			fail();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			fail();
 		}
 		//Another challenge but this time it is denied
 		try {
 			client.writeServer("GetPlayers");
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 			client.writeServer("Challenge 4 2 Julian");
 			Thread.sleep(2000);
 			client2.writeServer("ChallengeAccept n");
 			Thread.sleep(2000);
 		} catch (IOException e) {
-			e.printStackTrace();
+			fail();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			fail();
 		}
 
 
