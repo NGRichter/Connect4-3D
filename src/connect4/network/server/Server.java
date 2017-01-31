@@ -17,6 +17,8 @@ public class Server extends Thread {
 	private /*@ spec_public @*/ List<ClientHandler> toBeRemoved = new ArrayList<>();
 	private Security security;
 
+	//@ invariant !clients.contains(null);
+
 	public Server() {
 		clients = new ArrayList<>();
 	}
@@ -315,6 +317,7 @@ public class Server extends Thread {
 					empty++;
 				}
 			}
+			//If all buffers are empty, remove the clients that are gone and sleep.
 			if (empty == clients.size()) {
 				try {
 					for (ClientHandler remove : toBeRemoved) {
@@ -378,6 +381,7 @@ public class Server extends Thread {
 	 * Used by the ServerStarter
 	 * @param client - The client you want to add
 	 */
+	//@ requires client != null;
 	//@ ensures clients.contains(client);
 	public void addClient(ClientHandler client) {
 		if (!clients.contains(client)) {
@@ -391,6 +395,7 @@ public class Server extends Thread {
 	 * scrolling through the clients.
 	 * @param client - The client you want removed
 	 */
+	//@ requires client != null;
 	//@ ensures toBeRemoved.contains(client);
 	public void removeClient(ClientHandler client) {
 		toBeRemoved.add(client);

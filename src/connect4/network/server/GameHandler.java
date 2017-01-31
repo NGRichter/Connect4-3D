@@ -16,11 +16,13 @@ public class GameHandler extends Thread {
 
 	private /*@ spec_public @*/ Game game;
 	private /*@ spec_public @*/ Board board;
-	private List<ClientHandler> gamers;
+	private /*@ spec_public @*/ List<ClientHandler> gamers;
 	private /*@ spec_public @*/ ClientHandler next;
 	private /*@ spec_public @*/ int[] nextMove = {-1, -1};
 	private /*@ spec_public @*/ boolean terminate = false;
 	private /*@ spec_public @*/ boolean wantHint = false;
+
+	//@ invariant !gamers.contains(null);
 
 	/**
 	 * Makes a new Game.
