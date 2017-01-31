@@ -108,7 +108,11 @@ public class Lobby extends Thread {
 			same.add(first);
 			for (int o = 0; o < ready.size(); o++) {
 				ClientHandler other = ready.get(o);
-				if (first != other && first.getPlayers() == other.getPlayers() && first.getDimension() == other.getDimension() && first.getNoRoof() == other.getNoRoof() && first.getWinCondition() == other.getWinCondition()) {
+				if (first != other &&
+						first.getPlayers() == other.getPlayers() &&
+						first.getDimension() == other.getDimension() &&
+						first.getNoRoof() == other.getNoRoof() &&
+						first.getWinCondition() == other.getWinCondition()) {
 					same.add(other);
 				}
 			}
