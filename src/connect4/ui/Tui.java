@@ -232,7 +232,7 @@ public class Tui implements GameView {
 
     @Override
     public void gameStarted() {
-        //Only for GUI
+     drawBoard();
     }
 
     @Override

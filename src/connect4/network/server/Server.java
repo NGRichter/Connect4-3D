@@ -158,12 +158,14 @@ public class Server extends Thread {
 	 */
 	public void leaderboardCommand(ClientHandler client) {
 		String leaderboardTemp = "Leaderboard";
-		showMessage(leaderboard.topN(10));
+        showMessage(leaderboard.topN(10));
 		String[] leaderboardArrayTemp = leaderboard.topN(10).split(" ");
-		for (int i = 0; i < leaderboardArrayTemp.length; i += 4) {
-			leaderboardTemp += " " + leaderboardArrayTemp[i] + " " + leaderboardArrayTemp[i + 1];
+        if (!leaderboardArrayTemp[0].equals("")) {
+			for (int i = 0; i < leaderboardArrayTemp.length; i += 4) {
+				leaderboardTemp += " " + leaderboardArrayTemp[i] + " " + leaderboardArrayTemp[i + 1];
+			}
+			sendMessage(client, leaderboardTemp);
 		}
-		sendMessage(client, leaderboardTemp);
 	}
 
 	/**

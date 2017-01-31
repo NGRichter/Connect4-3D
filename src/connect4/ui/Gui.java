@@ -381,6 +381,7 @@ public class Gui extends Application implements GameView, Initializable {
                 gameTools.setVisible(false);
                 readyBox.setDisable(false);
                 readyInfo.setVisible(false);
+                challengeBox.setDisable(false);
             }
         });
     }
