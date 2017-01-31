@@ -59,7 +59,7 @@ public class Gui extends Application implements GameView, Initializable {
 	@FXML
 	private PasswordField passwordField;
 	@FXML
-	private HBox connectBox, joinBox, lobbyTools, gameTools;
+	private HBox connectBox, joinBox, lobbyTools, gameTools, challengeControls;
 	@FXML
 	private VBox readyBox, challengeBox;
 	@FXML
@@ -162,6 +162,22 @@ public class Gui extends Application implements GameView, Initializable {
 		}
 	}
 
+	public void disconnect() {
+		writeServer("Disconnect");
+		client.stopClientGame();
+		client.serverDisconnected();
+		gameOver();
+		connectPane.toFront();
+		connectPane.setVisible(true);
+		gamePane.toBack();
+		gamePane.setVisible(false);
+	}
+
+	public void leave() {
+		writeServer("Leave");
+		client.stopClientGame();
+		gameOver();
+	}
 
 	public void leaderboard() {
 		writeServer("Leaderboard");
@@ -180,6 +196,7 @@ public class Gui extends Application implements GameView, Initializable {
 		writeServer("Ready " + playerAmount + " " + boardDim + " " + noRoof);
 		readyBox.setDisable(true);
 		challengeBox.setDisable(true);
+		readyInfo.setVisible(true);
 		readyInfo.setText("Waiting for other players to ready up...");
 	}
 
@@ -393,6 +410,7 @@ public class Gui extends Application implements GameView, Initializable {
                 readyBox.setDisable(false);
                 readyInfo.setVisible(false);
                 challengeBox.setDisable(false);
+                challengeControls.setDisable(true);
             }
         });
     }
@@ -421,19 +439,60 @@ public class Gui extends Application implements GameView, Initializable {
 
 	@Override
 	public void showChallenge(String challenge) {
-		if (challenge.equals("ChallengeDenied")) {
-			showMessage("The challenge has been denied by someone.");
-		} else {
-			String[] challenges = challenge.split(" ");
-			String challengeMsgNoRoof = String.format("Someone wants to challenge you: %s%nDimension: %s%nPlayers: %s%nWith no roof%nSend <Accept> to accept the challenge, <Deny> to deny the challenge.%n", challenges[4], challenges[1], challenges[2]);
-			String challengeMsg = String.format("Someone wants to challenge you: %s%nDimension: %s%nPlayers: %s%nWith roof%nSend <Accept> to accept the challenge, <Deny> to deny the challenge.%n", challenges[3], challenges[1], challenges[2]);
-			if (challenges[3].equals("NoRoof")) {
-				showMessage(challengeMsgNoRoof);
-			} else {
-				showMessage(challengeMsg);
-			}
-		}
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                showMessage("CHALLENGE RECEIVED");
+                if (!challenge.equals("ChallengeDenied")) {
+                    challengeControls.setDisable(false);
+                    String[] challenges = challenge.split(" ");
+                    if (challenges.length >= 3){
+                        String challengeMsg = String.format("You've been challenged: %s%nDimension:" +
+                                " %s%nPlayers: %s%nWith roof%n.-------", challenges[3], challenges[1], challenges[2]);
+                        showMessage(challengeMsg);
+                    } else if (challenges.length >= 4 && challenges[3].equals("NoRoof")){
+                        String challengeMsg = String.format("You've been challenged: %s%nDimension:" +
+                                " %s%nPlayers: %s%nWith no roof%n-------", challenges[4], challenges[1], challenges[2]);
+                        showMessage(challengeMsg);
+                    }
+                } else {
+                    showMessage("Challange has been denied.");
+                    gameOver();
+                }
+            }
+        });
 	}
+
+    public void challengePlayer(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                int playerAmount = 2;
+                int boardDim = 4;
+                String noRoof = "";
+                if (!(playerAmountField.getText().trim().isEmpty())) {
+                    playerAmount = Integer.parseInt(playerAmountField.getText());
+                }
+                if (!(boardDimField.getText().trim().isEmpty())) {
+                    boardDim = Integer.parseInt(boardDimField.getText());
+                }
+                if (!challengeNameField.getText().trim().isEmpty()) {
+                    writeServer("Challenge " + boardDim + " " + playerAmount + " " + noRoof + challengeNameField.getText());
+                    readyBox.setDisable(true);
+                    challengeBox.setDisable(true);
+                    readyInfo.setVisible(true);
+                    readyInfo.setText("Waiting for challenge response...");
+                }
+            }
+        });
+    }
+
+    public void acceptChallenge(){
+        writeServer("ChallengeAccept y");
+    }
+    public void denyChallenge() {
+        writeServer("ChallengeAccept n");
+    }
 
 	@Override
 	public void showLeaderboard(String leaderboard) {

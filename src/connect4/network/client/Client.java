@@ -97,7 +97,6 @@ public class Client {
 		}
 	}
 
-
 	public void letAIDoGame(boolean ai, int time) {
 		aiDoGame = ai;
 		thinkingtime = time;
@@ -116,7 +115,7 @@ public class Client {
 	}
 
 	public void setBoardDim(int dim) {
-		boardDim = dim;
+		this.boardDim = dim;
 	}
 
 	public void stopClientGame() {

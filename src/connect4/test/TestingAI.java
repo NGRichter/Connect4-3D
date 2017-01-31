@@ -15,11 +15,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-/**
- * Created by NickR on 26-1-2017.
- */
 public class TestingAI {
-
+/*
 	public static void main(String[] args) {
 
 		Leaderboard leaderboard = new Leaderboard("Serverdata\\Leaderboard.txt");
@@ -179,7 +176,7 @@ public class TestingAI {
 		*/
 
 	}
-
+/*
 	public static void drawBoard(Board board2) {
 		Board board = board2;
 		for (int i = 0; i < 5; i++) {
@@ -218,3 +215,4 @@ public class TestingAI {
 
 
 }
+*/
