@@ -61,11 +61,7 @@ public class MinimaxAlphaV2 extends Player {
 				return false;
 			}
 		}
-		if (players == 2 && nulls == 2) {
-			return true;
-		} else {
-			return false;
-		}
+		return players == 2 && nulls == 2;
 	}
 
 	public boolean threeSameOneNull(List<Player> check, Player player) {
@@ -80,11 +76,7 @@ public class MinimaxAlphaV2 extends Player {
 				return false;
 			}
 		}
-		if (players == 3 && nulls == 1) {
-			return true;
-		} else {
-			return false;
-		}
+		return players == 3 && nulls == 1;
 	}
 
 	public int threeInARow(Board board, Player player) {
@@ -369,10 +361,10 @@ public class MinimaxAlphaV2 extends Player {
 		int score = evaluate(game);
 		if (score == 1000) {
 			//System.out.println("I returned the max score");
-			return score - depth * 30;
+			return 1000 - depth * 30;
 		} else if (score == -1000) {
 			//System.out.println("I returned the min score");
-			return score + depth * 30;
+			return -1000 + depth * 30;
 		}
 		if (depth == maxDepth) return score;
 		if (isMax) {

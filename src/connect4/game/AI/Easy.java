@@ -1,6 +1,5 @@
 package connect4.game.AI;
 
-import connect4.exceptions.OutsidePlayingBoardException;
 import connect4.game.Game;
 import connect4.game.Player;
 
@@ -16,9 +15,9 @@ public class Easy implements Strategy {
 		int adjacent = random.nextInt(100);
 		if (adjacent < adjacentChance) {
 			int[] move = adjacent(game, player);
-				if (move[0] != -1) {
-					return move;
-				}
+			if (move[0] != -1) {
+				return move;
+			}
 		}
 		while (true) {
 			int x = random.nextInt(game.board.getDimX());

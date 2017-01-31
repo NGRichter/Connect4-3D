@@ -1,7 +1,9 @@
 package connect4.test;
 
-import connect4.exceptions.NoEmptySpotException;
-import connect4.game.*;
+import connect4.game.Board;
+import connect4.game.Game;
+import connect4.game.HumanPlayer;
+import connect4.game.Player;
 import javafx.scene.paint.Color;
 import org.junit.Before;
 import org.junit.Rule;
@@ -11,11 +13,13 @@ import org.junit.rules.ExpectedException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class GameTest {
 
-	@Rule public ExpectedException thrown = ExpectedException.none();
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	Board board;
 	Game game;
@@ -113,7 +117,7 @@ public class GameTest {
 		game.getBoard().setField(0, 0, player1);
 		game.getBoard().setField(0, 0, player1);
 		assertTrue(game.checkWinner() == player1);
-		game.getBoard().setFieldToNull(0,0);
+		game.getBoard().setFieldToNull(0, 0);
 		assertFalse(game.checkWinner() == player1);
 		assertTrue(game.checkWinner() == null);
 

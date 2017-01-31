@@ -22,8 +22,9 @@ public class Buffer {
 
 	/**
 	 * Reads one string from the buffer and sets isEmpty to true if it was the only string.
-	 * Will read at first index and remove the first index. 
+	 * Will read at first index and remove the first index.
 	 * All elements will be shifted to the left.
+	 *
 	 * @return String that was stored
 	 */
 	//@ requires !isEmpty; 
@@ -45,6 +46,7 @@ public class Buffer {
 
 	/**
 	 * Writes a String to the buffer, if it was empty before set isEmpty to false.
+	 *
 	 * @param string - The string you want to store in the buffer
 	 */
 	//@ ensures buffer.contains(string);
@@ -59,6 +61,7 @@ public class Buffer {
 
 	/**
 	 * Returns true if the buffer is empty, false if it is not.
+	 *
 	 * @return true if empty, false if not empty
 	 */
 	//@ ensures \result == buffer.isEmpty();

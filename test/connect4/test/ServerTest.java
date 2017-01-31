@@ -2,8 +2,6 @@ package connect4.test;
 
 import connect4.game.GameView;
 import connect4.network.client.Client;
-import connect4.network.server.Lobby;
-import connect4.network.server.Server;
 import connect4.network.server.ServerStarter;
 import connect4.ui.Tui;
 import org.junit.Before;
@@ -11,9 +9,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ServerTest {
 
@@ -85,8 +83,11 @@ public class ServerTest {
 		try {
 			client2.writeServer("Join Julian chat leaderboard challenge security");
 			client2.writeServer("Ready");
+			Thread.sleep(3000);
 			client.writeServer("Ready");
 		} catch (IOException e) {
+			fail();
+		} catch (InterruptedException e) {
 			fail();
 		}
 		//Sleep to make time for the server to process it. And for the person running this test to see if everything is alright.
@@ -103,13 +104,13 @@ public class ServerTest {
 		//It could be done by modifying the files to return something instead of void but this will take to much time
 		//and it will likely break the implementation.
 		try {
-			for(int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) {
 				client.writeServer("Move " + i + " " + 0);
-				Thread.sleep(1000);
+				Thread.sleep(2000);
 				client.writeServer("Move " + i + " " + 0);
-				Thread.sleep(1000);
+				Thread.sleep(2000);
 				client2.writeServer("Move " + i + " " + 2);
-				Thread.sleep(1000);
+				Thread.sleep(2000);
 			}
 
 		} catch (IOException e) {
@@ -130,12 +131,12 @@ public class ServerTest {
 			fail();
 		}
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			fail();
 		}
 		try {
-			for(int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) {
 				client.writeServer("Move " + i + " " + 0);
 				Thread.sleep(1000);
 				client.writeServer("Move " + i + " " + 0);
@@ -150,7 +151,7 @@ public class ServerTest {
 			fail();
 		}
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(8000);
 		} catch (InterruptedException e) {
 			fail();
 		}
@@ -170,7 +171,7 @@ public class ServerTest {
 		//Client2 also tries to login into the same account with another password
 		try {
 			client.writeServer("Security Nick Thisismypassword");
-			Thread.sleep(2000);
+			Thread.sleep(5000);
 			client2.writeServer("Security Nick Nottherightpassword");
 			Thread.sleep(5000);
 		} catch (IOException e) {
@@ -182,9 +183,9 @@ public class ServerTest {
 		//First he asks who he can challenge by the command GetPlayers
 		try {
 			client.writeServer("GetPlayers");
-			Thread.sleep(2000);
+			Thread.sleep(5000);
 			client.writeServer("Challenge 4 2 Julian");
-			Thread.sleep(2000);
+			Thread.sleep(5000);
 			client2.writeServer("ChallengeAccept y");
 			Thread.sleep(2000);
 		} catch (IOException e) {
@@ -197,7 +198,7 @@ public class ServerTest {
 		//They both go to the lobby again
 		try {
 			client2.writeServer("Leave");
-			Thread.sleep(2000);
+			Thread.sleep(5000);
 		} catch (IOException e) {
 			fail();
 		} catch (InterruptedException e) {
@@ -206,13 +207,13 @@ public class ServerTest {
 		//And now they want to chat a bit
 		try {
 			client2.writeServer("Chat Hey how are you doing?");
-			Thread.sleep(2000);
+			Thread.sleep(5000);
 			client.writeServer("Chat Hey, I am doing fine, and you?");
-			Thread.sleep(2000);
+			Thread.sleep(5000);
 			client2.writeServer("Chat Same, playing some board game called Connect4-3D or Score Four");
-			Thread.sleep(2000);
+			Thread.sleep(5000);
 			client.writeServer("Chat What a coincidence, me too");
-			Thread.sleep(2000);
+			Thread.sleep(5000);
 
 		} catch (IOException e) {
 			fail();
@@ -222,17 +223,16 @@ public class ServerTest {
 		//Another challenge but this time it is denied
 		try {
 			client.writeServer("GetPlayers");
-			Thread.sleep(2000);
+			Thread.sleep(3000);
 			client.writeServer("Challenge 4 2 Julian");
-			Thread.sleep(2000);
+			Thread.sleep(3000);
 			client2.writeServer("ChallengeAccept n");
-			Thread.sleep(2000);
+			Thread.sleep(5000);
 		} catch (IOException e) {
 			fail();
 		} catch (InterruptedException e) {
 			fail();
 		}
-
 
 
 	}

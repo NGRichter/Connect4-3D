@@ -1,161 +1,173 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.paint.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.Separator?>
+<?import javafx.scene.PerspectiveCamera?>
 <?import javafx.scene.text.Font?>
-<?import javafx.geometry.Insets?>
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="connect4.ui.Gui">
-   <children>
-      <Pane fx:id="connectPane" visible="false" StackPane.alignment="CENTER">
-         <children>
-               <VBox alignment="CENTER" prefHeight="720.0" prefWidth="1280.0" spacing="10.0" BorderPane.alignment="CENTER">
-                  <children>
-                     <Label alignment="CENTER" text="One client to rule them all." textAlignment="CENTER">
-                        <font>
-                           <Font size="18.0" />
-                        </font>
-                     </Label>
-                     <Separator prefWidth="200.0" />
-                     <HBox fx:id="connectBox" alignment="CENTER" prefHeight="28.0" prefWidth="600.0" spacing="10.0">
-                        <children>
-                           <Label text="IP:" />
-                           <TextField fx:id="ipField" promptText="ip-adress" text="localhost" />
-                           <Label text="Port:" />
-                           <TextField fx:id="portField" promptText="port" text="27015" />
-                        </children>
-                     </HBox>
-                     <HBox fx:id="joinBox" alignment="CENTER" layoutX="10.0" layoutY="27.0" prefHeight="28.0" prefWidth="600.0" spacing="10.0">
-                        <children>
-                           <Label text="Username:" />
-                           <TextField fx:id="usernameField" prefHeight="25.0" prefWidth="195.0" promptText="username" />
-                        </children>
-                     </HBox>
-                     <HBox fx:id="joinBox1" alignment="CENTER" layoutX="10.0" layoutY="263.0" prefHeight="28.0" prefWidth="600.0" spacing="10.0">
-                        <children>
-                           <Label prefHeight="17.0" prefWidth="55.0" text="Password:" />
-                           <PasswordField fx:id="passwordField" prefHeight="25.0" prefWidth="195.0" promptText="password" />
-                        </children>
-                     </HBox>
-                     <Button fx:id="connectButton" mnemonicParsing="false" onAction="#connect" prefHeight="25.0" prefWidth="69.0" text="Connect" />
-                  </children>
-               </VBox>
-         </children>
-      </Pane>
-      <BorderPane fx:id="gamePane" prefHeight="200.0" prefWidth="200.0">
-         <left>
-            <VBox prefHeight="720.0" prefWidth="320.0" spacing="5.0" BorderPane.alignment="CENTER">
-               <children>
-                  <TextArea fx:id="messageArea" editable="false" prefHeight="336.0" prefWidth="300.0" wrapText="true" />
-                  <TextArea fx:id="chatArea" editable="false" prefHeight="269.0" prefWidth="300.0" wrapText="true" VBox.vgrow="SOMETIMES" />
-                  <TextField fx:id="chatField" onAction="#sendChat" prefHeight="25.0" prefWidth="132.0" promptText="send chat message" VBox.vgrow="NEVER" />
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </VBox>
-         </left>
-         <bottom>
-            <HBox spacing="5.0" BorderPane.alignment="CENTER">
-               <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="705.0" spacing="10.0">
-                     <children>
-                        <Label fx:id="errorField" prefHeight="17.0" prefWidth="468.0" textFill="RED" />
-                        <Button mnemonicParsing="false" onAction="#leaderboard" text="Leaderboard" />
-                     </children>
-                  </HBox>
-                  <HBox fx:id="gameTools" alignment="CENTER" prefHeight="25.0" prefWidth="208.0" spacing="5.0">
-                     <children>
-                        <Separator orientation="VERTICAL" prefHeight="20.0" />
-                        <Button fx:id="moveButton" mnemonicParsing="false" onAction="#makeMove" text="Make move" />
-                        <TextField prefHeight="25.0" prefWidth="49.0" promptText="X" fx:id="xField" />
-                        <TextField fx:id="yField" prefHeight="25.0" prefWidth="49.0" promptText="Y" />
-                        <Separator orientation="VERTICAL" prefHeight="20.0" />
-                     </children>
-                  </HBox>
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </HBox>
-         </bottom>
-         <center>
-            <StackPane fx:id="centerPane" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Pane fx:id="boardPane" prefHeight="612.0" prefWidth="830.0" visible="false">
-                     <children>
-                        <PerspectiveCamera fx:id="camera" />
-                        <Group fx:id="boardGroup" translateX="475.0" translateY="325.0" />
-                     </children>
-                  </Pane>
-                  <Pane fx:id="lobbyPane" prefHeight="200.0" prefWidth="200.0" StackPane.alignment="CENTER">
-                     <children>
-                        <VBox alignment="CENTER" prefHeight="675.0" prefWidth="960.0" spacing="10.0">
-                           <children>
-                              <Label text="Lobby">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <Separator prefWidth="200.0" />
-                              <VBox fx:id="readyBox" alignment="CENTER" spacing="10.0">
-                                 <children>
-                                    <Label text="What game would you like to start?" />
-                                    <HBox alignment="CENTER" spacing="10.0">
-                                       <children>
-                                          <Label text="Amount of players:" />
-                                          <TextField fx:id="playerAmountField" prefHeight="25.0" prefWidth="79.0" promptText="default: 2" text="2" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" spacing="10.0">
-                                       <children>
-                                          <Label text="Board dimension:" />
-                                          <TextField fx:id="boardDimField" prefHeight="25.0" prefWidth="81.0" promptText="default: 4" text="4" />
-                                       </children>
-                                    </HBox>
-                                    <RadioButton fx:id="noRoofButton" disable="true" mnemonicParsing="false" text="No roof" />
-                                    <Button fx:id="readyButton" mnemonicParsing="false" onAction="#setReady" prefHeight="25.0" prefWidth="79.0" text="Ready!">
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Button>
-                                 </children>
-                              </VBox>
-                              <VBox fx:id="challengeBox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
-                                 <children>
-                                    <Label text="Enter a name to challenge someone using the rules defined above." />
-                                    <TextField fx:id="challengeNameField" alignment="CENTER" prefHeight="25.0" prefWidth="860.0" promptText="name or list of names, space seperated" />
-                                    <Button fx:id="challengeButton" mnemonicParsing="false" text="Challenge!" />
-                                 </children>
-                                 <padding>
-                                    <Insets left="200.0" right="200.0" />
-                                 </padding>
-                              </VBox>
-                              <Label fx:id="readyInfo" alignment="CENTER" contentDisplay="CENTER" prefHeight="33.0" prefWidth="604.0">
-                                 <VBox.margin>
-                                    <Insets top="50.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                     </children>
-                  </Pane>
-               </children>
-            </StackPane>
-         </center>
-      </BorderPane>
-   </children>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+           prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8"
+           fx:controller="connect4.ui.Gui">
+    <children>
+        <Pane fx:id="connectPane" visible="false" StackPane.alignment="CENTER">
+            <children>
+                <VBox alignment="CENTER" prefHeight="720.0" prefWidth="1280.0" spacing="10.0"
+                      BorderPane.alignment="CENTER">
+                    <children>
+                        <Label alignment="CENTER" text="One client to rule them all." textAlignment="CENTER">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Label>
+                        <Separator prefWidth="200.0"/>
+                        <HBox fx:id="connectBox" alignment="CENTER" prefHeight="28.0" prefWidth="600.0" spacing="10.0">
+                            <children>
+                                <Label text="IP:"/>
+                                <TextField fx:id="ipField" promptText="ip-adress" text="localhost"/>
+                                <Label text="Port:"/>
+                                <TextField fx:id="portField" promptText="port" text="27015"/>
+                            </children>
+                        </HBox>
+                        <HBox fx:id="joinBox" alignment="CENTER" layoutX="10.0" layoutY="27.0" prefHeight="28.0"
+                              prefWidth="600.0" spacing="10.0">
+                            <children>
+                                <Label text="Username:"/>
+                                <TextField fx:id="usernameField" prefHeight="25.0" prefWidth="195.0"
+                                           promptText="username"/>
+                            </children>
+                        </HBox>
+                        <HBox fx:id="joinBox1" alignment="CENTER" layoutX="10.0" layoutY="263.0" prefHeight="28.0"
+                              prefWidth="600.0" spacing="10.0">
+                            <children>
+                                <Label prefHeight="17.0" prefWidth="55.0" text="Password:"/>
+                                <PasswordField fx:id="passwordField" prefHeight="25.0" prefWidth="195.0"
+                                               promptText="password"/>
+                            </children>
+                        </HBox>
+                        <Button fx:id="connectButton" mnemonicParsing="false" onAction="#connect" prefHeight="25.0"
+                                prefWidth="69.0" text="Connect"/>
+                    </children>
+                </VBox>
+            </children>
+        </Pane>
+        <BorderPane fx:id="gamePane" prefHeight="200.0" prefWidth="200.0">
+            <left>
+                <VBox prefHeight="720.0" prefWidth="320.0" spacing="5.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <TextArea fx:id="messageArea" editable="false" prefHeight="336.0" prefWidth="300.0"
+                                  wrapText="true"/>
+                        <TextArea fx:id="chatArea" editable="false" prefHeight="269.0" prefWidth="300.0" wrapText="true"
+                                  VBox.vgrow="SOMETIMES"/>
+                        <TextField fx:id="chatField" onAction="#sendChat" prefHeight="25.0" prefWidth="132.0"
+                                   promptText="send chat message" VBox.vgrow="NEVER"/>
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    </padding>
+                </VBox>
+            </left>
+            <bottom>
+                <HBox spacing="5.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="705.0" spacing="10.0">
+                            <children>
+                                <Label fx:id="errorField" prefHeight="17.0" prefWidth="468.0" textFill="RED"/>
+                                <Button mnemonicParsing="false" onAction="#leaderboard" text="Leaderboard"/>
+                            </children>
+                        </HBox>
+                        <HBox fx:id="gameTools" alignment="CENTER" prefHeight="25.0" prefWidth="208.0" spacing="5.0">
+                            <children>
+                                <Separator orientation="VERTICAL" prefHeight="20.0"/>
+                                <Button fx:id="moveButton" mnemonicParsing="false" onAction="#makeMove"
+                                        text="Make move"/>
+                                <TextField prefHeight="25.0" prefWidth="49.0" promptText="X" fx:id="xField"/>
+                                <TextField fx:id="yField" prefHeight="25.0" prefWidth="49.0" promptText="Y"/>
+                                <Separator orientation="VERTICAL" prefHeight="20.0"/>
+                            </children>
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    </padding>
+                </HBox>
+            </bottom>
+            <center>
+                <StackPane fx:id="centerPane" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Pane fx:id="boardPane" prefHeight="612.0" prefWidth="830.0" visible="false">
+                            <children>
+                                <PerspectiveCamera fx:id="camera"/>
+                                <Group fx:id="boardGroup" translateX="475.0" translateY="325.0"/>
+                            </children>
+                        </Pane>
+                        <Pane fx:id="lobbyPane" prefHeight="200.0" prefWidth="200.0" StackPane.alignment="CENTER">
+                            <children>
+                                <VBox alignment="CENTER" prefHeight="675.0" prefWidth="960.0" spacing="10.0">
+                                    <children>
+                                        <Label text="Lobby">
+                                            <font>
+                                                <Font size="24.0"/>
+                                            </font>
+                                        </Label>
+                                        <Separator prefWidth="200.0"/>
+                                        <VBox fx:id="readyBox" alignment="CENTER" spacing="10.0">
+                                            <children>
+                                                <Label text="What game would you like to start?"/>
+                                                <HBox alignment="CENTER" spacing="10.0">
+                                                    <children>
+                                                        <Label text="Amount of players:"/>
+                                                        <TextField fx:id="playerAmountField" prefHeight="25.0"
+                                                                   prefWidth="79.0" promptText="default: 2" text="2"/>
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" spacing="10.0">
+                                                    <children>
+                                                        <Label text="Board dimension:"/>
+                                                        <TextField fx:id="boardDimField" prefHeight="25.0"
+                                                                   prefWidth="81.0" promptText="default: 4" text="4"/>
+                                                    </children>
+                                                </HBox>
+                                                <RadioButton fx:id="noRoofButton" disable="true" mnemonicParsing="false"
+                                                             text="No roof"/>
+                                                <Button fx:id="readyButton" mnemonicParsing="false" onAction="#setReady"
+                                                        prefHeight="25.0" prefWidth="79.0" text="Ready!">
+                                                    <VBox.margin>
+                                                        <Insets top="10.0"/>
+                                                    </VBox.margin>
+                                                </Button>
+                                            </children>
+                                        </VBox>
+                                        <VBox fx:id="challengeBox" alignment="CENTER" prefHeight="200.0"
+                                              prefWidth="100.0" spacing="10.0">
+                                            <children>
+                                                <Label text="Enter a name to challenge someone using the rules defined above."/>
+                                                <TextField fx:id="challengeNameField" alignment="CENTER"
+                                                           prefHeight="25.0" prefWidth="860.0"
+                                                           promptText="name or list of names, space seperated"/>
+                                                <Button fx:id="challengeButton" mnemonicParsing="false"
+                                                        text="Challenge!"/>
+                                            </children>
+                                            <padding>
+                                                <Insets left="200.0" right="200.0"/>
+                                            </padding>
+                                        </VBox>
+                                        <Label fx:id="readyInfo" alignment="CENTER" contentDisplay="CENTER"
+                                               prefHeight="33.0" prefWidth="604.0">
+                                            <VBox.margin>
+                                                <Insets top="50.0"/>
+                                            </VBox.margin>
+                                            <font>
+                                                <Font size="20.0"/>
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </Pane>
+                    </children>
+                </StackPane>
+            </center>
+        </BorderPane>
+    </children>
 </StackPane>
