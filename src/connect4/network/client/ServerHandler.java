@@ -119,15 +119,4 @@ public class ServerHandler extends Thread {
 		out.flush();
 	}
 
-	public Socket getSocket() {
-		return sock;
-	}
-
-	public BufferedReader getReader() {
-		return in;
-	}
-
-	public BufferedWriter getWriter() {
-		return out;
-	}
 }

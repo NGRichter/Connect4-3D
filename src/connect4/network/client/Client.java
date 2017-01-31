@@ -27,10 +27,6 @@ public class Client {
 	private int winCondition = 4;
 	private int thinkingtime;
 	private boolean noRoof;
-	private boolean isConnected;
-	private boolean inLobby;
-	private boolean isReady;
-	private boolean inGame;
 	private boolean aiDoGame;
 	private Color[] colors = {Color.DARKBLUE, Color.CYAN, Color.PINK, Color.PURPLE, Color.RED,
 				Color.ORANGE, Color.YELLOW, Color.DARKGREEN, Color.LIGHTGREEN, Color.BROWN};
@@ -120,36 +116,16 @@ public class Client {
 		server = null;
 	}
 
-	public int getBoardDim() {
-		return boardDim;
-	}
-
 	public void setBoardDim(int dim) {
 		this.boardDim = dim;
-	}
-
-	public int getWinCondition() {
-		return winCondition;
-	}
-
-	public void setWinCondition(int wincondition) {
-		this.winCondition = wincondition;
 	}
 
 	public void stopClientGame() {
 		game = null;
 	}
 
-	public boolean gameIsActive() {
-		return game != null;
-	}
-
 	public Game getGame() {
 		return game;
-	}
-
-	public boolean getAiDoGame() {
-		return aiDoGame;
 	}
 
 	public Player getAI() {

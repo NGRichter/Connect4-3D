@@ -55,7 +55,7 @@ public class ServerTest {
 		starter.start();
 		try {
 			Thread.sleep(1000);
-			client.connectServer(2019, InetAddress.getLocalHost());
+			client.connectServer(2018, InetAddress.getLocalHost());
 			Thread.sleep(1000);
 			client.writeServer("Join Nick chat leaderboard challenge security");
 			client.writeServer("NotAValidCommand");
