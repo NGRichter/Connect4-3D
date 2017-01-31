@@ -4,8 +4,11 @@ import connect4.bonus.Leaderboard;
 import connect4.bonus.Score;
 import connect4.exceptions.NoEmptySpotException;
 import connect4.exceptions.OutsidePlayingBoardException;
-import connect4.game.*;
 import connect4.game.AI.*;
+import connect4.game.Board;
+import connect4.game.ComputerPlayer;
+import connect4.game.Game;
+import connect4.game.Player;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -20,7 +23,7 @@ public class TestingAI {
 	public static void main(String[] args) {
 
 		Leaderboard leaderboard = new Leaderboard("Serverdata\\Leaderboard.txt");
-		Board board = new Board(4,4,4);
+		Board board = new Board(4, 4, 4);
 		Player minimaxV2 = new MinimaxAlphaV2("v2", Color.YELLOW);
 		Player minimaxV1 = new MinimaxAlpha("v1", Color.GREEN);
 		Strategy hardstrat = new Hard();
@@ -52,14 +55,14 @@ public class TestingAI {
 					miniv1.add((int) (end - begin));
 					//System.out.println("V1 took: " + (end - begin));
 					turns++;
-				} else if (game.getCurrentPlayer() == minimaxV2){
+				} else if (game.getCurrentPlayer() == minimaxV2) {
 					begin = System.currentTimeMillis();
 					xy = minimaxV2.determineMove(game, 6);
 					end = System.currentTimeMillis();
 					miniv2.add((int) (end - begin));
 					//System.out.println("V2 took: " + (end - begin));
 					turns++;
-				} else if (game.getCurrentPlayer() == hash){
+				} else if (game.getCurrentPlayer() == hash) {
 					begin = System.currentTimeMillis();
 					xy = hash.determineMove(game, 6);
 					end = System.currentTimeMillis();
@@ -179,10 +182,10 @@ public class TestingAI {
 
 	public static void drawBoard(Board board2) {
 		Board board = board2;
-		for (int i = 0; i < 5; i++){
+		for (int i = 0; i < 5; i++) {
 			System.out.println("+-------------------------------------------------------------------------+");
 		}
-		for (int z = (board.getDimZ()-1); z < board.getDimZ() && z >= 0; z--){
+		for (int z = (board.getDimZ() - 1); z < board.getDimZ() && z >= 0; z--) {
 			System.out.println("Layer: " + z + " out of " + (board.getDimZ() - 1));
 			String vertFrame = "\r\n+---+";
 			System.out.print("+---+");

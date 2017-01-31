@@ -1,6 +1,5 @@
 package connect4.network.client;
 
-import connect4.game.AI.MinimaxAlpha;
 import connect4.game.AI.MinimaxHash;
 import connect4.game.*;
 import connect4.ui.Gui;
@@ -29,7 +28,7 @@ public class Client {
 	private boolean noRoof;
 	private boolean aiDoGame;
 	private Color[] colors = {Color.DARKBLUE, Color.CYAN, Color.PINK, Color.PURPLE, Color.RED,
-				Color.ORANGE, Color.YELLOW, Color.DARKGREEN, Color.LIGHTGREEN, Color.BROWN};
+			Color.ORANGE, Color.YELLOW, Color.DARKGREEN, Color.LIGHTGREEN, Color.BROWN};
 	private List<Color> usedColors = new ArrayList<>();
 
 	public Client(GameView ui) {
@@ -44,8 +43,8 @@ public class Client {
 			tuiThread.start();
 			tui.setClient(client);
 		} else if (args.length == 1 && args[0].equals("gui")) {
-            Application.launch(Gui.class);
-        }
+			Application.launch(Gui.class);
+		}
 	}
 
 	public void startClientGame(List<String> usernames) {
@@ -87,10 +86,10 @@ public class Client {
 
 	}
 
-	public Color getRandomColor(){
-		int i = (int)(Math.random() * colors.length);
+	public Color getRandomColor() {
+		int i = (int) (Math.random() * colors.length);
 		Color color = colors[i];
-		if (!(usedColors.contains(color))){
+		if (!(usedColors.contains(color))) {
 			usedColors.add(color);
 			return color;
 		} else {
@@ -132,12 +131,12 @@ public class Client {
 		return AI;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getName() {
 		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public ServerHandler getServer() {

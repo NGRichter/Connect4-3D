@@ -13,6 +13,7 @@ public class Leaderboard {
 
 	/**
 	 * Makes a leaderboard that reads initial values from a storage file.
+	 *
 	 * @param path - path to the storage file
 	 */
 	public Leaderboard(String path) {
@@ -39,6 +40,7 @@ public class Leaderboard {
 	/**
 	 * Adds a score to the list.
 	 * Writes it to the file.
+	 *
 	 * @param score - score to be added
 	 */
 	//@ requires score != null;
@@ -60,6 +62,7 @@ public class Leaderboard {
 
 	/**
 	 * Makes a string consisting of the top N places.
+	 *
 	 * @param n - how many places you want
 	 * @return string with \r\n after every place
 	 */
@@ -82,6 +85,7 @@ public class Leaderboard {
 
 	/**
 	 * Makes a string consisting of the scores above a certain value N.
+	 *
 	 * @param n - the value which the scores should be above
 	 * @return string with \r\n after every place
 	 */
@@ -99,6 +103,7 @@ public class Leaderboard {
 
 	/**
 	 * Makes a string consisting of the scores below a certain value N.
+	 *
 	 * @param n - the value which the scores should be below
 	 * @return string with \r\n after every place
 	 */
@@ -116,6 +121,7 @@ public class Leaderboard {
 
 	/**
 	 * Returns an integer with the average score of all the scores.
+	 *
 	 * @return int of average score of all-time
 	 */
 	public int averageScore() {
@@ -130,6 +136,7 @@ public class Leaderboard {
 
 	/**
 	 * Returns an integer with the average score of all the scores of today.
+	 *
 	 * @return int of average score of today
 	 */
 	public int averageScoreToday() {
@@ -146,6 +153,7 @@ public class Leaderboard {
 
 	/**
 	 * Makes a string consisting of all the scores of today
+	 *
 	 * @return string with \r\n after every place
 	 */
 	public String scoresToday() {
@@ -161,6 +169,7 @@ public class Leaderboard {
 
 	/**
 	 * Makes a string with the best score of today.
+	 *
 	 * @return string of best score
 	 */
 	public String bestToday() {
@@ -175,6 +184,7 @@ public class Leaderboard {
 
 	/**
 	 * Makes a string with the best score of a person.
+	 *
 	 * @param name - name of person
 	 * @return string of best score of that person
 	 */
@@ -222,6 +232,7 @@ public class Leaderboard {
 
 	/**
 	 * Makes a string of all the scores ever made.
+	 *
 	 * @return string with \r\n after every place
 	 */
 	public String toString() {
@@ -234,6 +245,7 @@ public class Leaderboard {
 
 	/**
 	 * Calculates if the date is today.
+	 *
 	 * @param date - the date you want to know if it is today
 	 * @return true if it is today, false if it is not today
 	 */

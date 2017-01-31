@@ -1,9 +1,6 @@
 package connect4.game;
 
-import connect4.exceptions.OutsidePlayingBoardException;
 import javafx.scene.paint.Color;
-
-import java.util.Scanner;
 
 public class HumanPlayer extends Player {
 
@@ -13,7 +10,7 @@ public class HumanPlayer extends Player {
 
 	@Override
 	public int[] determineMove(Game game, int thinkingtime) {
-		int[] xy = {-1 , -1};
+		int[] xy = {-1, -1};
 		return xy;
 	}
 

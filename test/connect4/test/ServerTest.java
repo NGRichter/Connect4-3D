@@ -2,8 +2,6 @@ package connect4.test;
 
 import connect4.game.GameView;
 import connect4.network.client.Client;
-import connect4.network.server.Lobby;
-import connect4.network.server.Server;
 import connect4.network.server.ServerStarter;
 import connect4.ui.Tui;
 import org.junit.Before;
@@ -11,9 +9,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ServerTest {
 
@@ -103,7 +101,7 @@ public class ServerTest {
 		//It could be done by modifying the files to return something instead of void but this will take to much time
 		//and it will likely break the implementation.
 		try {
-			for(int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) {
 				client.writeServer("Move " + i + " " + 0);
 				Thread.sleep(1000);
 				client.writeServer("Move " + i + " " + 0);
@@ -135,7 +133,7 @@ public class ServerTest {
 			fail();
 		}
 		try {
-			for(int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) {
 				client.writeServer("Move " + i + " " + 0);
 				Thread.sleep(1000);
 				client.writeServer("Move " + i + " " + 0);
@@ -232,7 +230,6 @@ public class ServerTest {
 		} catch (InterruptedException e) {
 			fail();
 		}
-
 
 
 	}

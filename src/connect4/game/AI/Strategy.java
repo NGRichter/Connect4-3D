@@ -5,9 +5,9 @@ import connect4.game.Player;
 
 public interface Strategy {
 
-	public int[] determineMove(Game game, Player player);
+	int[] determineMove(Game game, Player player);
 
-	public int getWinChance();
+	int getWinChance();
 
-	public int getBlockChance();
+	int getBlockChance();
 }

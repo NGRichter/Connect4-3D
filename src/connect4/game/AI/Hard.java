@@ -1,6 +1,5 @@
 package connect4.game.AI;
 
-import connect4.exceptions.OutsidePlayingBoardException;
 import connect4.game.Game;
 import connect4.game.Player;
 
@@ -30,7 +29,7 @@ public class Hard implements Strategy {
 		while (true) {
 			int x = random.nextInt(game.board.getDimX());
 			int y = random.nextInt(game.board.getDimY());
-			int[] xy = {x,y};
+			int[] xy = {x, y};
 			return xy;
 		}
 	}

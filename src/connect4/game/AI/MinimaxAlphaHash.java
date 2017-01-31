@@ -13,11 +13,11 @@ import java.util.Random;
 
 public class MinimaxAlphaHash extends Player {
 
+	private final long[][][][] hashTable = new long[4][4][4][3];
+	private final Map<Long, Integer> hashMap;
+	private final Random random = new Random();
 	public Player player;
 	public Player opponent;
-	private long[][][][] hashTable = new long[4][4][4][3];
-	private Map<Long, Integer> hashMap;
-	private Random random = new Random();
 
 	public MinimaxAlphaHash(String name, Color colour) {
 		super(name, colour);
@@ -58,7 +58,7 @@ public class MinimaxAlphaHash extends Player {
 		for (int z = 0; z < 4; z++) {
 			for (int y = 0; y < 4; y++) {
 				for (int x = 0; x < 4; x++) {
-					if (board.getFields()[z][y][x] !=  null) {
+					if (board.getFields()[z][y][x] != null) {
 						h ^= hashTable[z][y][x][indexOfPlayer(board.getFields()[z][y][x])];
 					}
 				}
@@ -87,17 +87,17 @@ public class MinimaxAlphaHash extends Player {
 		}
 		int amount = 0;
 		if (game.checkWinner() == player) {
-			hashMap.put(computeHash(game.getBoard()) , 1000);
+			hashMap.put(computeHash(game.getBoard()), 1000);
 			return 1000;
 		} else if (game.checkWinner() == opponent) {
-			hashMap.put(computeHash(game.getBoard()) , -1000);
+			hashMap.put(computeHash(game.getBoard()), -1000);
 			return -1000;
 		}
 		int amountplayer = checkIfThreeInARow(game.board, player);
 		int amountopponent = checkIfThreeInARow(game.board, opponent);
 		amount += amountplayer * 100;
 		amount += amountopponent * -100;
-		hashMap.put(computeHash(game.getBoard()) , amount);
+		hashMap.put(computeHash(game.getBoard()), amount);
 		return amount;
 
 	}

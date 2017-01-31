@@ -1,6 +1,5 @@
 package connect4.game;
 
-import connect4.exceptions.OutsidePlayingBoardException;
 import connect4.game.AI.Strategy;
 import javafx.scene.paint.Color;
 
@@ -12,8 +11,9 @@ public class ComputerPlayer extends Player {
 
 	/**
 	 * Makes a computerplayer that will play using a given strategy.
-	 * @param name - Name of the computerplayer
-	 * @param colour - The colour of the computerplayer
+	 *
+	 * @param name     - Name of the computerplayer
+	 * @param colour   - The colour of the computerplayer
 	 * @param strategy - The strategy of the computerplayer
 	 */
 
@@ -25,6 +25,7 @@ public class ComputerPlayer extends Player {
 
 	/**
 	 * Determines the index of the place the computerplayer wants to play.
+	 *
 	 * @param game - The game in which the computer player plays
 	 * @return index at which the computerplayer wants to play
 	 */

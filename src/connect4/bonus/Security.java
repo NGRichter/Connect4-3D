@@ -10,24 +10,25 @@ import java.util.Map;
 
 public class Security {
 
-	private Map<String, String> accounts = new HashMap<String, String>();
+	private final Map<String, String> accounts = new HashMap<String, String>();
 	private BufferedReader reader;
 	private FileWriter writer;
 
 	/**
 	 * Makes a new security object which reads all data from a storage file and puts it in a map.
+	 *
 	 * @param path - path to the storage file
 	 */
 	public Security(String path) {
 		try {
 			File file = new File(path);
 			file.mkdir();
-			writer = new FileWriter(file, true);
-			reader = new BufferedReader(new FileReader(file));
+			this.writer = new FileWriter(file, true);
+			this.reader = new BufferedReader(new FileReader(file));
 			String temp;
-			while ((temp = reader.readLine()) != null) {
+			while ((temp = this.reader.readLine()) != null) {
 				String[] temp2 = temp.split(" ");
-				accounts.put(temp2[0], temp2[1]);
+				this.accounts.put(temp2[0], temp2[1]);
 			}
 		} catch (IOException e) {
 
@@ -37,6 +38,7 @@ public class Security {
 
 	/**
 	 * Registers a username and password, writes it to the storage file.
+	 *
 	 * @param username - username that you want registered
 	 * @param password - password you want registered
 	 */
@@ -46,13 +48,13 @@ public class Security {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			byte[] bytearray = md.digest(saltedPassword.getBytes());
-			accounts.put(username, Hex.encodeHexString(bytearray));
-			if (accounts.size() == 1) {
-				writer.write(username + " " + Hex.encodeHexString(bytearray));
-				writer.flush();
+			this.accounts.put(username, Hex.encodeHexString(bytearray));
+			if (this.accounts.size() == 1) {
+				this.writer.write(username + " " + Hex.encodeHexString(bytearray));
+				this.writer.flush();
 			} else {
-				writer.write("\r\n" + username + " " + Hex.encodeHexString(bytearray));
-				writer.flush();
+				this.writer.write("\r\n" + username + " " + Hex.encodeHexString(bytearray));
+				this.writer.flush();
 			}
 
 		} catch (NoSuchAlgorithmException e) {
@@ -65,27 +67,24 @@ public class Security {
 	/**
 	 * Verifies if the username and password specified is the same as stored.
 	 * If username is not stored yet register the user.
+	 *
 	 * @param username
 	 * @param password
 	 * @return true if successfully logged in or registered, false if password is not the same as stored
 	 */
 	//@ requires username != null && password != null;
 	public boolean login(String username, String password) {
-		if (accounts.containsKey(username)) {
+		if (this.accounts.containsKey(username)) {
 			String saltedPassword = password + username + username.substring(0, 1);
 			try {
 				MessageDigest md = MessageDigest.getInstance("SHA-256");
 				byte[] bytearray = md.digest(saltedPassword.getBytes());
-				if (accounts.get(username).equals(Hex.encodeHexString(bytearray))) {
-					return true;
-				} else {
-					return false;
-				}
+				return this.accounts.get(username).equals(Hex.encodeHexString(bytearray));
 			} catch (NoSuchAlgorithmException e) {
 				return false;
 			}
 		} else {
-			register(username, password);
+			this.register(username, password);
 			return true;
 		}
 	}

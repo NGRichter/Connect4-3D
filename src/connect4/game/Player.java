@@ -1,13 +1,11 @@
 package connect4.game;
 
-import connect4.exceptions.NoEmptySpotException;
-import connect4.exceptions.OutsidePlayingBoardException;
 import javafx.scene.paint.Color;
 
 public abstract class Player {
 
-	private String name;
-	private Color colour;
+	private final String name;
+	private final Color colour;
 
 	public Player(String name, Color colour) {
 		this.name = name;

@@ -79,7 +79,7 @@ public class ServerStarter extends Thread {
 
 	//We could do no system test without it being a thread
 	public void run() {
-		main(new String[] {port});
+		main(new String[]{port});
 	}
 
 }

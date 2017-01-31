@@ -9,10 +9,10 @@ import java.util.Observable;
 
 public class Game extends Observable {
 
+	private final List<Player> players = new ArrayList<Player>();
+	private final int winCondition;
 	public Board board;
-	private List<Player> players = new ArrayList<Player>();
-	private int playerIndex = 0;
-	private int winCondition;
+	private int playerIndex;
 
 	/**
 	 * Defines a game with a board, players, and win condition.
@@ -51,11 +51,7 @@ public class Game extends Observable {
 	 */
 	public boolean isWinner(Player player) {
 		Player winner = checkWinner();
-		if (winner == player) {
-			return true;
-		} else {
-			return false;
-		}
+		return winner == player;
 	}
 
 	public void makeNextMove(int x, int y) throws NoEmptySpotException, OutsidePlayingBoardException {
@@ -263,7 +259,7 @@ public class Game extends Observable {
 	/**
 	 * Checks what the next move for the player would be if there is a winning move.
 	 *
-	 * @param player - player to check move for
+	 * @param player    - player to check move for
 	 * @param condition - win condition of the game
 	 * @return coordinates of a winning move or {-1,-1} if none
 	 */

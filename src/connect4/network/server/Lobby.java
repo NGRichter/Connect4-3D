@@ -5,10 +5,10 @@ import java.util.List;
 
 public class Lobby extends Thread {
 
+	public final Server server;
 	private List<ClientHandler> clients;
 	private List<ClientHandler> ready;
 	private List<ClientHandler> inGame;
-	public final Server server;
 
 	//@ invariant !clients.contains(null);
 	//@ invariant !ready.contains(null);
@@ -24,6 +24,7 @@ public class Lobby extends Thread {
 	/**
 	 * Adds a client to the list of clients that are in game
 	 * Removes them from the lobby list and ready list
+	 *
 	 * @param game - the client that starts a game
 	 */
 	//@ requires game != null;
@@ -37,6 +38,7 @@ public class Lobby extends Thread {
 	/**
 	 * If a client goes out of a game remove them from the game list
 	 * and put the client into the lobby list.
+	 *
 	 * @param client - The client that just ended a game
 	 */
 	//@ requires client != null;
@@ -49,6 +51,7 @@ public class Lobby extends Thread {
 	/**
 	 * If a client is ready to start a game but something happened
 	 * and the client has to go out of the ready list.
+	 *
 	 * @param client - The client that has to go out of the ready list
 	 */
 	//@ requires client != null;
@@ -59,6 +62,7 @@ public class Lobby extends Thread {
 
 	/**
 	 * If a client joins the server this command places him in the lobby.
+	 *
 	 * @param client - The client that wants to connect
 	 */
 	//@ requires client != null;
@@ -71,6 +75,7 @@ public class Lobby extends Thread {
 
 	/**
 	 * If a client wants to play a game, put the client into the ready list.
+	 *
 	 * @param client - The client who wants to play a game
 	 */
 	//@ requires clients.contains(client) && client != null;
@@ -84,6 +89,7 @@ public class Lobby extends Thread {
 	/**
 	 * If a clients disconnects or wants to disconnect
 	 * this method will remove the client from the lists.
+	 *
 	 * @param client - The client that disconnects/wants to disconnect
 	 */
 	//@ requires client != null;
@@ -128,6 +134,7 @@ public class Lobby extends Thread {
 		}
 
 	}
+
 	/**
 	 * This thread tries to start games every 1 second.
 	 * It sleeps after every time to reduce CPU usage.

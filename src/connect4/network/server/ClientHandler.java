@@ -38,8 +38,9 @@ public class ClientHandler extends Thread {
 
 	/**
 	 * Makes a new client with all values at their default.
+	 *
 	 * @param lobby - The lobby
-	 * @param sock - The socket (connection between server and client)
+	 * @param sock  - The socket (connection between server and client)
 	 */
 	public ClientHandler(Lobby lobby, Socket sock) {
 		this.lobby = lobby;
@@ -101,6 +102,7 @@ public class ClientHandler extends Thread {
 
 	/**
 	 * Writes the message given to the client.
+	 *
 	 * @param string - The message you want to send to the client
 	 * @throws IOException - If the connection is lost
 	 */
@@ -109,12 +111,13 @@ public class ClientHandler extends Thread {
 		out.newLine();
 		out.flush();
 	}
-/**
- * The below methods are all getters and setter except for the last one.
- * Some methods do not take an argument but set something to true (or false),
- * this is because those values once true should always be true.
- * All getters are //@pure and all setters should have //@ensures variable == true/false/argument.
- */
+
+	/**
+	 * The below methods are all getters and setter except for the last one.
+	 * Some methods do not take an argument but set something to true (or false),
+	 * this is because those values once true should always be true.
+	 * All getters are //@pure and all setters should have //@ensures variable == true/false/argument.
+	 */
 	public void loggedIn() {
 		loggedIn = true;
 	}
@@ -247,12 +250,12 @@ public class ClientHandler extends Thread {
 		return buffer;
 	}
 
-	public void setChallengeGame(Challenge challenge) {
-		this.challengeGame = challenge;
-	}
-
 	public Challenge getChallengeGame() {
 		return challengeGame;
+	}
+
+	public void setChallengeGame(Challenge challenge) {
+		this.challengeGame = challenge;
 	}
 
 	public boolean getHasBeenChallenged() {
@@ -265,6 +268,7 @@ public class ClientHandler extends Thread {
 
 	/**
 	 * Makes a player to use in games and sets the username to the name.
+	 *
 	 * @param name - The name the clients wants
 	 */
 	//@ requires name != null;

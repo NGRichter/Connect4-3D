@@ -1,12 +1,12 @@
 package connect4.network.server;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import connect4.bonus.Challenge;
 import connect4.bonus.Leaderboard;
 import connect4.bonus.Security;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Server extends Thread {
 
@@ -35,7 +35,7 @@ public class Server extends Thread {
 		while (true) {
 
 			long endTime = System.currentTimeMillis();
-			if(endTime - beginTime >= 60000) {
+			if (endTime - beginTime >= 60000) {
 				if (clients.size() == 1) {
 					System.out.println("1 client is currently connected.");
 				} else {
@@ -105,7 +105,7 @@ public class Server extends Thread {
 						} else if (command[0].equals("GetPlayers")) {
 							getPlayersCommand(client);
 
-						//Used only by our client, to see everybody that is in the lobby and in game
+							//Used only by our client, to see everybody that is in the lobby and in game
 						} else if (command[0].equals("GetAllPlayers")) {
 							getAllPlayersCommand(client);
 
@@ -154,6 +154,7 @@ public class Server extends Thread {
 
 	/**
 	 * Sends a client the leaderboard.
+	 *
 	 * @param client - The client
 	 */
 	public void leaderboardCommand(ClientHandler client) {
@@ -168,7 +169,8 @@ public class Server extends Thread {
 
 	/**
 	 * Send all clients with the chat command the chat message.
-	 * @param client - The client
+	 *
+	 * @param client  - The client
 	 * @param command - String[] with words
 	 */
 	public void chatCommand(ClientHandler client, String[] command) {
@@ -185,6 +187,7 @@ public class Server extends Thread {
 
 	/**
 	 * Gives the client a hint if it is his turn.
+	 *
 	 * @param client - The client
 	 */
 	public void hintCommand(ClientHandler client) {
@@ -195,7 +198,8 @@ public class Server extends Thread {
 
 	/**
 	 * Makes a move if it is the clients turn.
-	 * @param client - The client
+	 *
+	 * @param client  - The client
 	 * @param command - String[] with x and y values
 	 */
 	public void moveCommand(ClientHandler client, String[] command) {
@@ -214,6 +218,7 @@ public class Server extends Thread {
 
 	/**
 	 * If a client is in a game make it leave.
+	 *
 	 * @param client - The client
 	 */
 	public void leaveCommand(ClientHandler client) {
@@ -226,13 +231,14 @@ public class Server extends Thread {
 
 	/**
 	 * Used only by our implementation, gives back all information about players in the server.
+	 *
 	 * @param client - The client
 	 */
 	public void getAllPlayersCommand(ClientHandler client) {
 		String players = "AllPlayers";
 		for (ClientHandler player : clients) {
 			if (player.getInLobby()) {
-				players +=  " " + player.getUserName();
+				players += " " + player.getUserName();
 			}
 		}
 		players += " Game";
@@ -246,13 +252,14 @@ public class Server extends Thread {
 
 	/**
 	 * Gives back all the players the client can challenge.
+	 *
 	 * @param client - The client
 	 */
 	public void getPlayersCommand(ClientHandler client) {
 		String players = "Players";
 		for (ClientHandler player : clients) {
 			if (player.getChallenge() && !player.getInGame() && !player.getHasBeenChallenged()) {
-				players +=  " " + player.getUserName();
+				players += " " + player.getUserName();
 			}
 		}
 		sendMessage(client, players);
@@ -260,8 +267,9 @@ public class Server extends Thread {
 
 	/**
 	 * Accepts the challenge from another client.
+	 *
 	 * @param client - The Client
-	 * @param s - String containing y(es) or n(o).
+	 * @param s      - String containing y(es) or n(o).
 	 */
 	public void challengeAcceptCommand(ClientHandler client, String s) {
 		try {
@@ -286,7 +294,8 @@ public class Server extends Thread {
 
 	/**
 	 * If a client wants to challenge someone.
-	 * @param client - The client
+	 *
+	 * @param client  - The client
 	 * @param command - String[] with dimension amount of players and all the players
 	 */
 	public void challengeCommand(ClientHandler client, String[] command) {
@@ -347,7 +356,8 @@ public class Server extends Thread {
 
 	/**
 	 * If a client wants to start a game with optional parameters
-	 * @param client - The client
+	 *
+	 * @param client  - The client
 	 * @param command - String[] with optional parameters
 	 */
 	public void readyCommand(ClientHandler client, String[] command) {
@@ -387,7 +397,8 @@ public class Server extends Thread {
 
 	/**
 	 * If a client wants to log in or register.
-	 * @param client - The client
+	 *
+	 * @param client  - The client
 	 * @param command - String[] with username and password
 	 */
 	public void securityCommand(ClientHandler client, String[] command) {
@@ -406,6 +417,7 @@ public class Server extends Thread {
 
 	/**
 	 * If a client wants to disconnect from the server
+	 *
 	 * @param client - The client
 	 */
 	public void disconnectCommand(ClientHandler client) {
@@ -419,7 +431,8 @@ public class Server extends Thread {
 
 	/**
 	 * If a client has connected to the server and wants to join the lobby
-	 * @param client - The client
+	 *
+	 * @param client  - The client
 	 * @param command - String[] with optional bonus features
 	 */
 	public void joinCommand(ClientHandler client, String[] command) {
@@ -459,6 +472,7 @@ public class Server extends Thread {
 
 	/**
 	 * Send an error message to the System.err console.
+	 *
 	 * @param error - String with error message
 	 */
 	public void showError(String error) {
@@ -467,6 +481,7 @@ public class Server extends Thread {
 
 	/**
 	 * Send an message to the normal server console.
+	 *
 	 * @param message - String with message
 	 */
 	public void showMessage(String message) {
@@ -475,7 +490,8 @@ public class Server extends Thread {
 
 	/**
 	 * Send an error message to the client.
-	 * @param client - The client you want to send an error message to
+	 *
+	 * @param client    - The client you want to send an error message to
 	 * @param errorCode - The error message to want to send
 	 */
 	//@ requires client != null;
@@ -489,7 +505,8 @@ public class Server extends Thread {
 
 	/**
 	 * Send a message to a client.
-	 * @param client - The client you want to send an error message to
+	 *
+	 * @param client  - The client you want to send an error message to
 	 * @param message - The message to want to send
 	 */
 	//@ requires client != null;
@@ -504,6 +521,7 @@ public class Server extends Thread {
 	/**
 	 * Adds a client to the list of clients
 	 * Used by the ServerStarter
+	 *
 	 * @param client - The client you want to add
 	 */
 	//@ requires client != null;
@@ -518,6 +536,7 @@ public class Server extends Thread {
 	 * If you want a client removed you use this method.
 	 * It will remove the client when the server is not busy
 	 * scrolling through the clients.
+	 *
 	 * @param client - The client you want removed
 	 */
 	//@ requires client != null;

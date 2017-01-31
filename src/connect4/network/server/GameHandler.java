@@ -26,9 +26,10 @@ public class GameHandler extends Thread {
 
 	/**
 	 * Makes a new Game.
-	 * @param clients - The list of clients that are going to play the game
-	 * @param dimension - The dimensions of the game
-	 * @param noroof - True if clients want no roof, false if they are the dimension as the roof
+	 *
+	 * @param clients      - The list of clients that are going to play the game
+	 * @param dimension    - The dimensions of the game
+	 * @param noroof       - True if clients want no roof, false if they are the dimension as the roof
 	 * @param winCondition - The win condition of the game (default = 4)
 	 */
 	//@ requires \forall int i; i >= 0 && i < clients.size(); clients.get(i) != null;
@@ -54,6 +55,7 @@ public class GameHandler extends Thread {
 
 	/**
 	 * Returns the game object.
+	 *
 	 * @return Game - Game object
 	 */
 	//@ ensures game != null;
@@ -63,6 +65,7 @@ public class GameHandler extends Thread {
 
 	/**
 	 * Sets a boolean to true so the thread knows the current client wants a hint.
+	 *
 	 * @param client - The client that asks for a hint
 	 */
 	//@ requires client == next;
@@ -108,6 +111,7 @@ public class GameHandler extends Thread {
 	/**
 	 * When a client disconnects or leaves this method is called.
 	 * It will send every client a message saying that the game ended.
+	 *
 	 * @param disconnect - Client that disconnected
 	 */
 	//@ requires disconnect != null;
@@ -128,6 +132,7 @@ public class GameHandler extends Thread {
 
 	/**
 	 * When the game is over this method will tell everyone who the winner is or if it is a draw.
+	 *
 	 * @param winner - String with the username of the winner or "Draw" if a draw
 	 */
 	//@ requires winner != null;
@@ -162,9 +167,10 @@ public class GameHandler extends Thread {
 
 	/**
 	 * Method used by the server to set nextMove[] to the next move.
-	 * Will only change it if it is the client's turn. 
-	 * @param x - The x value of the move
-	 * @param y - The y value of the move
+	 * Will only change it if it is the client's turn.
+	 *
+	 * @param x      - The x value of the move
+	 * @param y      - The y value of the move
 	 * @param client - The client that wants to make a move
 	 */
 	//@ requires client == next && x >= 0 && y >= 0;
@@ -190,6 +196,7 @@ public class GameHandler extends Thread {
 
 	/**
 	 * This method will notify all clients of the recent move.
+	 *
 	 * @param x - The x value of the move
 	 * @param y - The y value of the move
 	 */
@@ -242,7 +249,7 @@ public class GameHandler extends Thread {
 				try {
 					if (wantHint) {
 						foundHint:
-						for(int o= 0; o < game.getWinCondition() - 1; o++) {
+						for (int o = 0; o < game.getWinCondition() - 1; o++) {
 							int[] winningMove = game.winningMove(next.getPlayer(), game.getWinCondition() - o);
 							if (winningMove[0] != -1) {
 								try {

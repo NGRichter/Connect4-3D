@@ -14,15 +14,15 @@ public class Challenge extends Thread {
 	private /*@ spec_public @*/ Map<ClientHandler, Boolean> clients;
 	private int dimension;
 	private boolean noRoof;
-	private ClientHandler challenger;
-	private boolean terminate = false;
+	private boolean terminate;
 
 	/**
 	 * Makes a new challenge.
 	 * Will start a game if all challenged clients accepted.
-	 * @param clients - List of clients that are challenged
-	 * @param dimension - Dimension of game
-	 * @param noRoof - If the game should have a roof
+	 *
+	 * @param clients    - List of clients that are challenged
+	 * @param dimension  - Dimension of game
+	 * @param noRoof     - If the game should have a roof
 	 * @param challenger - The client that has challenged the others
 	 */
 	public Challenge(List<ClientHandler> clients, int dimension, boolean noRoof, ClientHandler challenger) {
@@ -58,7 +58,6 @@ public class Challenge extends Thread {
 		challenger.setHasBeenChallenged(true);
 		this.dimension = dimension;
 		this.noRoof = noRoof;
-		this.challenger = challenger;
 	}
 
 	/**
@@ -69,7 +68,7 @@ public class Challenge extends Thread {
 		while (!terminate) {
 			boolean allReady = true;
 			try {
-				sleep(250);
+				Thread.sleep(250);
 			} catch (InterruptedException e) {
 			}
 			for (ClientHandler client : clients.keySet()) {
@@ -93,6 +92,7 @@ public class Challenge extends Thread {
 
 	/**
 	 * If a client has accepted the challenge this will set a value to true.
+	 *
 	 * @param accept - The client that has accepted
 	 */
 	//@ requires accept != null;
@@ -110,6 +110,7 @@ public class Challenge extends Thread {
 	/**
 	 * If a client has denied the challenge this will send everyone a message saying the challenge has been cancelled.
 	 * It will terminate this thread.
+	 *
 	 * @param denied - The client that denied the challenge
 	 */
 	//@ requires denied != null;
