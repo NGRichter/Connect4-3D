@@ -108,7 +108,7 @@ public class Client {
 	}
 
 	public void setNoRoof(boolean noroof) {
-		this.noRoof = noroof;
+		noRoof = noroof;
 	}
 
 	public void serverDisconnected() {
@@ -116,7 +116,7 @@ public class Client {
 	}
 
 	public void setBoardDim(int dim) {
-		this.boardDim = dim;
+		boardDim = dim;
 	}
 
 	public void stopClientGame() {

@@ -1,5 +1,7 @@
 package connect4.test;
 
+import connect4.exceptions.NoEmptySpotException;
+import connect4.exceptions.OutsidePlayingBoardException;
 import connect4.game.Board;
 import connect4.game.HumanPlayer;
 import connect4.game.Player;
@@ -9,6 +11,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class BoardTest {
 
@@ -53,7 +56,7 @@ public class BoardTest {
 		assertTrue(board.getField(0, 0, 0) == player);
 	}
 
-	//Tests if the esEmpty method will return true if the board is empty or false if not
+	//Tests if the isEmpty method will return true if the board is empty or false if not
 	@Test
 	public void isEmpty() throws Exception {
 		assertTrue(board.isEmpty());
@@ -61,6 +64,32 @@ public class BoardTest {
 		assertFalse(board.isEmpty());
 		board.setFieldToNull(0, 0);
 		assertTrue(board.isEmpty());
+	}
+
+	@Test
+	public void exceptions() throws Exception {
+		try {
+			board.setField(-1, -1, player);
+			fail();
+		} catch (OutsidePlayingBoardException e) {
+			try {
+				board.setField(4, 4, player);
+				fail();
+			} catch (OutsidePlayingBoardException i) {
+				try {
+					board.setField(0, 0, player);
+					board.setField(0, 0, player);
+					board.setField(0, 0, player);
+					board.setField(0, 0, player);
+					board.setField(0, 0, player);
+					fail();
+				} catch (NoEmptySpotException o) {
+
+				}
+			}
+		}
+
+
 	}
 
 }
