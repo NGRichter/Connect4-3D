@@ -1,0 +1,8 @@
+connect4.bonus
+connect4.exceptions
+connect4.game
+connect4.game.AI
+connect4.network.client
+connect4.network.server
+connect4.test
+connect4.ui
