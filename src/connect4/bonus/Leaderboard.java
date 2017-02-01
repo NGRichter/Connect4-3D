@@ -28,7 +28,13 @@ public class Leaderboard {
 				String[] temp2 = temp.split(" ");
 				String[] temp3 = temp2[2].split("/");
 				String[] temp4 = temp2[3].split(":");
-				Score score = new Score(Integer.parseInt(temp3[2]), Integer.parseInt(temp3[1]), Integer.parseInt(temp3[0]), Integer.parseInt(temp4[0]), Integer.parseInt(temp4[1]), Integer.parseInt(temp2[1]), temp2[0]);
+				Score score = new Score(Integer.parseInt(temp3[2]), 
+						Integer.parseInt(temp3[1]), 
+						Integer.parseInt(temp3[0]), 
+						Integer.parseInt(temp4[0]), 
+						Integer.parseInt(temp4[1]), 
+						Integer.parseInt(temp2[1]), 
+						temp2[0]);
 				scores.add(score);
 			}
 			reader.close();

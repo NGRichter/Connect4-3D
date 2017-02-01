@@ -344,7 +344,7 @@ public class Tui implements GameView {
 				System.out.println("Invalid number");
 			}
 		} else if (cmdlength == 4) {
-			writeServer("Ready " + command[1] + " " + command[2] + " " + command[3]);
+			writeServer("Ready " + command[1] + " " + command[2] + " NoRoof");
 			try {
 				client.setBoardDim(Integer.parseInt(command[2]));
 				if (command[3].equals("noroof")) {

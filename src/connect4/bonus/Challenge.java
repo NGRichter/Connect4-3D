@@ -25,7 +25,10 @@ public class Challenge extends Thread {
 	 * @param noRoof     - If the game should have a roof
 	 * @param challenger - The client that has challenged the others
 	 */
-	public Challenge(List<ClientHandler> clients, int dimension, boolean noRoof, ClientHandler challenger) {
+	public Challenge(List<ClientHandler> clients, 
+			int dimension, 
+			boolean noRoof, 
+			ClientHandler challenger) {
 		System.out.println("Challenge created by " + challenger.getUserName());
 		this.clients = new HashMap<>();
 		this.clients.put(challenger, true);
@@ -35,7 +38,10 @@ public class Challenge extends Thread {
 			client.setHasBeenChallenged(true);
 			try {
 				if (noRoof) {
-					client.handleOutput("ChallengeRequest " + dimension + " " + (clients.size() + 1) + " NoRoof " + challenger.getUserName());
+					client.handleOutput("ChallengeRequest " + 
+				dimension + " " + (
+						clients.size() + 1) + 
+				" NoRoof " + challenger.getUserName());
 				} else {
 					client.handleOutput("ChallengeRequest " + dimension + " " + (clients.size() + 1) + " " + challenger.getUserName());
 				}
