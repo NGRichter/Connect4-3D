@@ -94,7 +94,10 @@ public class ClientHandler extends Thread {
 
 				break;
 			}
-			buffer.writeBuffer(temp);
+			if (temp != null) {
+				buffer.writeBuffer(temp);
+			}
+
 
 
 		}
