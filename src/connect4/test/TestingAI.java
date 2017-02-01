@@ -1,20 +1,5 @@
 package connect4.test;
 
-import connect4.bonus.Leaderboard;
-import connect4.bonus.Score;
-import connect4.exceptions.NoEmptySpotException;
-import connect4.exceptions.OutsidePlayingBoardException;
-import connect4.game.AI.*;
-import connect4.game.Board;
-import connect4.game.ComputerPlayer;
-import connect4.game.Game;
-import connect4.game.Player;
-import javafx.scene.paint.Color;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
 public class TestingAI {
 /*
 	public static void main(String[] args) {
@@ -175,7 +160,7 @@ public class TestingAI {
 		}
 		*/
 
-	}
+}
 /*
 	public static void drawBoard(Board board2) {
 		Board board = board2;

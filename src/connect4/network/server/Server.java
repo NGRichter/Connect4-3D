@@ -10,6 +10,20 @@ import java.util.List;
 
 public class Server extends Thread {
 
+	private final String DISCONNECT = "Disconnect";
+	private final String JOIN = "Join";
+	private final String GETPLAYERS = "GetPlayers";
+	private final String GETALLPLAYERS = "GetAllPlayers";
+	private final String LEAVE = "Leave";
+	private final String LEADERBOARD = "Leaderboard";
+	private final String CHALLENGE = "Challenge";
+	private final String CHALLENGEACCEPT = "ChallengeAccept";
+	private final String CHAT = "Chat";
+	private final String READY = "Ready";
+	private final String SECURITY = "Security";
+	private final String HINT = "Hint";
+	private final String MOVE = "Move";
+
 	private final String ACCOUNTS_FILE_PATH = "Serverdata\\Accounts.txt";
 	private final String LEADERBOARD_FILE_PATH = "Serverdata\\Leaderboard.txt";
 	public Leaderboard leaderboard;
@@ -78,55 +92,55 @@ public class Server extends Thread {
 					if (command.length != 0) {
 
 						//Client wants to join.
-						if (command[0].equals("Join") && command.length >= 2) {
+						if (command[0].equals(JOIN) && command.length >= 2) {
 							joinCommand(client, command);
 
 							//Client wants to disconnect.
-						} else if (command[0].equals("Disconnect")) {
+						} else if (command[0].equals(DISCONNECT)) {
 							disconnectCommand(client);
 
 							//Client wants to specify security options.
-						} else if (command[0].equals("Security") && command.length == 3) {
+						} else if (command[0].equals(SECURITY) && command.length == 3) {
 							securityCommand(client, command);
 
 							//Client is ready.
-						} else if (command[0].equals("Ready")) {
+						} else if (command[0].equals(READY)) {
 							readyCommand(client, command);
 
 							//Client wants to challenge.
-						} else if (command[0].equals("Challenge")) {
+						} else if (command[0].equals(CHALLENGE)) {
 							challengeCommand(client, command);
 
 							//Client wants to accept or deny challenge
-						} else if (command[0].equals("ChallengeAccept") && command.length == 2) {
+						} else if (command[0].equals(CHALLENGEACCEPT) && command.length == 2) {
 							challengeAcceptCommand(client, command[1]);
 
 							//Client wants to see which players he can challenge
-						} else if (command[0].equals("GetPlayers")) {
+						} else if (command[0].equals(GETPLAYERS)) {
 							getPlayersCommand(client);
 
 							//Used only by our client, to see everybody that is in the lobby and in game
-						} else if (command[0].equals("GetAllPlayers")) {
+						} else if (command[0].equals(GETALLPLAYERS)) {
 							getAllPlayersCommand(client);
 
 							//Client wants to leave the game.
-						} else if (command[0].equals("Leave")) {
+						} else if (command[0].equals(LEAVE)) {
 							leaveCommand(client);
 
 							//Client wants to make a move.
-						} else if (command[0].equals("Move")) {
+						} else if (command[0].equals(MOVE)) {
 							moveCommand(client, command);
 
 							//Client requests a hint.
-						} else if (command[0].equals("Hint")) {
+						} else if (command[0].equals(HINT)) {
 							hintCommand(client);
 
 							//Client sends a chat message.
-						} else if (command[0].equals("Chat") && client.getChat()) {
+						} else if (command[0].equals(CHAT) && client.getChat()) {
 							chatCommand(client, command);
 
 							//Client requests the leaderboard.
-						} else if (command[0].equals("Leaderboard")) {
+						} else if (command[0].equals(LEADERBOARD)) {
 							leaderboardCommand(client);
 
 						} else {
@@ -159,9 +173,9 @@ public class Server extends Thread {
 	 */
 	public void leaderboardCommand(ClientHandler client) {
 		String leaderboardTemp = "Leaderboard";
-        showMessage(leaderboard.topN(10));
+		showMessage(leaderboard.topN(10));
 		String[] leaderboardArrayTemp = leaderboard.topN(10).split(" ");
-        if (!leaderboardArrayTemp[0].equals("")) {
+		if (!leaderboardArrayTemp[0].equals("")) {
 			for (int i = 0; i < leaderboardArrayTemp.length; i += 4) {
 				leaderboardTemp += " " + leaderboardArrayTemp[i] + " " + leaderboardArrayTemp[i + 1];
 			}

@@ -115,7 +115,7 @@ public class Client {
 	}
 
 	public void setBoardDim(int dim) {
-		this.boardDim = dim;
+		boardDim = dim;
 	}
 
 	public void stopClientGame() {

@@ -3,7 +3,6 @@ package connect4.network.client;
 import connect4.exceptions.NoEmptySpotException;
 import connect4.exceptions.OutsidePlayingBoardException;
 import connect4.game.Game;
-import javafx.scene.paint.Color;
 
 import java.io.*;
 import java.net.Socket;
@@ -12,16 +11,13 @@ import java.util.List;
 
 public class ServerHandler extends Thread {
 
-	private Socket sock;
 	private Client client;
 	private BufferedReader in;
 	private BufferedWriter out;
 	private Game game;
 	private boolean terminate = false;
-	private Color colour;
 
 	public ServerHandler(Socket sock, Client client) throws IOException {
-		this.sock = sock;
 		this.client = client;
 		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
@@ -33,7 +29,7 @@ public class ServerHandler extends Thread {
 
 	public void run() {
 		while (!terminate) {
-			String receive = null;
+			String receive;
 			try {
 				receive = in.readLine();
 			} catch (IOException e) {

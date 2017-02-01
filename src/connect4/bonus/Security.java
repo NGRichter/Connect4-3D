@@ -68,8 +68,8 @@ public class Security {
 	 * Verifies if the username and password specified is the same as stored.
 	 * If username is not stored yet register the user.
 	 *
-	 * @param username
-	 * @param password
+	 * @param username - Username
+	 * @param password - Password
 	 * @return true if successfully logged in or registered, false if password is not the same as stored
 	 */
 	//@ requires username != null && password != null;

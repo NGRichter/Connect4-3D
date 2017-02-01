@@ -38,10 +38,10 @@ public class Gui extends Application implements GameView, Initializable {
 	//Application settings
 	private final int HEIGHT = 1280;
 	private final int WIDTH = 720;
-	private boolean RESIZABLE;
 	//3D Scene settings
 	private final int SCENE3DHEIGHT = 675;
 	private final int SCENE3DWIDTH = 970;
+	private boolean RESIZABLE;
 	private Stage window;
 	private Client client;
 	private Scene scene;
@@ -397,23 +397,23 @@ public class Gui extends Application implements GameView, Initializable {
 		});
 	}
 
-    @Override
-    public void gameOver() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                lobbyPane.setVisible(true);
-                lobbyPane.toFront();
-                boardPane.toBack();
-                boardPane.setVisible(false);
-                gameTools.setVisible(false);
-                readyBox.setDisable(false);
-                readyInfo.setVisible(false);
-                challengeBox.setDisable(false);
-                challengeControls.setDisable(true);
-            }
-        });
-    }
+	@Override
+	public void gameOver() {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				lobbyPane.setVisible(true);
+				lobbyPane.toFront();
+				boardPane.toBack();
+				boardPane.setVisible(false);
+				gameTools.setVisible(false);
+				readyBox.setDisable(false);
+				readyInfo.setVisible(false);
+				challengeBox.setDisable(false);
+				challengeControls.setDisable(true);
+			}
+		});
+	}
 
 	@Override
 	public void showPlayers(String players) {
@@ -439,60 +439,61 @@ public class Gui extends Application implements GameView, Initializable {
 
 	@Override
 	public void showChallenge(String challenge) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                showMessage("CHALLENGE RECEIVED");
-                if (!challenge.equals("ChallengeDenied")) {
-                    challengeControls.setDisable(false);
-                    String[] challenges = challenge.split(" ");
-                    if (challenges.length >= 3){
-                        String challengeMsg = String.format("You've been challenged: %s%nDimension:" +
-                                " %s%nPlayers: %s%nWith roof%n.-------", challenges[3], challenges[1], challenges[2]);
-                        showMessage(challengeMsg);
-                    } else if (challenges.length >= 4 && challenges[3].equals("NoRoof")){
-                        String challengeMsg = String.format("You've been challenged: %s%nDimension:" +
-                                " %s%nPlayers: %s%nWith no roof%n-------", challenges[4], challenges[1], challenges[2]);
-                        showMessage(challengeMsg);
-                    }
-                } else {
-                    showMessage("Challange has been denied.");
-                    gameOver();
-                }
-            }
-        });
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				showMessage("CHALLENGE RECEIVED");
+				if (!challenge.equals("ChallengeDenied")) {
+					challengeControls.setDisable(false);
+					String[] challenges = challenge.split(" ");
+					if (challenges.length >= 3) {
+						String challengeMsg = String.format("You've been challenged: %s%nDimension:" +
+								" %s%nPlayers: %s%nWith roof%n.-------", challenges[3], challenges[1], challenges[2]);
+						showMessage(challengeMsg);
+					} else if (challenges.length >= 4 && challenges[3].equals("NoRoof")) {
+						String challengeMsg = String.format("You've been challenged: %s%nDimension:" +
+								" %s%nPlayers: %s%nWith no roof%n-------", challenges[4], challenges[1], challenges[2]);
+						showMessage(challengeMsg);
+					}
+				} else {
+					showMessage("Challange has been denied.");
+					gameOver();
+				}
+			}
+		});
 	}
 
-    public void challengePlayer(){
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                int playerAmount = 2;
-                int boardDim = 4;
-                String noRoof = "";
-                if (!(playerAmountField.getText().trim().isEmpty())) {
-                    playerAmount = Integer.parseInt(playerAmountField.getText());
-                }
-                if (!(boardDimField.getText().trim().isEmpty())) {
-                    boardDim = Integer.parseInt(boardDimField.getText());
-                }
-                if (!challengeNameField.getText().trim().isEmpty()) {
-                    writeServer("Challenge " + boardDim + " " + playerAmount + " " + noRoof + challengeNameField.getText());
-                    readyBox.setDisable(true);
-                    challengeBox.setDisable(true);
-                    readyInfo.setVisible(true);
-                    readyInfo.setText("Waiting for challenge response...");
-                }
-            }
-        });
-    }
+	public void challengePlayer() {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				int playerAmount = 2;
+				int boardDim = 4;
+				String noRoof = "";
+				if (!(playerAmountField.getText().trim().isEmpty())) {
+					playerAmount = Integer.parseInt(playerAmountField.getText());
+				}
+				if (!(boardDimField.getText().trim().isEmpty())) {
+					boardDim = Integer.parseInt(boardDimField.getText());
+				}
+				if (!challengeNameField.getText().trim().isEmpty()) {
+					writeServer("Challenge " + boardDim + " " + playerAmount + " " + noRoof + challengeNameField.getText());
+					readyBox.setDisable(true);
+					challengeBox.setDisable(true);
+					readyInfo.setVisible(true);
+					readyInfo.setText("Waiting for challenge response...");
+				}
+			}
+		});
+	}
 
-    public void acceptChallenge(){
-        writeServer("ChallengeAccept y");
-    }
-    public void denyChallenge() {
-        writeServer("ChallengeAccept n");
-    }
+	public void acceptChallenge() {
+		writeServer("ChallengeAccept y");
+	}
+
+	public void denyChallenge() {
+		writeServer("ChallengeAccept n");
+	}
 
 	@Override
 	public void showLeaderboard(String leaderboard) {
