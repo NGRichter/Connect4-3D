@@ -22,13 +22,13 @@ public class Security {
 	public Security(String path) {
 		try {
 			File file = new File(path);
-			file.mkdir();
-			this.writer = new FileWriter(file, true);
-			this.reader = new BufferedReader(new FileReader(file));
+			file.getParentFile().mkdir();
+			writer = new FileWriter(file, true);
+			reader = new BufferedReader(new FileReader(file));
 			String temp;
-			while ((temp = this.reader.readLine()) != null) {
+			while ((temp = reader.readLine()) != null) {
 				String[] temp2 = temp.split(" ");
-				this.accounts.put(temp2[0], temp2[1]);
+				accounts.put(temp2[0], temp2[1]);
 			}
 		} catch (IOException e) {
 
@@ -48,13 +48,13 @@ public class Security {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			byte[] bytearray = md.digest(saltedPassword.getBytes());
-			this.accounts.put(username, Hex.encodeHexString(bytearray));
-			if (this.accounts.size() == 1) {
-				this.writer.write(username + " " + Hex.encodeHexString(bytearray));
-				this.writer.flush();
+			accounts.put(username, Hex.encodeHexString(bytearray));
+			if (accounts.size() == 1) {
+				writer.write(username + " " + Hex.encodeHexString(bytearray));
+				writer.flush();
 			} else {
-				this.writer.write("\r\n" + username + " " + Hex.encodeHexString(bytearray));
-				this.writer.flush();
+				writer.write("\r\n" + username + " " + Hex.encodeHexString(bytearray));
+				writer.flush();
 			}
 
 		} catch (NoSuchAlgorithmException e) {
@@ -74,17 +74,17 @@ public class Security {
 	 */
 	//@ requires username != null && password != null;
 	public boolean login(String username, String password) {
-		if (this.accounts.containsKey(username)) {
+		if (accounts.containsKey(username)) {
 			String saltedPassword = password + username + username.substring(0, 1);
 			try {
 				MessageDigest md = MessageDigest.getInstance("SHA-256");
 				byte[] bytearray = md.digest(saltedPassword.getBytes());
-				return this.accounts.get(username).equals(Hex.encodeHexString(bytearray));
+				return accounts.get(username).equals(Hex.encodeHexString(bytearray));
 			} catch (NoSuchAlgorithmException e) {
 				return false;
 			}
 		} else {
-			this.register(username, password);
+			register(username, password);
 			return true;
 		}
 	}

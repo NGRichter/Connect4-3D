@@ -38,6 +38,6 @@ public class Score {
 	 */
 	public String toString() {
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		return this.name + " " + this.score + " " + format.format(this.date);
+		return name + " " + score + " " + format.format(date);
 	}
 }

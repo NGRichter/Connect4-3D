@@ -1,12 +1,12 @@
 package connect4.network.server;
 
-import connect4.bonus.Challenge;
-import connect4.bonus.Leaderboard;
-import connect4.bonus.Security;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import connect4.bonus.Challenge;
+import connect4.bonus.Leaderboard;
+import connect4.bonus.Security;
 
 public class Server extends Thread {
 
@@ -31,7 +31,7 @@ public class Server extends Thread {
 	private /*@ spec_public @*/ List<ClientHandler> toBeRemoved = new ArrayList<>();
 	private Security security;
 
-	//@ invariant !clients.contains(null);
+	//@ public invariant !clients.contains(null);
 
 	public Server() {
 		clients = new ArrayList<>();

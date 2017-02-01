@@ -6,13 +6,13 @@ import java.util.List;
 public class Lobby extends Thread {
 
 	public final Server server;
-	private List<ClientHandler> clients;
-	private List<ClientHandler> ready;
-	private List<ClientHandler> inGame;
+	private /*@ spec_public @*/ List<ClientHandler> clients;
+	private /*@ spec_public @*/ List<ClientHandler> ready;
+	private /*@ spec_public @*/ List<ClientHandler> inGame;
 
-	//@ invariant !clients.contains(null);
-	//@ invariant !ready.contains(null);
-	//@ invariant !inGame.contains(null);
+	//@ public invariant !clients.contains(null);
+	//@ public invariant !ready.contains(null);
+	//@ public invariant !inGame.contains(null);
 
 	public Lobby(Server server) {
 		clients = new ArrayList<>();

@@ -20,7 +20,7 @@ public class Leaderboard {
 		scores = new ArrayList<>();
 		try {
 			File file = new File(path);
-			file.mkdir();
+			file.getParentFile().mkdir();
 			writer = new FileWriter(file, true);
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String temp;
@@ -52,7 +52,7 @@ public class Leaderboard {
 				writer.write(score.toString());
 				writer.flush();
 			} else {
-				writer.write("\r\n" + score.toString());
+				writer.write("\r\n" + score);
 				writer.flush();
 			}
 		} catch (IOException e) {
@@ -95,7 +95,7 @@ public class Leaderboard {
 		sortScore();
 		for (Score score : scores) {
 			if (score.score > n) {
-				leaderboard += score.toString() + "\r\n";
+				leaderboard += score + "\r\n";
 			}
 		}
 		return leaderboard;
@@ -113,7 +113,7 @@ public class Leaderboard {
 		sortScore();
 		for (Score score : scores) {
 			if (score.score < n) {
-				leaderboard += score.toString() + "\r\n";
+				leaderboard += score + "\r\n";
 			}
 		}
 		return leaderboard;
@@ -161,7 +161,7 @@ public class Leaderboard {
 		sortScore();
 		for (Score score : scores) {
 			if (isToday(score.date)) {
-				leaderboard += score.toString() + "\r\n";
+				leaderboard += score + "\r\n";
 			}
 		}
 		return leaderboard;
@@ -176,7 +176,7 @@ public class Leaderboard {
 		sortScore();
 		for (Score score : scores) {
 			if (isToday(score.date)) {
-				return score.toString() + "\r\n";
+				return score + "\r\n";
 			}
 		}
 		return "No score today";

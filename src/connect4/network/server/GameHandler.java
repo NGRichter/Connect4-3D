@@ -22,7 +22,7 @@ public class GameHandler extends Thread {
 	private /*@ spec_public @*/ boolean terminate = false;
 	private /*@ spec_public @*/ boolean wantHint = false;
 
-	//@ invariant !gamers.contains(null);
+	//@ public invariant !gamers.contains(null);
 
 	/**
 	 * Makes a new Game.
