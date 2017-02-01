@@ -27,10 +27,16 @@ public class ServerHandler extends Thread {
 		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 	}
 
+	/**
+	 * Sets termnnate to true, stopping the while loop in run().
+	 */
 	public void terminate() {
 		terminate = true;
 	}
 
+	/**
+	 * While not terminated, wait for incoming commands from the server.
+	 */
 	public void run() {
 		while (!terminate) {
 			String receive = null;
@@ -113,6 +119,11 @@ public class ServerHandler extends Thread {
 		}
 	}
 
+	/**
+	 * Writes a command to the server.
+	 * @param string - command
+	 * @throws IOException
+	 */
 	public void handleOutput(String string) throws IOException {
 		out.write(string);
 		out.newLine();
