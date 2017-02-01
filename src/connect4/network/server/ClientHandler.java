@@ -116,7 +116,8 @@ public class ClientHandler extends Thread {
 	 * The below methods are all getters and setter except for the last one.
 	 * Some methods do not take an argument but set something to true (or false),
 	 * this is because those values once true should always be true.
-	 * All getters are //@pure and all setters should have //@ensures variable == true/false/argument.
+	 * All getters are //@pure and all setters should have 
+	 * //@ensures variable == true/false/argument.
 	 */
 	public void loggedIn() {
 		loggedIn = true;

@@ -70,7 +70,8 @@ public class Security {
 	 *
 	 * @param username - Username
 	 * @param password - Password
-	 * @return true if successfully logged in or registered, false if password is not the same as stored
+	 * @return true if successfully logged in or registered, 
+	 * false if password is not the same as stored
 	 */
 	//@ requires username != null && password != null;
 	public boolean login(String username, String password) {

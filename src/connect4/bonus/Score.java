@@ -23,7 +23,11 @@ public class Score {
 	 */
 	public Score(int year, int month, int day, int hour, int minute, int score, String name) {
 		try {
-			date = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(day + "/" + month + "/" + year + " " + hour + ":" + minute);
+			date = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(day + "/" + 
+					month + "/" + 
+					year + " " + 
+					hour + ":" + 
+					minute);
 		} catch (ParseException e) {
 			System.out.println("Can't create date");
 		}

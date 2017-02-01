@@ -58,7 +58,9 @@ public class Tui implements GameView {
 	 * Waits for input and processes it.
 	 */
 	public void run() {
-		showMessage("Welcome to the Connect4-3D TUI client by Nick & Julian.\r\nType 'help' for a list of commands.");
+		showMessage("Welcome to the Connect4-3D TUI client "
+				+ "by Nick & Julian.\r\n"
+				+ "Type 'help' for a list of commands.");
 
 		Scanner scan = new Scanner(System.in);
 		while (true) {
@@ -81,7 +83,8 @@ public class Tui implements GameView {
 				} else if (command[0].equals(JOIN)) {
 					join(command, cmdlength);
 
-					//Toggle ready for a match by certain rules. 'ready <player amount> <board dimension> <noRoof>'
+					//Toggle ready for a match by certain rules. 
+					//'ready <player amount> <board dimension> <noRoof>'
 				} else if (command[0].equals(READY)) {
 					ready(command, cmdlength);
 
@@ -171,7 +174,9 @@ public class Tui implements GameView {
 		try {
 			client.letAIDoGame(true, Integer.parseInt(s));
 			if (Integer.parseInt(s) >= 7) {
-				System.out.println("AI level of 7 or higher can take a long time, please reconsider.");
+				System.out.println("AI level of 7 or "
+						+ "higher can take a long time, "
+						+ "please reconsider.");
 			}
 
 		} catch (NumberFormatException e) {
@@ -239,7 +244,8 @@ public class Tui implements GameView {
 				for (int i = 3; i < cmdlength; i++) {
 					players += " " + command[i];
 				}
-				writeServer("Challenge " + Integer.parseInt(command[1]) + " " + Integer.parseInt(command[2]) + " " + command[3]);
+				writeServer("Challenge " + Integer.parseInt(command[1]) 
+				+ " " + Integer.parseInt(command[2]) + " " + command[3]);
 			} catch (NumberFormatException e) {
 				showMessage("Invalid numbers");
 			}
@@ -250,7 +256,9 @@ public class Tui implements GameView {
 				for (int i = 4; i < cmdlength; i++) {
 					players += " " + command[i];
 				}
-				writeServer("Challenge " + Integer.parseInt(command[1]) + " " + Integer.parseInt(command[2]) + " " + command[3] + players);
+				writeServer("Challenge " + Integer.parseInt(command[1]) 
+				+ " " + Integer.parseInt(command[2]) + " " + command[3] 
+						+ players);
 			} catch (NumberFormatException e) {
 				showMessage("Invalid numbers");
 			}
@@ -348,7 +356,9 @@ public class Tui implements GameView {
 				System.out.println("Invalid number");
 			}
 		} else {
-			showError("incorrect syntax. Use: 'ready' for default match or 'ready <player amount> <board dimension> <noroof>' for custom ruleset.");
+			showError("incorrect syntax. Use: 'ready' for default "
+					+ "match or 'ready <player amount> <board "
+					+ "dimension> <noroof>' for custom ruleset.");
 		}
 	}
 
@@ -498,9 +508,17 @@ public class Tui implements GameView {
 		} else {
 			String[] challenges = challenge.split(" ");
 			if (challenges[3].equals("NoRoof")) {
-				System.out.format("Someone wants to challenge you: %s%nDimension: %s%nPlayers: %s%nWith no roof%nSend <Accept> to accept the challenge, <Deny> to deny the challenge.%n", challenges[4], challenges[1], challenges[2]);
+				System.out.format("Someone wants to challenge you: "
+						+ "%s%nDimension: %s%nPlayers: %s%nWith no roof"
+						+ "%nSend <Accept> to accept the challenge, "
+						+ "<Deny> to deny the challenge.%n", 
+						challenges[4], challenges[1], challenges[2]);
 			} else {
-				System.out.format("Someone wants to challenge you: %s%nDimension: %s%nPlayers: %s%nWith roof%nSend <Accept> to accept the challenge, <Deny> to deny the challenge.%n", challenges[3], challenges[1], challenges[2]);
+				System.out.format("Someone wants to challenge you: "
+						+ "%s%nDimension: %s%nPlayers: %s%nWith roof"
+						+ "%nSend <Accept> to accept the challenge, "
+						+ "<Deny> to deny the challenge.%n", 
+						challenges[3], challenges[1], challenges[2]);
 			}
 		}
 	}
@@ -541,9 +559,11 @@ public class Tui implements GameView {
 	public void drawBoard() {
 		Board board = client.getGame().getBoard();
 		for (int i = 0; i < 5; i++) {
-			System.out.println("+-------------------------------------------------------------------------+");
+			System.out.println("+-------------------------------"
+					+ "------------------------------------------+");
 		}
-		for (int z = (board.getDimZ() - 1); z < board.getDimZ() && z >= 0; z--) {
+		for (int z = board.getDimZ() - 1; z < 
+				board.getDimZ() && z >= 0; z--) {
 			System.out.println("Layer: " + z + " out of " + (board.getDimZ() - 1));
 			String vertFrame = "\r\n+---+";
 			System.out.print("+---+");

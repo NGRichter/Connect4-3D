@@ -29,12 +29,14 @@ public class GameHandler extends Thread {
 	 *
 	 * @param clients      - The list of clients that are going to play the game
 	 * @param dimension    - The dimensions of the game
-	 * @param noroof       - True if clients want no roof, false if they are the dimension as the roof
+	 * @param noroof       - True if clients want no roof, 
+	 * false if they are the dimension as the roof
 	 * @param winCondition - The win condition of the game (default = 4)
 	 */
 	//@ requires \forall int i; i >= 0 && i < clients.size(); clients.get(i) != null;
 	//@ requires dimension > 0 && winCondition > 0 && clients.size() >= 2;
-	public GameHandler(List<ClientHandler> clients, int dimension, boolean noroof, int winCondition) {
+	public GameHandler(List<ClientHandler> clients, int dimension, 
+			boolean noroof, int winCondition) {
 		if (noroof) {
 			board = new Board(dimension, dimension, 1000);
 		} else {
@@ -101,7 +103,7 @@ public class GameHandler extends Thread {
 	}
 
 	/**
-	 * Stops the thread
+	 * Stops the thread.
 	 */
 	//@ ensures terminate == true;
 	public void stopGame() {
@@ -184,7 +186,8 @@ public class GameHandler extends Thread {
 			}
 		} else if (nextMove[0] != -1) {
 			try {
-				client.handleOutput("Error You already send your command or there is something wrong with the server.");
+				client.handleOutput("Error You already send your command "
+						+ "or there is something wrong with the server.");
 			} catch (IOException e) {
 				disconnectGame(client);
 			}
@@ -216,7 +219,8 @@ public class GameHandler extends Thread {
 	 * Shuffles the playerlist.
 	 * Tries to make a move when nextMove[0] is not -1 anymore.
 	 * When a move is made set nextMove[0] back to -1 to indicate that the move has been processed.
-	 * If the client wants a hint the wantHint boolean becomes true and this thread will give back an x and y value.
+	 * If the client wants a hint the wantHint boolean becomes true 
+	 * and this thread will give back an x and y value.
 	 * If the game is over and there is a winner notify everyone about it.
 	 * If the winner has logged in also make a leaderboard score.
 	 */
@@ -238,7 +242,8 @@ public class GameHandler extends Thread {
 					turns++;
 				} catch (OutsidePlayingBoardException | NoEmptySpotException e) {
 					try {
-						next.handleOutput("Error The spot you specified is either not on the board or has no empty spot above");
+						next.handleOutput("Error The spot you specified is "
+								+ "either not on the board or has no empty spot above");
 						nextMove[0] = -1;
 						nextMove[1] = -1;
 					} catch (IOException e1) {
@@ -250,20 +255,24 @@ public class GameHandler extends Thread {
 					if (wantHint) {
 						foundHint:
 						for (int o = 0; o < game.getWinCondition() - 1; o++) {
-							int[] winningMove = game.winningMove(next.getPlayer(), game.getWinCondition() - o);
+							int[] winningMove = game.winningMove(next.getPlayer(), 
+									game.getWinCondition() - o);
 							if (winningMove[0] != -1) {
 								try {
-									next.handleOutput("Hint " + winningMove[0] + " " + winningMove[1]);
+									next.handleOutput("Hint " + winningMove[0] + 
+											" " + winningMove[1]);
 								} catch (IOException e) {
 									disconnectGame(next);
 								}
 								continue foundHint;
 							} else {
 								for (Player player : game.getPlayers()) {
-									winningMove = game.winningMove(player, game.getWinCondition() - o);
+									winningMove = game.winningMove(player, 
+											game.getWinCondition() - o);
 									if (winningMove[0] != -1) {
 										try {
-											next.handleOutput("Hint " + winningMove[0] + " " + winningMove[1]);
+											next.handleOutput("Hint " + winningMove[0] + 
+													" " + winningMove[1]);
 										} catch (IOException e) {
 											disconnectGame(next);
 										}
@@ -290,7 +299,9 @@ public class GameHandler extends Thread {
 				gameOver(winner.getName());
 				for (ClientHandler client : gamers) {
 					if (client.getPlayer() == winner && client.getLoggedIn()) {
-						int scorevalue = board.getDimX() * board.getDimX() * board.getDimX() * game.getWinCondition() - turns * board.getDimX() * game.getWinCondition();
+						int scorevalue = board.getDimX() * board.getDimX() * 
+								board.getDimX() * game.getWinCondition() - 
+								turns * board.getDimX() * game.getWinCondition();
 						if (scorevalue < 0) {
 							scorevalue = 0;
 						}

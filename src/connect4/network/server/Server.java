@@ -59,7 +59,7 @@ public class Server extends Thread {
 				beginTime = endTime;
 			}
 
-			int empty = 0;//Counter to see if no client has send anything.
+			int empty = 0; //Counter to see if no client has send anything.
 			//Sleep if there are no clients (otherwise cpu goes to 30% used).
 			while (clients.isEmpty()) {
 				try {
@@ -76,13 +76,16 @@ public class Server extends Thread {
 					String[] command = temp.split(" ");
 					if (client.getUserName() == null) {
 						if (command[0].equals("Security") && command.length == 3) {
-							showMessage(client.getSocket().getInetAddress().getHostAddress() + ": " + command[0] + " " + command[1] + " ******");
+							showMessage(client.getSocket().getInetAddress().getHostAddress() + 
+									": " + command[0] + " " + command[1] + " ******");
 						} else {
-							showMessage(client.getSocket().getInetAddress().getHostAddress() + ": " + temp);
+							showMessage(client.getSocket().getInetAddress().getHostAddress() 
+									+ ": " + temp);
 						}
 					} else {
 						if (command[0].equals("Security") && command.length == 3) {
-							showMessage(client.getUserName() + ": " + command[0] + " " + command[1] + " ******");
+							showMessage(client.getUserName() + ": " + command[0] + " " 
+									+ command[1] + " ******");
 						} else {
 							showMessage(client.getUserName() + ": " + temp);
 						}
@@ -119,7 +122,8 @@ public class Server extends Thread {
 						} else if (command[0].equals(GETPLAYERS)) {
 							getPlayersCommand(client);
 
-							//Used only by our client, to see everybody that is in the lobby and in game
+							//Used only by our client, 
+							//to see everybody that is in the lobby and in game
 						} else if (command[0].equals(GETALLPLAYERS)) {
 							getAllPlayersCommand(client);
 
@@ -177,7 +181,8 @@ public class Server extends Thread {
 		String[] leaderboardArrayTemp = leaderboard.topN(10).split(" ");
 		if (!leaderboardArrayTemp[0].equals("")) {
 			for (int i = 0; i < leaderboardArrayTemp.length; i += 4) {
-				leaderboardTemp += " " + leaderboardArrayTemp[i] + " " + leaderboardArrayTemp[i + 1];
+				leaderboardTemp += " " + leaderboardArrayTemp[i] + 
+						" " + leaderboardArrayTemp[i + 1];
 			}
 			sendMessage(client, leaderboardTemp);
 		}
@@ -323,7 +328,8 @@ public class Server extends Thread {
 					if (command.length == 4 + players - 1) {
 						List<ClientHandler> challenge = new ArrayList<>();
 						for (ClientHandler player : clients) {
-							if (player.getInLobby() && !player.getHasBeenChallenged() && player.getChallenge()) {
+							if (player.getInLobby() && !player.getHasBeenChallenged() 
+									&& player.getChallenge()) {
 								for (int i = 4; i < command.length; i++) {
 									if (player.getUserName().equalsIgnoreCase(command[i])) {
 										challenge.add(player);
@@ -333,19 +339,22 @@ public class Server extends Thread {
 							}
 						}
 						if (challenge.size() == players - 1) {
-							Challenge newChallenge = new Challenge(challenge, dimension, true, client);
+							Challenge newChallenge = new Challenge(challenge, 
+									dimension, true, client);
 							newChallenge.start();
 						} else {
 							sendError(client, "Not all people specified are available or exist");
 						}
 					} else {
-						sendError(client, "Amount of players does not correspond with the amount of usernames");
+						sendError(client, "Amount of players does not correspond "
+								+ "with the amount of usernames");
 					}
 				} else {
 					if (command.length == 3 + players - 1) {
 						List<ClientHandler> challenge = new ArrayList<>();
 						for (ClientHandler player : clients) {
-							if (player.getInLobby() && !player.getHasBeenChallenged() && player.getChallenge()) {
+							if (player.getInLobby() && !player.getHasBeenChallenged() 
+									&& player.getChallenge()) {
 								for (int i = 3; i < command.length; i++) {
 									if (player.getUserName().equalsIgnoreCase(command[i])) {
 										challenge.add(player);
@@ -355,23 +364,27 @@ public class Server extends Thread {
 							}
 						}
 						if (challenge.size() == players - 1) {
-							Challenge newChallenge = new Challenge(challenge, dimension, false, client);
+							Challenge newChallenge = new Challenge(challenge, 
+									dimension, false, client);
 							newChallenge.start();
 						} else {
 							sendError(client, "Not all people specified are available or exist");
 						}
 					} else {
-						sendError(client, "Amount of players does not correspond with the amount of usernames");
+						sendError(client, "Amount of players does not "
+								+ "correspond with the amount of usernames");
 					}
 				}
 			} else {
-				sendError(client, "Please use Challenge <dimension> <amount of players> [NoRoof] <username1> <username2> ...");
+				sendError(client, "Please use Challenge <dimension> "
+						+ "<amount of players> [NoRoof] "
+						+ "<username1> <username2> ...");
 			}
 		}
 	}
 
 	/**
-	 * If a client wants to start a game with optional parameters
+	 * If a client wants to start a game with optional parameters.
 	 *
 	 * @param client  - The client
 	 * @param command - String[] with optional parameters
@@ -432,7 +445,7 @@ public class Server extends Thread {
 	}
 
 	/**
-	 * If a client wants to disconnect from the server
+	 * If a client wants to disconnect from the server.
 	 *
 	 * @param client - The client
 	 */
@@ -446,7 +459,7 @@ public class Server extends Thread {
 	}
 
 	/**
-	 * If a client has connected to the server and wants to join the lobby
+	 * If a client has connected to the server and wants to join the lobby.
 	 *
 	 * @param client  - The client
 	 * @param command - String[] with optional bonus features
@@ -535,7 +548,7 @@ public class Server extends Thread {
 	}
 
 	/**
-	 * Adds a client to the list of clients
+	 * Adds a client to the list of clients.
 	 * Used by the ServerStarter
 	 *
 	 * @param client - The client you want to add

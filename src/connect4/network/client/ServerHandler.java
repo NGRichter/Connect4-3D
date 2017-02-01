@@ -63,7 +63,8 @@ public class ServerHandler extends Thread {
 			} else if (command[0].equals("NotifyMove")) {
 				if (command.length == 3) {
 					try {
-						game.makeNextMove(Integer.parseInt(command[1]), Integer.parseInt(command[2]));
+						game.makeNextMove(Integer.parseInt(command[1]), 
+								Integer.parseInt(command[2]));
 					} catch (NoEmptySpotException | OutsidePlayingBoardException e) {
 						e.printStackTrace();
 					}
@@ -72,7 +73,8 @@ public class ServerHandler extends Thread {
 				//Notify client that game has ended.
 			} else if (command[0].equals("GameOver")) {
 				if (command[1].equals("Winner") && command.length == 3) {
-					client.getGameView().showMessage("The game is over.\r\n" + command[2] + " has won the match!");
+					client.getGameView().showMessage("The game is over.\r\n" + 
+									command[2] + " has won the match!");
 				} else {
 					client.getGameView().showMessage("The game is over.\r\nIt's a draw!");
 				}
@@ -95,7 +97,8 @@ public class ServerHandler extends Thread {
 			} else if (command[0].equals("Players") || command[0].equals("AllPlayers")) {
 				client.getGameView().showPlayers(receive);
 
-			} else if (command[0].equals("ChallengeRequest") || command[0].equals("ChallengeDenied")) {
+			} else if (command[0].equals("ChallengeRequest") || 
+					command[0].equals("ChallengeDenied")) {
 				client.getGameView().showChallenge(receive);
 
 			} else if (command[0].equals("Leaderboard")) {

@@ -19,7 +19,7 @@ public class Client {
 	private Socket sock;
 	private ServerHandler server;
 	private GameView ui;
-	private Player AI = new MinimaxHash("Me", Color.YELLOW);
+	private Player ai = new MinimaxHash("Me", Color.YELLOW);
 
 	private String name;
 	private int boardDim = 4;
@@ -28,7 +28,7 @@ public class Client {
 	private boolean noRoof;
 	private boolean aiDoGame;
 	private Color[] colors = {Color.DARKBLUE, Color.CYAN, Color.PINK, Color.PURPLE, Color.RED,
-			Color.ORANGE, Color.YELLOW, Color.DARKGREEN, Color.LIGHTGREEN, Color.BROWN};
+		Color.ORANGE, Color.YELLOW, Color.DARKGREEN, Color.LIGHTGREEN, Color.BROWN};
 	private List<Color> usedColors = new ArrayList<>();
 
 	public Client(GameView ui) {
@@ -57,7 +57,7 @@ public class Client {
 		int i = 0;
 		for (String username : usernames) {
 			if (username.equals(name) && aiDoGame) {
-				players[i] = AI;
+				players[i] = ai;
 			} else {
 				Player newhuman = new HumanPlayer(username, getRandomColor());
 				players[i] = newhuman;
@@ -195,7 +195,7 @@ public class Client {
 	 * @return AI
 	 */
 	public Player getAI() {
-		return AI;
+		return ai;
 	}
 
 	/**

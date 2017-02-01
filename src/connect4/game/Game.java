@@ -54,7 +54,8 @@ public class Game extends Observable {
 		return winner == player;
 	}
 
-	public void makeNextMove(int x, int y) throws NoEmptySpotException, OutsidePlayingBoardException {
+	public void makeNextMove(int x, int y) 
+			throws NoEmptySpotException, OutsidePlayingBoardException {
 		Player nextPlayer = players.get(playerIndex % players.size());
 		board.setField(x, y, nextPlayer);
 		playerIndex++;
@@ -96,9 +97,13 @@ public class Game extends Observable {
 				for (int y = 0; y < board.getDimY(); y++) {
 					for (int x = 0; x < board.getDimX(); x++) {
 						if (board.getField(x, y, z) != null) {
-							if (x + winCondition - 1 < board.getDimX()) {//If there are enough spaces to the right.
-								for (int i = 0; i < winCondition - 1; i++) {//For every space to the right check if it is the same as the next one.
-									if (board.getField(x + i, y, z) == board.getField(x + i + 1, y, z)) {
+							//If there are enough spaces to the right.
+							if (x + winCondition - 1 < board.getDimX()) {
+								//For every space to the right check 
+								//if it is the same as the next one.
+								for (int i = 0; i < winCondition - 1; i++) {
+									if (board.getField(x + i, y, z) == 
+											board.getField(x + i + 1, y, z)) {
 										if (i + 1 == winCondition - 1) {
 											return board.getField(x, y, z);
 										}
@@ -106,9 +111,12 @@ public class Game extends Observable {
 										break;
 									}
 								}
-								if (y + winCondition - 1 < board.getDimY()) {//If there are enough spaces vertically down. Checks if there is a diagonal.
+								//If there are enough spaces vertically down. 
+								//Checks if there is a diagonal.
+								if (y + winCondition - 1 < board.getDimY()) {
 									for (int i = 0; i < winCondition - 1; i++) {
-										if (board.getField(x + i, y + i, z) == board.getField(x + i + 1, y + i + 1, z)) {
+										if (board.getField(x + i, y + i, z) == 
+												board.getField(x + i + 1, y + i + 1, z)) {
 											if (i + 1 == winCondition - 1) {
 												return board.getField(x, y, z);
 											}
@@ -117,9 +125,11 @@ public class Game extends Observable {
 										}
 									}
 								}
-								if (z + winCondition - 1 < board.getDimZ()) {//If there are enough spaces up also check the diagonal up/right.
+								//If there are enough spaces up also check the diagonal up/right.
+								if (z + winCondition - 1 < board.getDimZ()) {
 									for (int i = 0; i < winCondition - 1; i++) {
-										if (board.getField(x + i, y, z + i) == board.getField(x + i + 1, y, z + i + 1)) {
+										if (board.getField(x + i, y, z + i) == 
+												board.getField(x + i + 1, y, z + i + 1)) {
 											if (i + 1 == winCondition - 1) {
 												return board.getField(x, y, z);
 											}
@@ -127,9 +137,13 @@ public class Game extends Observable {
 											break;
 										}
 									}
-									if (y + winCondition - 1 < board.getDimY()) {//If in all directions there is enough space. (to the right, bottom (y++) and up)
+									//If in all directions there is enough space. 
+									//(to the right, bottom (y++) and up)
+									if (y + winCondition - 1 < board.getDimY()) {
 										for (int i = 0; i < winCondition - 1; i++) {
-											if (board.getField(x + i, y + i, z + i) == board.getField(x + i + 1, y + i + 1, z + i + 1)) {
+											if (board.getField(x + i, y + i, z + i) == 
+													board.getField(x + i + 1, y + i + 1, 
+															z + i + 1)) {
 												if (i + 1 == winCondition - 1) {
 													return board.getField(x, y, z);
 												}
@@ -138,9 +152,13 @@ public class Game extends Observable {
 											}
 										}
 									}
-									if (y - winCondition + 1 >= 0) {//If in all directions there is enough space. (to the right, top (y--) and up)
+									//If in all directions there is enough space. 
+									//(to the right, top (y--) and up)
+									if (y - winCondition + 1 >= 0) {
 										for (int i = 0; i < winCondition - 1; i++) {
-											if (board.getField(x + i, y - i, z + i) == board.getField(x + i + 1, y - i - 1, z + i + 1)) {
+											if (board.getField(x + i, y - i, z + i) == 
+													board.getField(x + i + 1, y - i - 1, 
+															z + i + 1)) {
 												if (i + 1 == winCondition - 1) {
 													return board.getField(x, y, z);
 												}
@@ -154,10 +172,11 @@ public class Game extends Observable {
 
 							}
 
-
-							if (y + winCondition - 1 < board.getDimY()) {//If there are enough spaces to the bottom.
+							//If there are enough spaces to the bottom.
+							if (y + winCondition - 1 < board.getDimY()) {
 								for (int i = 0; i < winCondition - 1; i++) {
-									if (board.getField(x, y + i, z) == board.getField(x, y + i + 1, z)) {
+									if (board.getField(x, y + i, z) == 
+											board.getField(x, y + i + 1, z)) {
 										if (i + 1 == winCondition - 1) {
 											return board.getField(x, y, z);
 										}
@@ -167,7 +186,8 @@ public class Game extends Observable {
 								}
 								if (x - winCondition + 1 >= 0) {
 									for (int i = 0; i < winCondition - 1; i++) {
-										if (board.getField(x - i, y + i, z) == board.getField(x - i - 1, y + i + 1, z)) {
+										if (board.getField(x - i, y + i, z) == 
+												board.getField(x - i - 1, y + i + 1, z)) {
 											if (i + 1 == winCondition - 1) {
 												return board.getField(x, y, z);
 											}
@@ -177,7 +197,9 @@ public class Game extends Observable {
 									}
 									if (z + winCondition - 1 < board.getDimZ()) {
 										for (int i = 0; i < winCondition - 1; i++) {
-											if (board.getField(x - i, y + i, z + i) == board.getField(x - i - 1, y + i + 1, z + i + 1)) {
+											if (board.getField(x - i, y + i, z + i) == 
+													board.getField(x - i - 1, y + i + 1, 
+															z + i + 1)) {
 												if (i + 1 == winCondition - 1) {
 													return board.getField(x, y, z);
 												}
@@ -189,7 +211,8 @@ public class Game extends Observable {
 								}
 								if (z + winCondition - 1 < board.getDimZ()) {
 									for (int i = 0; i < winCondition - 1; i++) {
-										if (board.getField(x, y + i, z + i) == board.getField(x, y + i + 1, z + i + 1)) {
+										if (board.getField(x, y + i, z + i) == 
+												board.getField(x, y + i + 1, z + i + 1)) {
 											if (i + 1 == winCondition - 1) {
 												return board.getField(x, y, z);
 											}
@@ -202,7 +225,8 @@ public class Game extends Observable {
 
 							if (z + winCondition - 1 < board.getDimZ()) {
 								for (int i = 0; i < winCondition - 1; i++) {
-									if (board.getField(x, y, z + i) == board.getField(x, y, z + i + 1)) {
+									if (board.getField(x, y, z + i) == 
+											board.getField(x, y, z + i + 1)) {
 										if (i + 1 == winCondition - 1) {
 											return board.getField(x, y, z);
 										}
@@ -212,7 +236,8 @@ public class Game extends Observable {
 								}
 								if (x - winCondition + 1 >= 0) {
 									for (int i = 0; i < winCondition - 1; i++) {
-										if (board.getField(x - i, y, z + i) == board.getField(x - i - 1, y, z + i + 1)) {
+										if (board.getField(x - i, y, z + i) == 
+												board.getField(x - i - 1, y, z + i + 1)) {
 											if (i + 1 == winCondition - 1) {
 												return board.getField(x, y, z);
 											}
@@ -222,7 +247,9 @@ public class Game extends Observable {
 									}
 									if (y - winCondition + 1 >= 0) {
 										for (int i = 0; i < winCondition - 1; i++) {
-											if (board.getField(x - i, y - i, z + i) == board.getField(x - i - 1, y - i - 1, z + i + 1)) {
+											if (board.getField(x - i, y - i, z + i) == 
+													board.getField(x - i - 1, y - i - 1, 
+															z + i + 1)) {
 												if (i + 1 == winCondition - 1) {
 													return board.getField(x, y, z);
 												}
@@ -234,7 +261,8 @@ public class Game extends Observable {
 								}
 								if (y - winCondition + 1 >= 0) {
 									for (int i = 0; i < winCondition - 1; i++) {
-										if (board.getField(x, y - i, z + i) == board.getField(x, y - i - 1, z + i + 1)) {
+										if (board.getField(x, y - i, z + i) == 
+												board.getField(x, y - i - 1, z + i + 1)) {
 											if (i + 1 == winCondition - 1) {
 												return board.getField(x, y, z);
 											}

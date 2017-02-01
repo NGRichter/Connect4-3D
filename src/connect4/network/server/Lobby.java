@@ -22,7 +22,7 @@ public class Lobby extends Thread {
 	}
 
 	/**
-	 * Adds a client to the list of clients that are in game
+	 * Adds a client to the list of clients that are in game.
 	 * Removes them from the lobby list and ready list
 	 *
 	 * @param game - the client that starts a game
@@ -123,7 +123,8 @@ public class Lobby extends Thread {
 				}
 			}
 			if (same.size() == first.getPlayers()) {
-				GameHandler game = new GameHandler(same, first.getDimension(), first.getNoRoof(), first.getWinCondition());
+				GameHandler game = new GameHandler(same, first.getDimension(), 
+						first.getNoRoof(), first.getWinCondition());
 				for (ClientHandler client : same) {
 					client.setGame(game);
 					addInGame(client);

@@ -64,9 +64,11 @@ public class Board extends Observable {
 	 * @param y      - y-coordinate of the field
 	 * @param player - player to occupy the field with
 	 * @throws OutsidePlayingBoardException if x and/or y is outside the board.
-	 * @throws NoEmptySpotException         if there is no empty spot at the highest 'altitude'/'layer'/'slice'/'z-level'.
+	 * @throws NoEmptySpotException if there is no empty spot 
+	 * at the highest 'altitude'/'layer'/'slice'/'z-level'.
 	 */
-	public void setField(int x, int y, Player player) throws OutsidePlayingBoardException, NoEmptySpotException {
+	public void setField(int x, int y, Player player) 
+			throws OutsidePlayingBoardException, NoEmptySpotException {
 		if (x >= DIMX || y >= DIMY || x < 0 || y < 0) {
 			throw new OutsidePlayingBoardException();
 		}
