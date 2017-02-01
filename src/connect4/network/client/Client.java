@@ -47,6 +47,10 @@ public class Client {
 		}
 	}
 
+	/**
+	 * Starts a game on the client, from a list of names.
+	 * @param usernames - usernames of participants for the game.
+	 */
 	public void startClientGame(List<String> usernames) {
 		Player[] players = new Player[usernames.size()];
 		int i = 0;
@@ -67,16 +71,33 @@ public class Client {
 		game.addObserver(ui);
 	}
 
+
+	/**
+	 * Requests the GameView.
+	 * @return GameView
+	 */
 	public GameView getGameView() {
 		return ui;
 	}
 
+
+	/**
+	 * Connect to a server with a port and InetAdress.
+	 * @param port - port of the server.
+	 * @param address - InetAdress of the server.
+	 * @throws IOException
+	 */
 	public void connectServer(int port, InetAddress address) throws IOException {
 		sock = new Socket(address, port);
 		server = new ServerHandler(sock, this);
 		server.start();
 	}
 
+	/**
+	 * Sends a command to the server.
+	 * @param string - command to be sent.
+	 * @throws IOException
+	 */
 	public void writeServer(String string) throws IOException {
 		if (server != null) {
 			server.handleOutput(string);
@@ -86,6 +107,10 @@ public class Client {
 
 	}
 
+	/**
+	 * Requests a random, non-used JavaFX color.
+	 * @return color
+	 */
 	public Color getRandomColor() {
 		int i = (int) (Math.random() * colors.length);
 		Color color = colors[i];
@@ -97,47 +122,91 @@ public class Client {
 		}
 	}
 
+	/**
+	 * Let AI play, with specific thinking time.
+	 * @param ai - let AI play, true or false
+	 * @param time - depth level of the AI
+	 */
 	public void letAIDoGame(boolean ai, int time) {
 		aiDoGame = ai;
 		thinkingtime = time;
 	}
 
+	/**
+	 * Requests the thinking time of the AI.
+	 * @return thinking time
+	 */
 	public int getThinkingtime() {
 		return thinkingtime;
 	}
 
+	/**
+	 * Sets the game to be roofless.
+	 * @param noroof - true or false
+	 */
 	public void setNoRoof(boolean noroof) {
 		noRoof = noroof;
 	}
 
+	/**
+	 * Disconnects the server by setting it to null.
+	 */
 	public void serverDisconnected() {
 		server = null;
 	}
 
+
+	/**
+	 * Sets the dimension of the board.
+	 * @param dim - dimenstion of the board.
+	 */
 	public void setBoardDim(int dim) {
 		boardDim = dim;
 	}
 
+	/**
+	 * Stops a game on the client, by setting it to null.
+	 */
 	public void stopClientGame() {
 		game = null;
 	}
 
+	/**
+	 * Requests the game of the client.
+	 * @return game
+	 */
 	public Game getGame() {
 		return game;
 	}
 
+	/**
+	 * Requests the AI of the client.
+	 * @return AI
+	 */
 	public Player getAI() {
 		return AI;
 	}
 
+	/**
+	 * Requests the name of the client.
+	 * @return name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Sets the name of the client.
+	 * @param name - string of name to be set.
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Requeests the server this client is connected to.
+	 * @return server
+	 */
 	public ServerHandler getServer() {
 		return server;
 	}
