@@ -49,6 +49,7 @@ public class Client {
 
 	/**
 	 * Starts a game on the client, from a list of names.
+	 *
 	 * @param usernames - usernames of participants for the game.
 	 */
 	public void startClientGame(List<String> usernames) {
@@ -74,6 +75,7 @@ public class Client {
 
 	/**
 	 * Requests the GameView.
+	 *
 	 * @return GameView
 	 */
 	public GameView getGameView() {
@@ -83,7 +85,8 @@ public class Client {
 
 	/**
 	 * Connect to a server with a port and InetAdress.
-	 * @param port - port of the server.
+	 *
+	 * @param port    - port of the server.
 	 * @param address - InetAdress of the server.
 	 * @throws IOException
 	 */
@@ -95,6 +98,7 @@ public class Client {
 
 	/**
 	 * Sends a command to the server.
+	 *
 	 * @param string - command to be sent.
 	 * @throws IOException
 	 */
@@ -109,6 +113,7 @@ public class Client {
 
 	/**
 	 * Requests a random, non-used JavaFX color.
+	 *
 	 * @return color
 	 */
 	public Color getRandomColor() {
@@ -124,7 +129,8 @@ public class Client {
 
 	/**
 	 * Let AI play, with specific thinking time.
-	 * @param ai - let AI play, true or false
+	 *
+	 * @param ai   - let AI play, true or false
 	 * @param time - depth level of the AI
 	 */
 	public void letAIDoGame(boolean ai, int time) {
@@ -134,6 +140,7 @@ public class Client {
 
 	/**
 	 * Requests the thinking time of the AI.
+	 *
 	 * @return thinking time
 	 */
 	public int getThinkingtime() {
@@ -142,6 +149,7 @@ public class Client {
 
 	/**
 	 * Sets the game to be roofless.
+	 *
 	 * @param noroof - true or false
 	 */
 	public void setNoRoof(boolean noroof) {
@@ -158,6 +166,7 @@ public class Client {
 
 	/**
 	 * Sets the dimension of the board.
+	 *
 	 * @param dim - dimenstion of the board.
 	 */
 	public void setBoardDim(int dim) {
@@ -173,6 +182,7 @@ public class Client {
 
 	/**
 	 * Requests the game of the client.
+	 *
 	 * @return game
 	 */
 	public Game getGame() {
@@ -181,6 +191,7 @@ public class Client {
 
 	/**
 	 * Requests the AI of the client.
+	 *
 	 * @return AI
 	 */
 	public Player getAI() {
@@ -189,6 +200,7 @@ public class Client {
 
 	/**
 	 * Requests the name of the client.
+	 *
 	 * @return name
 	 */
 	public String getName() {
@@ -197,6 +209,7 @@ public class Client {
 
 	/**
 	 * Sets the name of the client.
+	 *
 	 * @param name - string of name to be set.
 	 */
 	public void setName(String name) {
@@ -205,6 +218,7 @@ public class Client {
 
 	/**
 	 * Requeests the server this client is connected to.
+	 *
 	 * @return server
 	 */
 	public ServerHandler getServer() {

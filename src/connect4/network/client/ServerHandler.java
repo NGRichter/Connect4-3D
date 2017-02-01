@@ -117,6 +117,7 @@ public class ServerHandler extends Thread {
 
 	/**
 	 * Writes a command to the server.
+	 *
 	 * @param string - command
 	 * @throws IOException
 	 */
